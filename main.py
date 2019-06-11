@@ -54,7 +54,7 @@ optimizer = optim.Adam(classifier.parameters(), lr=config.lr)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
-
+print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
