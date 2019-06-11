@@ -11,13 +11,13 @@ import numpy as np
 from torchvision import transforms
 import os
 
-data_root = "/home/hesun/phd/medical image/unet_test/result"
-save_root = "/home/hesun/phd/medical image/unet_test/pre0528"
+data_root = "result"
+save_root = "pre0528"
 if not os.path.exists(save_root): os.mkdir(save_root)
 
-label = np.load("/home/hesun/phd/medical image/unet_test/result/label_0.npy")
-mask = np.load("/home/hesun/phd/medical image/unet_test/result/mask_0.npy")
-raw = np.load("/home/hesun/phd/medical image/unet_test/result/raw_0.npy")
+label = np.load("result/label_0.npy")
+mask = np.load("result/mask_0.npy")
+raw = np.load("result/raw_0.npy")
 
 label[label==1]=200
 label[label==2]=500
