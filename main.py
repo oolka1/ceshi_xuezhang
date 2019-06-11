@@ -97,20 +97,11 @@ for epoch in range(config.epochs):
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                 test_acc_epoch.append(test_acc)
-<<<<<<< HEAD
             print('epoch %d: %d | test loss: %f | test acc: %f'
             % (epoch+1, i+1, loss.item(), test_acc))
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (loss.item()))
             log_string('accuracy: %f' % (test_acc))
-=======
-             print(('epoch %d: %d | test loss: %f | test acc: %f')
-             % (epoch+1, i+1, loss.item(), test_acc))          
-             log_string(' -- %03d / %03d --' % (epoch+1, 1))
-             log_string('loss: %f' % (loss.item()))
-             log_string('accuracy: %f' % (test_acc))
-    
->>>>>>> e0042915f218ca97baa3ba88146062905b1d02f4
             
     print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
