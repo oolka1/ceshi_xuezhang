@@ -96,9 +96,9 @@ for epoch in range(config.epochs):
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
-             print('epoch %d: %d | test loss: %f | test acc: %f' 
-             % (epoch+1, i+1, loss.item(), test_acc))
-             test_acc_epoch.append(test_acc)
+                test_acc_epoch.append(test_acc)
+             print(('epoch %d: %d | test loss: %f | test acc: %f')
+             % (epoch+1, i+1, loss.item(), test_acc))          
              log_string(' -- %03d / %03d --' % (epoch+1, 1))
              log_string('loss: %f' % (loss.item()))
              log_string('accuracy: %f' % (test_acc))
