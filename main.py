@@ -16,9 +16,9 @@ import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet
 
-traindata_root = "/home/hesun/phd/medical image/unet_test/data/train"
-testdata_root = "/home/hesun/phd/medical image/unet_test/data/test"
-log_root = "/home/hesun/phd/medical image/unet_test/log"
+traindata_root = "train"
+testdata_root = "test"
+log_root = "log"
 if not os.path.exists(log_root): os.mkdir(log_root)
 LOG_FOUT = open(os.path.join(log_root, 'train.log'), 'w')
 def log_string(out_str):
