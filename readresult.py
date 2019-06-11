@@ -38,12 +38,12 @@ mask1[mask1==3]=600
 i = 0
 result = Image.fromarray(np.uint8(mask1))
 result.show()
-#result.save('%s/result_%d.png' % (save_root,i))
+result.save('%s/result_%d.png' % (save_root,i))
 
 gt = Image.fromarray(np.uint8(label[0]))
 gt.show()
-#gt.save('%s/gt_%d.png' % (save_root,i))
+gt.save('%s/gt_%d.png' % (save_root,i))
 
 rawdata = Image.fromarray(np.uint8(raw[0,0,:,:]))
 rawdata.show()
-#rawdata.save('%s/rawdata_%d.png' % (save_root,i))
+rawdata.save('%s/rawdata_%d.png' % (save_root,i))
