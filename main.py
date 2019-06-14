@@ -70,10 +70,10 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        loss = F.cross_entropy(pred, label)
-        loss = nn.NLLLoss(weight=weight1)
+        loss = F.CrossEntropyLoss(weight=weight1)
+        output = loss(pred, label)
         #print(pred.size(),label.size())
-        loss.backward()
+        output.backward()
         optimizer.step()
         pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
@@ -90,21 +90,21 @@ for epoch in range(config.epochs):
                 pred = classifier(slices)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
-                loss = F.cross_entropy(pred, label)
+                output = loss(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                 test_acc_epoch.append(test_acc)
             print('epoch %d: %d | test loss: %f | test acc: %f'
-            % (epoch+1, i+1, loss.item(), test_acc))
+            % (epoch+1, i+1, output.item(), test_acc))
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
-            log_string('loss: %f' % (loss.item()))
+            log_string('loss: %f' % (output.item()))
             log_string('accuracy: %f' % (test_acc))
 
     print('epoch %d: %d | train loss: %f | train acc: %f'
-    % (epoch+1, i+1, loss.item(), train_acc))
+    % (epoch+1, i+1, output.item(), train_acc))
     log_string(' -- %03d / %03d --' % (epoch+1, 1))
-    log_string('loss: %f' % (loss.item()))
+    log_string('loss: %f' % (output.item()))
     log_string('accuracy: %f' % (train_acc))
 
             
