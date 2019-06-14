@@ -57,6 +57,7 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
 weight1 = torch.Tensor([1,100,100,100])
+weight1 = weight1.to(device)
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
