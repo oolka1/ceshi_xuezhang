@@ -31,8 +31,8 @@ parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_1
                              " (default : 'MODEL.pth')")
 config = parser.parse_args()
 
-testdata_root = "/home/hesun/phd/medical image/unet_test/data/test"
-save_root = "/home/hesun/phd/medical image/unet_test/result"
+testdata_root = "test"
+save_root = "result"
 test_dataset = fudandataset(testdata_root,train=False)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, 
                                               num_workers=4)

@@ -11,13 +11,13 @@ import numpy as np
 from torchvision import transforms
 import os
 
-data_root = "/home/hesun/phd/medical image/unet_test/result"
-save_root = "/home/hesun/phd/medical image/unet_test/pre0528"
+data_root = "result"
+save_root = "pre0528"
 if not os.path.exists(save_root): os.mkdir(save_root)
 
-label = np.load("/home/hesun/phd/medical image/unet_test/result/label_0.npy")
-mask = np.load("/home/hesun/phd/medical image/unet_test/result/mask_0.npy")
-raw = np.load("/home/hesun/phd/medical image/unet_test/result/raw_0.npy")
+label = np.load("result/label_0.npy")
+mask = np.load("result/mask_0.npy")
+raw = np.load("result/raw_0.npy")
 
 label[label==1]=200
 label[label==2]=500
@@ -38,12 +38,12 @@ mask1[mask1==3]=600
 i = 0
 result = Image.fromarray(np.uint8(mask1))
 result.show()
-#result.save('%s/result_%d.png' % (save_root,i))
+result.save('%s/result_%d.png' % (save_root,i))
 
 gt = Image.fromarray(np.uint8(label[0]))
 gt.show()
-#gt.save('%s/gt_%d.png' % (save_root,i))
+gt.save('%s/gt_%d.png' % (save_root,i))
 
 rawdata = Image.fromarray(np.uint8(raw[0,0,:,:]))
 rawdata.show()
-#rawdata.save('%s/rawdata_%d.png' % (save_root,i))
+rawdata.save('%s/rawdata_%d.png' % (save_root,i))
