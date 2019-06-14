@@ -12,6 +12,7 @@ import torch
 import torch.optim as optim
 import torch.utils.data
 import torch.nn.functional as F
+import torch.nn as nn
 import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet
@@ -70,7 +71,7 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        loss = F.CrossEntropyLoss(weight=weight1)
+        loss = nn.CrossEntropyLoss(weight=weight1)
         output = loss(pred, label)
         #print(pred.size(),label.size())
         output.backward()
