@@ -72,7 +72,7 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        loss = nn.CrossEntropyLoss(weight=weight1)
+        loss = nn.CrossEntropyLoss(weight=weight1, reduce=False, size_average=False)
         output = loss(pred, label)
         #print(pred.size(),label.size())
         output.backward()
