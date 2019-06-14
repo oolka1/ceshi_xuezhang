@@ -15,6 +15,7 @@ import torch.nn.functional as F
 import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet
+import tensorflow as tf
 
 traindata_root = "train"
 testdata_root = "test"
@@ -54,6 +55,7 @@ optimizer = optim.Adam(classifier.parameters(), lr=config.lr)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
+weight1 = tf.Variable([1,500,500,500], tf.uint8)
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
@@ -69,6 +71,7 @@ for epoch in range(config.epochs):
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
         loss = F.cross_entropy(pred, label)
+        loss = nn.NLLLoss(weight=weight1)
         #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
