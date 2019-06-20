@@ -82,16 +82,11 @@ train_dataset001.train_data=train_datasetimg001
 train_dataset01.train_labels=train_datasetmask01
 train_dataset01.train_data=train_datasetimg01
 
-traindataloader0 = torch.utils.data.DataLoader(train_dataset0, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=4)
-traindataloader0001 = torch.utils.data.DataLoader(train_dataset0001, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=4)
-traindataloader001 = torch.utils.data.DataLoader(train_dataset001, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=4)
-traindataloader01 = torch.utils.data.DataLoader(train_dataset01, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=4)
-testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=4)
+traindataloader0 = torch.utils.data.DataLoader(train_dataset0, batch_size=config.batchsize, shuffle=True, num_workers=4)
+traindataloader0001 = torch.utils.data.DataLoader(train_dataset0001, batch_size=config.batchsize, shuffle=True, num_workers=4)
+traindataloader001 = torch.utils.data.DataLoader(train_dataset001, batch_size=config.batchsize, shuffle=True,  num_workers=4)
+traindataloader01 = torch.utils.data.DataLoader(train_dataset01, batch_size=config.batchsize, shuffle=True, num_workers=4)
+testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
 #seed = 123456
 #random.seed(seed)
 #torch.cuda.manual_seed(seed)
