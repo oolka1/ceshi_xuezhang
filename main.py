@@ -55,6 +55,7 @@ for i in range(len(label1)):
   r2=img1[i]
   maskzero=np.sum(r1==0)
   m=float(maskzero/r1.size)
+  m=1-m
   if m==1:
     train_datasetmask0.append(r1)
     train_datasetimg0.append(r2)
