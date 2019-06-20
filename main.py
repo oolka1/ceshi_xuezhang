@@ -56,7 +56,7 @@ for i in range(len(label1)):
   maskzero=np.sum(r1==0)
   m=float(maskzero/r1.size)
   m=1-m
-  if m==1:
+  if m==0:
     train_datasetmask0.append(r1)
     train_datasetimg0.append(r2)
   else:
