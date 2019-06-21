@@ -18,7 +18,7 @@ from fudandataset import fudandataset
 from Unet import UNet
 import copy
 
-traindata_root = "train"
+traindata_root = "train1"
 testdata_root = "test"
 log_root = "log"
 if not os.path.exists(log_root): os.mkdir(log_root)
@@ -60,7 +60,7 @@ weight1 = weight1.to(device)
 
 loss_stroge=0
 loss1=10
-trainaccst=0
+testaccst=0
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
@@ -123,5 +123,5 @@ for epoch in range(config.epochs):
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(loss_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     loss_stroge=copy.deepcopy(np.mean(loss_epoch))
-    trainaccst=copy.deepcopy(np.mean(train_acc_epoch))
+    testaccst=copy.deepcopy(np.mean(test_acc_epoch))
         
