@@ -120,7 +120,7 @@ for epoch in range(config.epochs):
 
     print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
-    print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(loss_epoch)))
+    print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(loss_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     loss_stroge=copy.deepcopy(np.mean(loss_epoch))
     testaccst=copy.deepcopy(np.mean(test_acc_epoch))
