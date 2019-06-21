@@ -66,12 +66,13 @@ print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
-    train_acc_epoch, test_acc_epoch = [], []
-    if (loss1-loss_stroge)<0.01:
-        loss1=copy.deepcopy(loss_stroge)
-        if trainaccst<0.99:
-            Ir=Ir/2
-            optimizer = optim.Adam(classifier.parameters(), lr=Ir)            
+    train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
+    if epoch>100:
+        if (loss1-loss_stroge)<0.01:
+            loss1=copy.deepcopy(loss_stroge)
+            if trainaccst<0.99:
+                Ir=Ir/2
+                optimizer = optim.Adam(classifier.parameters(), lr=Ir)            
     for i, data in enumerate(traindataloader):
         slices,label = data
         slices, label = slices.to(device), label.to(device)
@@ -89,6 +90,12 @@ for epoch in range(config.epochs):
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
         train_acc_epoch.append(train_acc)
+        loss_epoch.append(output.item())
+        print('epoch %d: %d | train loss: %f | train acc: %f'
+        % (epoch+1, i+1, output.item(), train_acc))
+        log_string(' -- %03d / %03d --' % (epoch+1, 1))
+        log_string('loss: %f' % (output.item()))
+        log_string('accuracy: %f' % (train_acc))
         if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
@@ -110,17 +117,11 @@ for epoch in range(config.epochs):
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (output.item()))
             log_string('accuracy: %f' % (test_acc))
-            
-        print('epoch %d: %d | train loss: %f | train acc: %f'
-        % (epoch+1, i+1, output.item(), train_acc))
-        log_string(' -- %03d / %03d --' % (epoch+1, 1))
-        log_string('loss: %f' % (output.item()))
-        log_string('accuracy: %f' % (train_acc))
 
-
-        print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
-        print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
-        torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
-        loss_stroge=copy.deepcopy(output.item())
-        trainaccst=copy.deepcopy(train_acc)
+    print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
+    print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
+    print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(loss_epoch)))
+    torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
+    loss_stroge=copy.deepcopy(np.mean(loss_epoch))
+    trainaccst=copy.deepcopy(np.mean(train_acc_epoch))
         
