@@ -113,8 +113,8 @@ for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
     train_acc_epoch, test_acc_epoch = [], []
-    if epoch<50:
-        for i, data in enumerate(traindataloader0):
+    if epoch<250:
+        for i, data in enumerate(traindataloader01):
             slices,label = data
             slices, label = slices.to(device), label.to(device)
             optimizer.zero_grad()
@@ -122,7 +122,7 @@ for epoch in range(config.epochs):
             pred = classifier(slices)
             pred = pred.view(-1, num_classes)
             label = label.view(-1).long()
-            loss = nn.CrossEntropyLoss( weight=weight1)
+            loss = nn.CrossEntropyLoss( weight=weight4)
             output = loss(pred, label)
             #print(pred.size(),label.size())
             output.backward()
@@ -164,8 +164,8 @@ for epoch in range(config.epochs):
         print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
         torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     else:
-        if epoch<150:
-            for i, data in enumerate(traindataloader0001):
+        if epoch<350:
+            for i, data in enumerate(traindataloader001):
                 slices,label = data
                 slices, label = slices.to(device), label.to(device)
                 optimizer.zero_grad()
@@ -173,7 +173,7 @@ for epoch in range(config.epochs):
                 pred = classifier(slices)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
-                loss = nn.CrossEntropyLoss( weight=weight2)
+                loss = nn.CrossEntropyLoss( weight=weight3)
                 output = loss(pred, label)
                 #print(pred.size(),label.size())
                 output.backward()
@@ -215,8 +215,8 @@ for epoch in range(config.epochs):
             print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
             torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch)) 
         else:
-            if epoch<250:
-                for i, data in enumerate(traindataloader001):
+            if epoch<450:
+                for i, data in enumerate(traindataloader0001):
                     slices,label = data
                     slices, label = slices.to(device), label.to(device)
                     optimizer.zero_grad()
@@ -224,7 +224,7 @@ for epoch in range(config.epochs):
                     pred = classifier(slices)
                     pred = pred.view(-1, num_classes)
                     label = label.view(-1).long()
-                    loss = nn.CrossEntropyLoss( weight=weight3)
+                    loss = nn.CrossEntropyLoss( weight=weight2)
                     output = loss(pred, label)
                     #print(pred.size(),label.size())
                     output.backward()
@@ -266,7 +266,7 @@ for epoch in range(config.epochs):
                 print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
                 torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
             else:
-                for i, data in enumerate(traindataloader01):
+                for i, data in enumerate(traindataloader0):
                     slices,label = data
                     slices, label = slices.to(device), label.to(device)
                     optimizer.zero_grad()
@@ -274,7 +274,7 @@ for epoch in range(config.epochs):
                     pred = classifier(slices)
                     pred = pred.view(-1, num_classes)
                     label = label.view(-1).long()
-                    loss = nn.CrossEntropyLoss( weight=weight4)
+                    loss = nn.CrossEntropyLoss( weight=weight1)
                     output = loss(pred, label)
                     #print(pred.size(),label.size())
                     output.backward()
