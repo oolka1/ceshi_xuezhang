@@ -47,7 +47,7 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 #random.seed(seed)
 #torch.cuda.manual_seed(seed)
 
-classifier = UNet(n_classes = num_classes)
+classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 Ir=config.lr
