@@ -18,7 +18,7 @@ from fudandataset import fudandataset
 from Unet import UNet
 import copy
 
-traindata_root = "train1"
+traindata_root = "train"
 testdata_root = "test"
 log_root = "log"
 if not os.path.exists(log_root): os.mkdir(log_root)
@@ -33,7 +33,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=300, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=500, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
 num_classes = 4
@@ -55,7 +55,7 @@ optimizer = optim.Adam(classifier.parameters(), lr=Ir)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
-weight1 = torch.Tensor([1,150,150,150])
+weight1 = torch.Tensor([1,200,200,200])
 weight1 = weight1.to(device)
 
 loss_stroge=0
