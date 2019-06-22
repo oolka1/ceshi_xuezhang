@@ -15,7 +15,7 @@ import torch.nn.functional as F
 import torch.nn as nn
 import numpy as np
 from fudandataset import fudandataset
-from Unet import UNet
+from Unet import UNet_Nested
 import copy
 
 traindata_root = "train"
