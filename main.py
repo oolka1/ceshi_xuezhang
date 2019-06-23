@@ -92,10 +92,9 @@ for epoch in range(config.epochs):
         train_acc=confusion_matrix.value()
         train_acc_epoch.append(train_acc)
         loss_epoch.append(loss_stroge)
-        print('epoch %d: %d | train loss: %f | train acc: %f'
-        % (epoch+1, i+1,loss_stroge[0], train_acc))
+        print('epoch %d: %d  | train acc: %f'
+        % (epoch+1, i+1, train_acc))
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
-        log_string('loss: %f' % (loss_stroge[0]))
         log_string('accuracy: %f' % (train_acc))       
         '''pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
@@ -139,4 +138,4 @@ for epoch in range(config.epochs):
         lr = lr * 0.95
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr               
-        previous_loss = loss_stroge[0]    
+    previous_loss = loss_stroge[0]    
