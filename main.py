@@ -31,7 +31,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.01, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=200, help='epochs to train')
@@ -127,7 +127,7 @@ for epoch in range(config.epochs):
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
 
     if loss_stroge[0] > previous_loss:          
-        lr = lr * 0.95
+        lr = lr * 0.9
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr               
     previous_loss = loss_stroge[0]    
