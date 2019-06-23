@@ -121,6 +121,10 @@ for epoch in range(config.epochs):
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (output.item()))
             log_string('accuracy: %f' % (test_acc))
+            if test_acc>0.995:
+                torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
+                break
+
     print("train loss:",loss_stroge[0])
     print("train acc:", train_acc[0])
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
