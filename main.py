@@ -53,7 +53,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
 optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 1e-4)
-scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=40, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
 #weight1 = torch.Tensor([1,200,200,200])
