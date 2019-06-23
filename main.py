@@ -33,7 +33,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float, default=0.01, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=300, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=200, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
 num_classes = 4
@@ -61,8 +61,7 @@ loss_meter = meter.AverageValueMeter()
 confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
 loss_stroge=0
-loss1=10
-testaccst=0
+
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
@@ -83,6 +82,17 @@ for epoch in range(config.epochs):
         #print(pred.size(),label.size())
         output.backward()
         optimizer.step()
+        loss_meter.add(output.data[0])
+        confusion_matrix.add(pred.data, label.data)
+        loss_stroge = loss_meter.value()[0],
+        train_acc=confusion_matrix.value()),
+        train_acc_epoch.append(train_acc)
+        loss_epoch.append(loss_stroge)
+        print('epoch %d: %d | train loss: %f | train acc: %f'
+        % (epoch+1, i+1,loss_stroge, train_acc))
+        log_string(' -- %03d / %03d --' % (epoch+1, 1))
+        log_string('loss: %f' % (loss_stroge))
+        log_string('accuracy: %f' % (train_acc))       
         '''pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
@@ -105,7 +115,7 @@ for epoch in range(config.epochs):
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 output = loss(pred, label)
-                '''pred_choice = pred.data.max(1)[1]
+                pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                 test_acc_epoch.append(test_acc)
@@ -113,12 +123,16 @@ for epoch in range(config.epochs):
             % (epoch+1, i+1, output.item(), test_acc))
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (output.item()))
-            log_string('accuracy: %f' % (test_acc))'''
+            log_string('accuracy: %f' % (test_acc))
 
-    '''print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
+    print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(loss_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     loss_stroge=copy.deepcopy(np.mean(loss_epoch))
-    testaccst=copy.deepcopy(np.mean(test_acc_epoch))'''
-        
+    testaccst=copy.deepcopy(np.mean(test_acc_epoch))
+    if loss_meter.value()[0] > previous_loss:          
+           lr = lr * 0.95
+           for param_group in optimizer.param_groups:
+               param_group['lr'] = lr               
+       previous_loss = loss_meter.value()[0]    
