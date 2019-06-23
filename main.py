@@ -133,7 +133,7 @@ for epoch in range(config.epochs):
     loss_stroge=copy.deepcopy(np.mean(loss_epoch))
     testaccst=copy.deepcopy(np.mean(test_acc_epoch))
     if loss_stroge[0] > previous_loss:          
-           lr = lr * 0.95
-           for param_group in optimizer.param_groups:
-               param_group['lr'] = lr               
-       previous_loss = loss_stroge[0]    
+        lr = lr * 0.95
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr               
+        previous_loss = loss_stroge[0]    
