@@ -67,8 +67,9 @@ print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
-    #train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
-              
+    train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
+    loss_meter.reset()
+    confusion_matrix.reset()         
     for i, data in enumerate(traindataloader):
         slices,label = data
         slices, label = slices.to(device), label.to(device)
@@ -84,14 +85,14 @@ for epoch in range(config.epochs):
         optimizer.step()
         loss_meter.add(output.data[0])
         confusion_matrix.add(pred.data, label.data)
-        loss_stroge = loss_meter.value()[0]
+        loss_stroge = loss_meter.value()
         train_acc=confusion_matrix.value()
         train_acc_epoch.append(train_acc)
         loss_epoch.append(loss_stroge)
         print('epoch %d: %d | train loss: %f | train acc: %f'
-        % (epoch+1, i+1,loss_stroge, train_acc))
+        % (epoch+1, i+1,loss_stroge[0], train_acc))
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
-        log_string('loss: %f' % (loss_stroge))
+        log_string('loss: %f' % (loss_stroge[0]))
         log_string('accuracy: %f' % (train_acc))       
         '''pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
