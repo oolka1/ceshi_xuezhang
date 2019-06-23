@@ -85,12 +85,12 @@ for epoch in range(config.epochs):
         #print(pred.size(),label.size())
         output.backward()
         optimizer.step()
-        output1=output.data
+       ''' output1=output.data
         loss_meter.add(output1.item())
         confusion_matrix.add(pred.data, label.data)
         loss_stroge = loss_meter.value()
-        train_acc=confusion_matrix.value()       
-        '''pred_choice = pred.data.max(1)[1]
+        train_acc=confusion_matrix.value()'''      
+        pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
         train_acc_epoch.append(train_acc)
@@ -99,7 +99,7 @@ for epoch in range(config.epochs):
         % (epoch+1, i+1, output.item(), train_acc))
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
         log_string('loss: %f' % (output.item()))
-        log_string('accuracy: %f' % (train_acc))'''
+        log_string('accuracy: %f' % (train_acc))
         if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
@@ -121,18 +121,14 @@ for epoch in range(config.epochs):
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (output.item()))
             log_string('accuracy: %f' % (test_acc))
-            if test_acc>0.995:
-                torch.save(classifier.state_dict(), '%s/%s_model.pth' % (config.outf, 'fudanc0'))
-                break
-    if test_acc>0.995:
-        break
+            
     print("train loss:",loss_stroge[0])
     print("train acc:", train_acc[0])
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
 
-    if loss_stroge[0] > previous_loss:          
+    '''if loss_stroge[0] > previous_loss:          
         lr = lr * 0.9
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr               
-    previous_loss = loss_stroge[0]    
+    previous_loss = loss_stroge[0] '''   
