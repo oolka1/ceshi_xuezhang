@@ -86,7 +86,7 @@ for epoch in range(config.epochs):
         output.backward()
         optimizer.step()
         output1=output.data
-        loss_meter.add(output1)
+        loss_meter.add(output1.item())
         confusion_matrix.add(pred.data, label.data)
         loss_stroge = loss_meter.value()
         train_acc=confusion_matrix.value()
