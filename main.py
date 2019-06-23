@@ -62,6 +62,7 @@ loss_meter = meter.AverageValueMeter()
 confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
 loss_stroge=0
+output1=0
 
 print (config.epochs)
 print ('Starting training...\n')
@@ -84,7 +85,8 @@ for epoch in range(config.epochs):
         #print(pred.size(),label.size())
         output.backward()
         optimizer.step()
-        loss_meter.add(output.data[0])
+        output1=output.data
+        loss_meter.add(output1[0])
         confusion_matrix.add(pred.data, label.data)
         loss_stroge = loss_meter.value()
         train_acc=confusion_matrix.value()
