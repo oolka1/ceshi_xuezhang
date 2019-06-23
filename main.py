@@ -52,12 +52,12 @@ classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=lr)
+optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 1e-4)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
-weight1 = torch.Tensor([1,200,200,200])
-weight1 = weight1.to(device)
+#weight1 = torch.Tensor([1,200,200,200])
+#weight1 = weight1.to(device)
 loss_meter = meter.AverageValueMeter()
 confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
@@ -80,7 +80,7 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        loss = nn.CrossEntropyLoss( weight=weight1)
+        loss = nn.CrossEntropyLoss()#weight=weight1
         output = loss(pred, label)
         #print(pred.size(),label.size())
         output.backward()
@@ -121,7 +121,7 @@ for epoch in range(config.epochs):
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (output.item()))
             log_string('accuracy: %f' % (test_acc))
-    print("loss:",loss_stroge[0])
+    print("train loss:",loss_stroge[0])
     print("train acc:", train_acc[0])
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
