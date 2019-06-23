@@ -30,7 +30,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.01, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=300, help='epochs to train')
@@ -50,14 +50,16 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
-Ir=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=Ir)
+lr=config.lr
+optimizer = optim.Adam(classifier.parameters(), lr=lr)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
 weight1 = torch.Tensor([1,200,200,200])
 weight1 = weight1.to(device)
-
+loss_meter = meter.AverageValueMeter()
+confusion_matrix = meter.ConfusionMeter(4)
+previous_loss = 1e100
 loss_stroge=0
 loss1=10
 testaccst=0
@@ -66,13 +68,8 @@ print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
-    train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
-    if epoch>100:
-        if (loss1-loss_stroge)<0.01:
-            loss1=copy.deepcopy(loss_stroge)
-            if trainaccst<0.99:
-                Ir=Ir/2
-                optimizer = optim.Adam(classifier.parameters(), lr=Ir)            
+    #train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
+              
     for i, data in enumerate(traindataloader):
         slices,label = data
         slices, label = slices.to(device), label.to(device)
@@ -86,7 +83,7 @@ for epoch in range(config.epochs):
         #print(pred.size(),label.size())
         output.backward()
         optimizer.step()
-        pred_choice = pred.data.max(1)[1]
+        '''pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
         train_acc_epoch.append(train_acc)
@@ -95,7 +92,7 @@ for epoch in range(config.epochs):
         % (epoch+1, i+1, output.item(), train_acc))
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
         log_string('loss: %f' % (output.item()))
-        log_string('accuracy: %f' % (train_acc))
+        log_string('accuracy: %f' % (train_acc))'''
         if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
@@ -108,7 +105,7 @@ for epoch in range(config.epochs):
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 output = loss(pred, label)
-                pred_choice = pred.data.max(1)[1]
+                '''pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                 test_acc_epoch.append(test_acc)
@@ -116,12 +113,12 @@ for epoch in range(config.epochs):
             % (epoch+1, i+1, output.item(), test_acc))
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (output.item()))
-            log_string('accuracy: %f' % (test_acc))
+            log_string('accuracy: %f' % (test_acc))'''
 
-    print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
+    '''print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(loss_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     loss_stroge=copy.deepcopy(np.mean(loss_epoch))
-    testaccst=copy.deepcopy(np.mean(test_acc_epoch))
+    testaccst=copy.deepcopy(np.mean(test_acc_epoch))'''
         
