@@ -122,7 +122,7 @@ for epoch in range(config.epochs):
             log_string('loss: %f' % (output.item()))
             log_string('accuracy: %f' % (test_acc))
             if test_acc>0.995:
-                torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
+                torch.save(classifier.state_dict(), '%s/%s_model.pth' % (config.outf, 'fudanc0'))
                 break
 
     print("train loss:",loss_stroge[0])
