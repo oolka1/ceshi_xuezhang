@@ -89,13 +89,7 @@ for epoch in range(config.epochs):
         loss_meter.add(output1.item())
         confusion_matrix.add(pred.data, label.data)
         loss_stroge = loss_meter.value()
-        train_acc=confusion_matrix.value()
-        train_acc_epoch.append(train_acc)
-        loss_epoch.append(loss_stroge)
-        print('epoch %d: %d  | train acc: %f'
-        % (epoch+1, i+1, train_acc))
-        log_string(' -- %03d / %03d --' % (epoch+1, 1))
-        log_string('accuracy: %f' % (train_acc))       
+        train_acc=confusion_matrix.value()       
         '''pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
@@ -127,13 +121,11 @@ for epoch in range(config.epochs):
             log_string(' -- %03d / %03d --' % (epoch+1, 1))
             log_string('loss: %f' % (output.item()))
             log_string('accuracy: %f' % (test_acc))
-
-    print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
+    print("loss:",loss_stroge[0])
+    print("train acc:", train_acc[0])
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
-    print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(loss_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
-    loss_stroge=copy.deepcopy(np.mean(loss_epoch))
-    testaccst=copy.deepcopy(np.mean(test_acc_epoch))
+
     if loss_stroge[0] > previous_loss:          
         lr = lr * 0.95
         for param_group in optimizer.param_groups:
