@@ -124,7 +124,8 @@ for epoch in range(config.epochs):
             if test_acc>0.995:
                 torch.save(classifier.state_dict(), '%s/%s_model.pth' % (config.outf, 'fudanc0'))
                 break
-
+    if test_acc>0.995:
+        break
     print("train loss:",loss_stroge[0])
     print("train acc:", train_acc[0])
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
