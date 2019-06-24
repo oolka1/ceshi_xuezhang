@@ -34,9 +34,10 @@ def my_segmentation_transform(input1, target1):
             if np.random.rand() < 0:
                 affine_params = T.RandomAffine(180).get_params((-90, 90), (1, 1), (2, 2), (-45, 45), self.crop)
                 input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)
+            input2=torch.unsqueeze(input2,3)
             input2 = np.array(input2)
             input2= input2.astype("uint16")
-            input2=torch.unsqueeze(input2,3)
+            
             target= np.array(target)
             target= target.astype("uint16")
             input1[i]=input2[:,:,np.newaxis].transpose(2,0,1)
