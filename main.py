@@ -95,7 +95,6 @@ for epoch in range(config.epochs):
         train_acc = correct.item()/float(label.shape[0])
         train_acc_epoch.append(train_acc)
         loss_epoch.append(output.item())
-        loss_stroge = output.item()
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
         log_string('train_loss: %f' % (output.item()))
         log_string('train_accuracy: %f' % (train_acc))
@@ -124,9 +123,10 @@ for epoch in range(config.epochs):
     print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(loss_epoch)))
+    loss_stroge = np.mean(loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     if loss_stroge > previous_loss:          
-        lr = lr * 0.9
+        lr = lr * 0.95
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr               
     previous_loss = loss_stroge
