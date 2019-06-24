@@ -128,7 +128,7 @@ for epoch in range(config.epochs):
     print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(test_loss_epoch)))
     print(' ')
-    loss_stroge = np.mean(test_loss_epoch)
+    loss_stroge = np.mean(train_loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     if loss_stroge > previous_loss:          
         lr = lr * 0.95
