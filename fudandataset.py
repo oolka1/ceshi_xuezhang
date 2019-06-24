@@ -61,8 +61,9 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        self.train_labels.append(labels[65:193, 65:193])
                         save_labels.append(labels[65:193, 65:193])
+                        self.train_labels.append(labels[65:193, 65:193])
+                        
                 else:
                     file_path = os.path.join(self.root,file_name)
                     file_data = nib.load(file_path)
@@ -70,9 +71,10 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
-                        data = data1[65:193, 65:193]
-                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+                        data = data1[65:193, 65:193] 
                         save1_data.append(data)
+                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+                       
             for i in range(10):
                 test1,label1=my_segmentation_transform(save1_data,save_labels)
                 test_data.extend(test1)
@@ -94,8 +96,9 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        self.test_labels.append(labels[65:193, 65:193])
                         save_labels.append(labels[65:193, 65:193])
+                        self.test_labels.append(labels[65:193, 65:193])
+                        
                 else:
                     file_path = os.path.join(self.root,file_name)
                     file_data = nib.load(file_path)
@@ -104,8 +107,9 @@ class fudandataset(data.Dataset):
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         data = data1[65:193, 65:193]
-                        self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         save1_data.append(data)
+                        self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
+                        
             for i in range(10):
                 test1,label1=my_segmentation_transform(save1_data,save_labels)
                 test_data.extend(test1)
