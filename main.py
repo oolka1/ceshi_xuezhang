@@ -72,8 +72,9 @@ for epoch in range(config.epochs):
     train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
     #loss_meter.reset()
     #confusion_matrix.reset()         
-    for i, (batch_x, batch_y) in enumerate(traindataloader): #data
+    for i, data in enumerate(traindataloader): 
         #slices,label = data
+        slices,label = data
         slices=batch_x
         label=batch_y
         slices, label = slices.to(device), label.to(device)
