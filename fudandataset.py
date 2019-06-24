@@ -17,11 +17,11 @@ from torchvision import transforms
 import torchvision.transforms.functional as F
 import random
 from torchvision import transforms as T
-
+inport cv2
 
 def my_segmentation_transform(input1, target1):
         for i in range(len(input1)):
-            r=copy.deepcopy(input1[i])
+            r=copy.deepcopy(input1[i].squeeze())
             target=F.to_pil_image(target1[i].astype("int32"),"I")
             input2=F.to_pil_image(r.astype("int32"),"I")
             
