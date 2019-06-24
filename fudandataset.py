@@ -71,7 +71,7 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
-                        data = data1[65:193, 65:193] 
+                        data = copy.deepcopy(data1[65:193, 65:193])
                         save1_data.append(data)
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
                        
@@ -106,7 +106,7 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
-                        data = data1[65:193, 65:193]
+                        data = copy.deepcopy(data1[65:193, 65:193])
                         save1_data.append(data)
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
