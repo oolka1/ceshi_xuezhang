@@ -17,7 +17,7 @@ from torchvision import transforms
 import torchvision.transforms.functional as F
 import random
 from torchvision import transforms as T
-inport cv2
+import cv2
 
 def my_segmentation_transform(input1, target1):
         for i in range(len(input1)):
