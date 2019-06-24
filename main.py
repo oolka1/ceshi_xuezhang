@@ -75,7 +75,7 @@ for epoch in range(config.epochs):
     #loss_meter.reset()
     #confusion_matrix.reset()         
     for i, data in enumerate(traindataloader): 
-        slices,label = data    
+        slices, label = data    
         slices, label = slices.to(device), label.to(device)
         optimizer.zero_grad()
         classifier = classifier.train()
