@@ -28,7 +28,7 @@ def my_segmentation_transform(input1, target1):
             input2=F.to_pil_image(r.astype("int32"),"I")
             
             i, j, h, w = T.RandomCrop.get_params(input2, (100, 100))
-            input = F.crop(input2, i, j, h, w)
+            input2 = F.crop(input2, i, j, h, w)
             target = F.crop(target, i, j, h, w)
             if random.random() > 0.5:
                 input2 = F.hflip(input2)
@@ -90,8 +90,7 @@ class fudandataset(data.Dataset):
             print('loading test data ')
             self.test_data = [] 
             self.test_labels = []
-            self.save2_data=[]
-            self.save2_labels=[]        
+                  
             files = os.listdir(root)
             files.sort()
             for file_name in files:
@@ -105,7 +104,7 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        self.save2_labels.append(labels[65:193, 65:193])
+                        
                         self.test_labels.append(labels[65:193, 65:193])
                         
                 else:
@@ -116,13 +115,10 @@ class fudandataset(data.Dataset):
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         data = copy.deepcopy(data1[65:193, 65:193])
-                        self.save2_data.append(data)
+                        
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
-            for i in range(10):
-                test1,label1=my_segmentation_transform(self.save2_data,self.save2_labels)
-                self.test_data.extend(test1)
-                self.test_labels.extend(label1)
+         
                         
     
     
