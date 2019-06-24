@@ -69,12 +69,13 @@ print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
-    train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
+    print('**** EPOCH %03d ****' % (epoch+1))
+    print(str(datetime.now()))
+    train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
     #loss_meter.reset()
     #confusion_matrix.reset()         
     for i, data in enumerate(traindataloader): 
-        slices,label = data
-    
+        slices,label = data    
         slices, label = slices.to(device), label.to(device)
         optimizer.zero_grad()
         classifier = classifier.train()
@@ -95,7 +96,7 @@ for epoch in range(config.epochs):
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
         train_acc_epoch.append(train_acc)
-        loss_epoch.append(output.item())
+        train_loss_epoch.append(output.item())
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
         log_string('train_loss: %f' % (output.item()))
         log_string('train_accuracy: %f' % (train_acc))
@@ -115,6 +116,7 @@ for epoch in range(config.epochs):
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                 test_acc_epoch.append(test_acc)
+                test_loss_epoch.append(output.item())
                 log_string(' -- %03d / %03d --' % (epoch+1, 1))
                 log_string('test_loss: %f' % (output.item()))
                 log_string('test_accuracy: %f' % (test_acc))
@@ -123,8 +125,10 @@ for epoch in range(config.epochs):
     #print("train acc:", train_acc[0])
     print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
-    print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(loss_epoch)))
-    loss_stroge = np.mean(loss_epoch)
+    print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
+    print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(test_loss_epoch)))
+    print(' ')
+    loss_stroge = np.mean(test_loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
     if loss_stroge > previous_loss:          
         lr = lr * 0.95
