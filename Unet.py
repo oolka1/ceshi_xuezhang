@@ -64,6 +64,7 @@ class UNet_Nested(nn.Module):
         X_30 = self.conv30(maxpool2)     # 128*64*64
         maxpool3 = self.maxpool(X_30)    # 128*32*32
         X_40 = self.conv40(maxpool3)     # 256*32*32
+        nn.Dropout(0.5)
         # column : 1
         X_01 = self.up_concat01(X_10,X_00)
         X_11 = self.up_concat11(X_20,X_10)
