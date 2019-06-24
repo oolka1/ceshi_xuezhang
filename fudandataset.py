@@ -23,7 +23,7 @@ def my_segmentation_transform(input1, target1):
         for i in range(len(input1)):
             input2=F.to_pil_image(input1[i].astype("int32"),"I")
             target=F.to_pil_image(target1[i].astype("int32"),"I")
-            i, j, h, w = T.RandomCrop.get_params(input, (100, 100))
+            i, j, h, w = T.RandomCrop.get_params(input2, (100, 100))
             input = F.crop(input2, i, j, h, w)
             target = F.crop(target, i, j, h, w)
             if random.random() > 0.5:
