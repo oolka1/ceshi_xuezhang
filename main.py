@@ -70,8 +70,8 @@ for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
     train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
-    loss_meter.reset()
-    confusion_matrix.reset()         
+    #loss_meter.reset()
+    #confusion_matrix.reset()         
     for i, (batch_x, batch_y) in enumerate(traindataloader): #data
         #slices,label = data
         slices=batch_x
