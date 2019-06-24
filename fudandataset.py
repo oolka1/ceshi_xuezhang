@@ -13,6 +13,10 @@ import os.path
 import nibabel as nib
 import numpy as np
 import copy
+from torchvision import transforms
+import torchvision.transforms.functional as F
+import random
+from torchvision import transforms as T
 
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
@@ -22,6 +26,8 @@ class fudandataset(data.Dataset):
             print('loading training data')
             self.train_data = []
             self.train_labels = []
+            save1_data=[]
+            save_labels=[]
             files = os.listdir(root)
             files.sort()
             for file_name in files:
@@ -35,7 +41,8 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        self.train_labels.append(labels[60:188, 60:188])
+                        self.train_labels.append(labels[65:193, 70:198])
+                        save_labels.append(labels[60:188, 60:188])
                 else:
                     file_path = os.path.join(self.root,file_name)
                     file_data = nib.load(file_path)
@@ -44,7 +51,12 @@ class fudandataset(data.Dataset):
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         data = data1[60:188, 60:188]
-                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))#
+                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+                        save1_data.append(data)
+            for i in range(10):
+                test1,label1=my_segmentation_transform(save1_data,save_labels)
+                test_data.extend(test1)
+                test_labels.extend(label1)                   
         else:
             print('loading test data ')
             self.test_data = [] 
@@ -63,6 +75,7 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=2
                         labels[labels==600]=3
                         self.test_labels.append(labels[60:188, 60:188])
+                        save_labels.append(labels[60:188, 60:188])
                 else:
                     file_path = os.path.join(self.root,file_name)
                     file_data = nib.load(file_path)
@@ -72,7 +85,31 @@ class fudandataset(data.Dataset):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         data = data1[60:188, 60:188]
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
+                        save1_data.append(data)
+            for i in range(10):
+                test1,label1=my_segmentation_transform(save1_data,save_labels)
+                test_data.extend(test1)
+                test_labels.extend(label1)
                         
+    def my_segmentation_transform(input1, target1):
+        for i in range(len(input1)):
+            input2=F.ToPILImage(input1[i]，mode=“I”)
+            target=F.ToPILImage(target1[i]，mode=“I”)
+            i, j, h, w = T.RandomCrop.get_params(input, (100, 100))
+            input = F.crop(input2, i, j, h, w)
+            target = F.crop(target, i, j, h, w)
+            if random.random() > 0.5:
+                input2 = F.hflip(input2)
+                target = F.hflip(target)
+            if np.random.rand() < 0:
+                affine_params = T.RandomAffine(180).get_params((-90, 90), (1, 1), (2, 2), (-45, 45), self.crop)
+                input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)
+            input2 = np.array(input2)
+            target= np.array(target)
+            input1[i]=input2[:,:,np.newaxis].transpose(2,0,1)
+            target1[i]=target
+        return input1, target1 
+    
     def __getitem__(self, index):
         if self.train:
     	    slices, label = self.train_data[index], self.train_labels[index] 
