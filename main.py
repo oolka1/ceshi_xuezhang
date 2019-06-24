@@ -13,7 +13,7 @@ import torch.optim as optim
 import torch.utils.data
 import torch.nn.functional as F
 import torch.nn as nn
-from torchnet import meter
+#from torchnet import meter
 import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet_Nested
@@ -42,7 +42,7 @@ num_classes = 4
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=config.batchsize, shuffle=True, num_workers=4)
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=10, shuffle=True, num_workers=4)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
 #seed = 123456
 #random.seed(seed)
@@ -58,8 +58,8 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 #loss = nn.CrossEntropyLoss()
 #weight1 = torch.Tensor([1,200,200,200])
 #weight1 = weight1.to(device)
-loss_meter = meter.AverageValueMeter()
-confusion_matrix = meter.ConfusionMeter(4)
+#loss_meter = meter.AverageValueMeter()
+#confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
 loss_stroge=0
 output1=0
@@ -72,8 +72,10 @@ for epoch in range(config.epochs):
     train_acc_epoch, test_acc_epoch ,loss_epoch= [], [],[]
     loss_meter.reset()
     confusion_matrix.reset()         
-    for i, data in enumerate(traindataloader):
-        slices,label = data
+    for i, (batch_x, batch_y) in enumerate(traindataloader): #data
+        #slices,label = data
+        slices=batch_x
+        label=batch_y
         slices, label = slices.to(device), label.to(device)
         optimizer.zero_grad()
         classifier = classifier.train()
