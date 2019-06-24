@@ -21,8 +21,9 @@ from torchvision import transforms as T
 
 def my_segmentation_transform(input1, target1):
         for i in range(len(input1)):
+            r=copy.deepcopy(input1[i])
             target=F.to_pil_image(target1[i].astype("int32"),"I")
-            input2=F.to_pil_image(input1[i].astype("int32"),"I")
+            input2=F.to_pil_image(r.astype("int32"),"I")
             
             i, j, h, w = T.RandomCrop.get_params(input2, (100, 100))
             input = F.crop(input2, i, j, h, w)
@@ -35,7 +36,8 @@ def my_segmentation_transform(input1, target1):
                 input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)
             input2 = np.array(input2)
             target= np.array(target)
-            input1[i]=input2[:,:,np.newaxis].transpose(2,0,1)
+            r1=copy.deepcopy(input2)
+            input1[i]=r1[:,:,np.newaxis].transpose(2,0,1)
             target1[i]=target
         return input1, target1 
     
