@@ -18,6 +18,26 @@ import torchvision.transforms.functional as F
 import random
 from torchvision import transforms as T
 
+
+def my_segmentation_transform(input1, target1):
+        for i in range(len(input1)):
+            input2=F.to_pil_image(input1[i],"I")
+            target=F.to_pil_image(target1[i],"I")
+            i, j, h, w = T.RandomCrop.get_params(input, (100, 100))
+            input = F.crop(input2, i, j, h, w)
+            target = F.crop(target, i, j, h, w)
+            if random.random() > 0.5:
+                input2 = F.hflip(input2)
+                target = F.hflip(target)
+            if np.random.rand() < 0:
+                affine_params = T.RandomAffine(180).get_params((-90, 90), (1, 1), (2, 2), (-45, 45), self.crop)
+                input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)
+            input2 = np.array(input2)
+            target= np.array(target)
+            input1[i]=input2[:,:,np.newaxis].transpose(2,0,1)
+            target1[i]=target
+        return input1, target1 
+    
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
         self.root = root
@@ -91,24 +111,7 @@ class fudandataset(data.Dataset):
                 test_data.extend(test1)
                 test_labels.extend(label1)
                         
-    def my_segmentation_transform(input1, target1):
-        for i in range(len(input1)):
-            input2=F.to_pil_image(input1[i],"I")
-            target=F.to_pil_image(target1[i],"I")
-            i, j, h, w = T.RandomCrop.get_params(input, (100, 100))
-            input = F.crop(input2, i, j, h, w)
-            target = F.crop(target, i, j, h, w)
-            if random.random() > 0.5:
-                input2 = F.hflip(input2)
-                target = F.hflip(target)
-            if np.random.rand() < 0:
-                affine_params = T.RandomAffine(180).get_params((-90, 90), (1, 1), (2, 2), (-45, 45), self.crop)
-                input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)
-            input2 = np.array(input2)
-            target= np.array(target)
-            input1[i]=input2[:,:,np.newaxis].transpose(2,0,1)
-            target1[i]=target
-        return input1, target1 
+    
     
     def __getitem__(self, index):
         if self.train:
