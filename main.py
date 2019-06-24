@@ -27,7 +27,7 @@ LOG_FOUT = open(os.path.join(log_root, 'train.log'), 'w')
 def log_string(out_str):
     LOG_FOUT.write(out_str+'\n')
     LOG_FOUT.flush()
-    print(out_str)
+
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
@@ -95,11 +95,10 @@ for epoch in range(config.epochs):
         train_acc = correct.item()/float(label.shape[0])
         train_acc_epoch.append(train_acc)
         loss_epoch.append(output.item())
-        print('epoch %d: %d | train loss: %f | train acc: %f'
-        % (epoch+1, i+1, output.item(), train_acc))
+        loss_stroge = output.item()
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
-        log_string('loss: %f' % (output.item()))
-        log_string('accuracy: %f' % (train_acc))
+        log_string('train_loss: %f' % (output.item()))
+        log_string('train_accuracy: %f' % (train_acc))
         if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
@@ -116,11 +115,9 @@ for epoch in range(config.epochs):
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                 test_acc_epoch.append(test_acc)
-            print('epoch %d: %d | test loss: %f | test acc: %f'
-            % (epoch+1, i+1, output.item(), test_acc))
-            log_string(' -- %03d / %03d --' % (epoch+1, 1))
-            log_string('loss: %f' % (output.item()))
-            log_string('accuracy: %f' % (test_acc))
+                log_string(' -- %03d / %03d --' % (epoch+1, 1))
+                log_string('test_loss: %f' % (output.item()))
+                log_string('test_accuracy: %f' % (test_acc))
             
     #print("train loss:",loss_stroge[0])
     #print("train acc:", train_acc[0])
@@ -128,7 +125,11 @@ for epoch in range(config.epochs):
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(loss_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
-
+    if loss_stroge > previous_loss:          
+        lr = lr * 0.9
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = lr               
+    previous_loss = loss_stroge
     '''if loss_stroge[0] > previous_loss:          
         lr = lr * 0.9
         for param_group in optimizer.param_groups:
