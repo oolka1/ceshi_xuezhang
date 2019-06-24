@@ -80,8 +80,8 @@ class fudandataset(data.Dataset):
                        
             for i in range(10):
                 test1,label1=my_segmentation_transform(save1_data,save_labels)
-                train_data.extend(test1)
-                train_labels.extend(label1)                   
+                self.train_data.extend(test1)
+                self.train_labels.extend(label1)                   
         else:
             print('loading test data ')
             self.test_data = [] 
@@ -115,8 +115,8 @@ class fudandataset(data.Dataset):
                         
             for i in range(10):
                 test1,label1=my_segmentation_transform(save1_data,save_labels)
-                train_data.extend(test1)
-                train_labels.extend(label1)
+                self.train_data.extend(test1)
+                self.train_labels.extend(label1)
                         
     
     
