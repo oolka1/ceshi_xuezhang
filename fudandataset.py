@@ -44,7 +44,7 @@ class fudandataset(data.Dataset):
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         data = data1[50:200, 50:200]
-                        self.train_data.append(data[:,:,np.newaxis])#.transpose(2,0,1)
+                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))#
         else:
             print('loading test data ')
             self.test_data = [] 
@@ -71,7 +71,7 @@ class fudandataset(data.Dataset):
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         data = data1[50:200, 50:200]
-                        self.test_data.append(data[:,:,np.newaxis]) #.transpose(2,0,1)
+                        self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
     def __getitem__(self, index):
         if self.train:
