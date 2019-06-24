@@ -35,7 +35,7 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        labels = labels.reshape((256,256))
+                        labels = labels.resize((256,256))
                         self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -44,7 +44,7 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(d):
                         data = copy.deepcopy(file_data[:,:,i])
-                        data = data.reshape((256,256))
+                        data = data.resize((256,256))
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
         else:
             print('loading test data ')
@@ -63,7 +63,7 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        labels = labels.reshape((256,256))
+                        labels = labels.resize((256,256))
                         self.test_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -72,7 +72,7 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(d):
                         data = copy.deepcopy(file_data[:,:,i])
-                        data = data.reshape((256,256))
+                        data = data.resize((256,256))
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1))
                         
     def __getitem__(self, index):
