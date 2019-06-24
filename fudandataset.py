@@ -27,9 +27,7 @@ def my_segmentation_transform(input1, target1):
             target=F.to_pil_image(target1[i].astype("int32"),"I")
             input2=F.to_pil_image(r.astype("int32"),"I")
             
-            i, j, h, w = T.RandomCrop.get_params(input2, (100, 100))
-            input2 = F.crop(input2, i, j, h, w)
-            target = F.crop(target, i, j, h, w)
+            
             if random.random() > 0.5:
                 input2 = F.hflip(input2)
                 target = F.hflip(target)
