@@ -36,7 +36,7 @@ def my_segmentation_transform(input1, target1):
                 input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)
             
             input2 = np.array(input2)            
-            input2= input2.astype("uint16")
+            input2= input2.astype("int16")
             input2=F.to_tensor(input2)
             input2=torch.unsqueeze(input2,3)
             input2 = np.array(input2)            
