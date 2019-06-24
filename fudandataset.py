@@ -93,8 +93,8 @@ class fudandataset(data.Dataset):
                         
     def my_segmentation_transform(input1, target1):
         for i in range(len(input1)):
-            input2=F.ToPILImage(input1[i]，mode=“I”)
-            target=F.ToPILImage(target1[i]，mode=“I”)
+            input2=F.to_pil_image(input1[i]，mode=“I”)
+            target=F.to_pil_image(target1[i]，mode=“I”)
             i, j, h, w = T.RandomCrop.get_params(input, (100, 100))
             input = F.crop(input2, i, j, h, w)
             target = F.crop(target, i, j, h, w)
