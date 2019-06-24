@@ -20,6 +20,8 @@ from torchvision import transforms as T
 import cv2
 
 def my_segmentation_transform(input1, target1):
+        inout=[]
+        tarout=[]
         for i in range(len(input1)):
             r=copy.deepcopy(input1[i].squeeze())
             target=F.to_pil_image(target1[i].astype("int32"),"I")
@@ -36,17 +38,12 @@ def my_segmentation_transform(input1, target1):
                 input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)
             
             input2 = np.array(input2)            
-            input2= input2.astype("int16")
-            input2=F.to_tensor(input2)
-            input2=torch.unsqueeze(input2,3)
-            input2 = np.array(input2)            
-            input2= input2.astype("uint16")
-        
+            input2= input2.astype("uint16")        
             target= np.array(target)
             target= target.astype("uint16")
-            input1[i]=input2[:,:,np.newaxis].transpose(2,0,1)
-            target1[i]=target
-        return input1, target1 
+            inout.append(input2[:,:,np.newaxis].transpose(2,0,1))
+            tarout.append(target)
+        return inout, tarout 
     
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
