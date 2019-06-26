@@ -19,7 +19,20 @@ import random
 from torchvision import transforms as T
 import cv2
 
+def my_segmentation_transform(input1, target1):	
+        inout=[]	
+        tarout=[]	
+        for i in range(len(input1)):	
+            r=copy.deepcopy(input1[i].squeeze())	
+            target=F.to_pil_image(target1[i].astype("int32"),"I")	
+            input2=F.to_pil_image(r.astype("int32"),"I")	
 
+
+            if random.random() > 0.5:	
+                input2 = F.hflip(input2)	
+                target = F.hflip(target)	
+            if np.random.rand() < 0:	
+                affine_params = T.RandomAffine(180).get_params((-90, 90), (1, 1), (2, 2), (-45, 45), 
     
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
