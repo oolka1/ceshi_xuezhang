@@ -11,7 +11,7 @@ import torch
 import torch.utils.data
 import numpy as np
 from fudandataset import fudandataset
-from Unet import UNet
+from Unet import UNet_Nested
 from PIL import Image
 from torchvision import transforms
 
@@ -26,7 +26,7 @@ def mask_to_image(mask):
     return Image.fromarray((mask * 255).astype(np.uint8))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_299.pth', metavar='FILE',
+parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_99.pth', metavar='FILE',
                         help="Specify the file in which is stored the model"
                              " (default : 'MODEL.pth')")
 config = parser.parse_args()
@@ -37,7 +37,7 @@ test_dataset = fudandataset(testdata_root,train=False)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, 
                                               num_workers=4)
 num_classes = 4
-classifier = UNet(n_classes = num_classes)
+classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 classifier.load_state_dict(torch.load(config.model))
