@@ -32,7 +32,16 @@ def my_segmentation_transform(input1, target1):
                 input2 = F.hflip(input2)	
                 target = F.hflip(target)	
             if np.random.rand() < 0:	
-                affine_params = T.RandomAffine(180).get_params((-90, 90), (1, 1), (2, 2), (-45, 45), 
+                affine_params = T.RandomAffine(180).get_params((-90, 90), (1, 1), (2, 2), (-45, 45), self.crop)	
+                input2, target = F.affine(input2, *affine_params), F.affine(target, *affine_params)	
+
+            input2 = np.array(input2)            	
+            input2= input2.astype("int16")        	
+            target= np.array(target)	
+            target= target.astype("int16")	
+            inout.append(input2[:,:,np.newaxis].transpose(2,0,1))	
+            tarout.append(target)	
+       return inout, tarout 
     
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
