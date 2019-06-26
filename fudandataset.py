@@ -45,8 +45,9 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=2
                         labels[labels==600]=3
                         x= labels.shape[1]
-                        self.save_labels.append(labels[0.3*x:256+0.3*x, 0.3*x:256+0.3*x])
-                        self.train_labels.append(labels[0.3*x:256+0.3*x, 0.3*x:256+0.3*x])
+                        x= int(0.3*x)
+                        self.save_labels.append(labels[x:256+x, x:256+x])
+                        self.train_labels.append(labels[x:256+x, x:256+x])
                         
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -56,7 +57,9 @@ class fudandataset(data.Dataset):
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         x= data1.shape[1]
-                        data = copy.deepcopy(data1[0.3*x:256+0.3*x, 0.3*x:256+0.3*x])
+                        x= int(0.3*x)
+                        
+                        data = copy.deepcopy(data1[x:256+x, x:256+x])
                         self.save1_data.append(data)
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
                        
@@ -83,7 +86,8 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=2
                         labels[labels==600]=3
                         x= labels.shape[1]
-                        self.test_labels.append(labels[0.3*x:256+0.3*x, 0.3*x:256+0.3*x])
+                        x= int(0.3*x)
+                        self.test_labels.append(labels[x:256+x, x:256+x])
                         
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -93,7 +97,8 @@ class fudandataset(data.Dataset):
                     for i in range(d):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         x= data1.shape[1]
-                        data = copy.deepcopy(data1[0.3*x:256+0.3*x, 0.3*x:256+0.3*x])
+                        x= int(0.3*x)
+                        data = copy.deepcopy(data1[x:256+x, x:256+x])
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
          
