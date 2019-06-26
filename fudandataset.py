@@ -41,7 +41,7 @@ def my_segmentation_transform(input1, target1):
             target= target.astype("int16")	
             inout.append(input2[:,:,np.newaxis].transpose(2,0,1))	
             tarout.append(target)	
-       return inout, tarout 
+        return inout, tarout 
     
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
