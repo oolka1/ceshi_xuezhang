@@ -110,6 +110,7 @@ for epoch in range(config.epochs):
                 output = F.cross_entropy(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
+                print(label.shape[0])
                 test_acc = correct.item()/float(label.shape[0])
                 test_acc_epoch.append(test_acc)
                 test_loss_epoch.append(output.item())
