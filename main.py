@@ -19,8 +19,8 @@ from fudandataset import fudandataset
 from Unet import UNet_Nested
 import copy
 
-traindata_root = "train"
-testdata_root = "test"
+traindata_root = "test"
+testdata_root = "train"
 log_root = "log"
 if not os.path.exists(log_root): os.mkdir(log_root)
 LOG_FOUT = open(os.path.join(log_root, 'train.log'), 'w')
