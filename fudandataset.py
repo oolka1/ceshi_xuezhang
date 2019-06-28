@@ -57,7 +57,7 @@ class fudandataset(data.Dataset):
                     d = file_data1.shape[2]
                     for i in range(2,d):
                         data = copy.deepcopy(file_data1[:,:,i])
-                       
+                        x=data.shape[0]
                         x=int(0.3*x)
                         data=data[[x,x+256]]
                         data=data[:,[x,x+256]]
