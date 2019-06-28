@@ -62,7 +62,7 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
 loss_stroge=0
-output1=0
+
 
 print (config.epochs)
 print ('Starting training...\n')
@@ -87,11 +87,7 @@ for epoch in range(config.epochs):
         #print(pred.size(),label.size())
         output.backward()
         optimizer.step()
-        '''output1=output.data
-        loss_meter.add(output1.item())
-        confusion_matrix.add(pred.data, label.data)
-        loss_stroge = loss_meter.value()
-        train_acc=confusion_matrix.value()'''      
+           
         pred_choice = pred.data.max(1)[1]
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
@@ -100,7 +96,7 @@ for epoch in range(config.epochs):
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
         log_string('train_loss: %f' % (output.item()))
         log_string('train_accuracy: %f' % (train_acc))
-        if (i+1) % 100 == 0:
+        if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
             for j, data in enumerate(testdataloader):
