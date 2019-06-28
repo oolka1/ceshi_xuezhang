@@ -24,6 +24,7 @@ class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
         self.root = root
         self.train = train
+        x=0
         if self.train:
             print('loading training data')
             self.train_data = []
