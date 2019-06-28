@@ -80,7 +80,7 @@ class UNet_Nested(nn.Module):
         X_11 = self.up_concat11(X_20,X_10)
         X_21 = self.up_concat21(X_30,X_20)
         X_31 = self.up_concat31(X_40,X_30)
-        X_41 = self.up_concat41(X_50,X_30)
+        X_41 = self.up_concat41(X_50,X_40)
         # column : 2
         X_02 = self.up_concat02(X_11,X_00,X_01)
         X_12 = self.up_concat12(X_21,X_10,X_11)
