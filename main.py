@@ -132,7 +132,7 @@ for epoch in range(config.epochs):
             param_group['lr'] = lr               
     previous_loss = loss_stroge
     '''if loss_stroge[0] > previous_loss:          
-        lr = lr * 0.9
+        lr = lr * 0.5
         for param_group in optimizer.param_groups:
             param_group['lr'] = lr               
     previous_loss = loss_stroge[0] '''   
