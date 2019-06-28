@@ -43,8 +43,10 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        x= labels.shape[1]
+                        x= labels.shape[0]
+                        print(x)
                         x= int(0.3*x)
+                        print(x)
                         labels1=labels[:, x:256+x]
                         labels2=labels1[x:256+x,: ]
                         self.train_labels.append(labels2)
