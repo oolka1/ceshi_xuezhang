@@ -29,8 +29,7 @@ class fudandataset(data.Dataset):
             print('loading training data')
             self.train_data = []
             self.train_labels = []
-            self.save1_data=[]
-            self.save_labels=[]
+            
             files = os.listdir(root)
             files.sort()
             for file_name in files:
@@ -46,7 +45,7 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=3
                         x= labels.shape[1]
                         x= int(0.3*x)
-                        self.save_labels.append(labels[x:256+x, x:256+x])
+                        
                         self.train_labels.append(labels[x:256+x, x:256+x])
                         
                 else:
@@ -58,9 +57,7 @@ class fudandataset(data.Dataset):
                         data1 = copy.deepcopy(file_data[:,:,i])
                         x= data1.shape[1]
                         x= int(0.3*x)
-                        
                         data = copy.deepcopy(data1[x:256+x, x:256+x])
-                        self.save1_data.append(data)
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
                        
                            
