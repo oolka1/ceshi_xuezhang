@@ -13,10 +13,10 @@ import os.path
 import nibabel as nib
 import numpy as np
 import copy
-from torchvision import transforms
+#from torchvision import transforms
 import torchvision.transforms.functional as F
 import random
-from torchvision import transforms as T
+#from torchvision import transforms as T
 import cv2
 
 
