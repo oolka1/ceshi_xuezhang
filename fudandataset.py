@@ -59,8 +59,7 @@ class fudandataset(data.Dataset):
                         x=labels.shape[0]
                         x=int(0.3*x)
                         data=data[[x,x+256]]
-                        data=data[:,[x,x+256]
-                        
+                        data=data[:,[x,x+256]]
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
                        
                            
@@ -87,8 +86,6 @@ class fudandataset(data.Dataset):
                         x=int(0.3*x)
                         labels=labels[[x,x+256]]
                         labels=labels[:,[x,x+256]]
-                       
-                        
                         self.test_labels.append(labels)
                         
                 else:
@@ -103,7 +100,6 @@ class fudandataset(data.Dataset):
                         x=int(0.3*x)
                         data=data[[x,x+256]]
                         data=data[:,[x,x+256]]
-                   
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
          
