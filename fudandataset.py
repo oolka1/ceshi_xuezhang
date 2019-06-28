@@ -76,7 +76,7 @@ class fudandataset(data.Dataset):
                     d = file_data1.shape[2]
                     x= file_data1.shape[1]
                     for i in range(2,d):
-                        labels = copy.deepcopy(file_data[:,:,i])
+                        labels = copy.deepcopy(file_data1[:,:,i])
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
