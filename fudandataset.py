@@ -102,7 +102,7 @@ class fudandataset(data.Dataset):
                         data1 = copy.deepcopy(file_data1[:,:,i])
             
                         x= int(0.3*x)
-                        data2=copy.deepcopy(data1[:, (x:256+x)])
+                        data2=copy.deepcopy(data1[:, x:(256+x)])
                         data3=copy.deepcopy(data2[x:(256+x),: ])
                         data = copy.deepcopy(data3)
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
