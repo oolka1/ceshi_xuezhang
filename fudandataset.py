@@ -44,7 +44,7 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=2
                         labels[labels==600]=3
                         x= labels.shape[1]
-                        x= int(0.4*x)
+                        x= int(0.3*x)
                         labels1=labels[:, x:256+x]
                         labels2=labels1[x:256+x,: ]
                         self.train_labels.append(labels2)
@@ -57,7 +57,7 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data1 = copy.deepcopy(file_data1[:,:,i])
                         x= data1.shape[1]
-                        x= int(0.4*x)
+                        x= int(0.3*x)
                         data2=data1[:, x:256+x]
                         data3=data2[x:256+x,: ]
                         data = copy.deepcopy(data3)
@@ -84,7 +84,7 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=2
                         labels[labels==600]=3
                         
-                        x= int(0.4*x)
+                        x= int(0.3*x)
                         labels1=labels[:, x:256+x]
                         labels2=labels1[x:256+x,: ]
                         
@@ -99,7 +99,7 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data1 = copy.deepcopy(file_data1[:,:,i])
             
-                        x= int(0.4*x)
+                        x= int(0.3*x)
                         data2=data1[:, x:256+x]
                         data3=data2[x:256+x,: ]
                         data = copy.deepcopy(data3)
