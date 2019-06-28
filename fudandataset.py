@@ -19,7 +19,7 @@ import random
 #from torchvision import transforms as T
 import cv2
 
-
+import matplotlib.pyplot as plt
     
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
@@ -44,11 +44,13 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=2
                         labels[labels==600]=3
                         x= labels.shape[0]
-                        print(x)
+                        
                         x= int(0.3*x)
-                        print(x)
+                        
                         labels1=labels[:, x:256+x]
                         labels2=labels1[x:256+x,: ]
+                        plt.imshow(labels2)        
+                        plt.show()
                         self.train_labels.append(labels2)
                         
                 else:
