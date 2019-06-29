@@ -11,7 +11,7 @@ import torch.nn as nn
 from utils import init_weights
 
 class unetConv2(nn.Module):
-    def __init__(self, in_size, out_size, is_batchnorm, n=2, ks=6, stride=1, padding=1):
+    def __init__(self, in_size, out_size, is_batchnorm, n=2, ks=5, stride=1, padding=1):
         super(unetConv2, self).__init__()
         self.n = n
         self.ks = ks
@@ -51,7 +51,7 @@ class unetUp(nn.Module):
         super(unetUp, self).__init__()
         self.conv = unetConv2(in_size+(n_concat-2)*out_size, out_size, False)
         if is_deconv:
-            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=5, stride=2, padding=0)
+            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=4, stride=2, padding=0)
         else:
             self.up = nn.Sequential(
                  nn.UpsamplingBilinear2d(scale_factor=2),
