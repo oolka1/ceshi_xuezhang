@@ -21,7 +21,7 @@ class unetConv2(nn.Module):
         p = padding
         if is_batchnorm:
             for i in range(1, n+1):
-                conv = nn.Sequential(nn.Conv2d(in_size, out_size, ks, s, p,dilation = 3),
+                conv = nn.Sequential(nn.Conv2d(in_size, out_size, ks, s, p,dilation = 2),
                                      nn.BatchNorm2d(out_size),
                                      nn.ReLU(inplace=True),)
                 setattr(self, 'conv%d'%i, conv)
@@ -29,7 +29,7 @@ class unetConv2(nn.Module):
 
         else:
             for i in range(1, n+1):
-                conv = nn.Sequential(nn.Conv2d(in_size, out_size, ks, s, p,dilation = 3),
+                conv = nn.Sequential(nn.Conv2d(in_size, out_size, ks, s, p,dilation = 2),
                                      nn.ReLU(inplace=True),)
                 setattr(self, 'conv%d'%i, conv)
                 in_size = out_size
@@ -51,11 +51,11 @@ class unetUp(nn.Module):
         super(unetUp, self).__init__()
         self.conv = unetConv2(in_size+(n_concat-2)*out_size, out_size, False)
         if is_deconv:
-            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=4, stride=2, padding=0,dilation = 3)
+            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=4, stride=2, padding=0,dilation = 2)
         else:
             self.up = nn.Sequential(
                  nn.UpsamplingBilinear2d(scale_factor=2),
-                 nn.Conv2d(in_size, out_size, 1,dilation = 3))
+                 nn.Conv2d(in_size, out_size, 1,dilation = 2))
            
         # initialise the blocks
         for m in self.children():
