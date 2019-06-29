@@ -45,8 +45,8 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=3
                         x=labels.shape[0]
                         x=int(0.3*x)
-                        labels=labels[x:x+216,]
-                        labels=labels[:,x:x+216]
+                        labels=labels[x:x+192,]
+                        labels=labels[:,x:x+192]
                        
                         self.train_labels.append(labels)
                         
@@ -59,8 +59,8 @@ class fudandataset(data.Dataset):
                         data = copy.deepcopy(file_data1[:,:,i])
                         x=data.shape[0]
                         x=int(0.3*x)
-                        data=data[x:x+216,]
-                        data=data[:,x:x+216]
+                        data=data[x:x+192,]
+                        data=data[:,x:x+192]
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
                        
                            
@@ -85,8 +85,8 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=3
                         x=labels.shape[0]
                         x=int(0.3*x)
-                        labels=labels[x:x+216,]
-                        labels=labels[:,x:x+216]
+                        labels=labels[x:x+192,]
+                        labels=labels[:,x:x+192]
                         self.test_labels.append(labels)
                         
                 else:
@@ -99,8 +99,8 @@ class fudandataset(data.Dataset):
                         data = copy.deepcopy(file_data1[:,:,i])
                         x=data.shape[0]
                         x=int(0.3*x)
-                        data=data[x:x+216,]
-                        data=data[:,x:x+216]
+                        data=data[x:x+192,]
+                        data=data[:,x:x+192]
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
          
