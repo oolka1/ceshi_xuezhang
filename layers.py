@@ -11,7 +11,7 @@ import torch.nn as nn
 from utils import init_weights
 
 class unetConv2(nn.Module):
-    def __init__(self, in_size, out_size, is_batchnorm, n=2, ks=3, stride=1, padding=12):
+    def __init__(self, in_size, out_size, is_batchnorm, n=2, ks=3, stride=1, padding=1):
         super(unetConv2, self).__init__()
         self.n = n
         self.ks = ks
