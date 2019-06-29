@@ -29,41 +29,44 @@ class fudandataset(data.Dataset):
             print('loading training data')
             self.train_data = []
             self.train_labels = []
-            
-            files = os.listdir(root)
-            files.sort()
-            for file_name in files:
-                if 'manual' in file_name:
-                    file_path = os.path.join(self.root,file_name)
-                    file_data = nib.load(file_path)
-                    file_data1 = file_data.get_data()
-                    d = file_data1.shape[2]
-                    for i in range(2,d):
-                        labels = copy.deepcopy(file_data1[:,:,i])
-                        labels[labels==200]=1
-                        labels[labels==500]=2
-                        labels[labels==600]=3
-                        x=labels.shape[0]
-                        x=int(0.31*x)
-                        labels=labels[x:x+192,]
-                        labels=labels[:,x:x+192]
-                       
-                        self.train_labels.append(labels)
-                        
-                else:
-                    file_path = os.path.join(self.root,file_name)
-                    file_data = nib.load(file_path)
-                    file_data1 = file_data.get_data()
-                    d = file_data1.shape[2]
-                    for i in range(2,d):
-                        data = copy.deepcopy(file_data1[:,:,i])
-                        x=data.shape[0]
-                        x=int(0.31*x)
-                        data=data[x:x+192,]
-                        data=data[:,x:x+192]
-                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
-                       
-                           
+            self.together = []
+
+            for i in range(10):
+                files = os.listdir(root)
+                files.sort()
+                for file_name in files:
+                    if 'manual' in file_name:
+                        file_path = os.path.join(self.root,file_name)
+                        file_data = nib.load(file_path)
+                        file_data1 = file_data.get_data()
+                        d = file_data1.shape[2]
+                        for i in range(2,d):
+                            labels = copy.deepcopy(file_data1[:,:,i])
+                            labels[labels==200]=1
+                            labels[labels==500]=2
+                            labels[labels==600]=3
+                            x=labels.shape[0]
+                            x=int(0.31*x)
+                            labels=labels[x:x+192,]
+                            labels=labels[:,x:x+192]
+
+                            self.train_labels.append(labels)
+
+                    else:
+                        file_path = os.path.join(self.root,file_name)
+                        file_data = nib.load(file_path)
+                        file_data1 = file_data.get_data()
+                        d = file_data1.shape[2]
+                        for i in range(2,d):
+                            data = copy.deepcopy(file_data1[:,:,i])
+                            x=data.shape[0]
+                            x=int(0.31*x)
+                            data=data[x:x+192,]
+                            data=data[:,x:x+192]
+                            self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+            self.together=list(zip(self.train_data,self.train_labels))          
+            random.shuffle(self.together)
+            self.train_data,self.train_labels = zip(*together)               
         else:
             print('loading test data ')
             self.test_data = [] 
