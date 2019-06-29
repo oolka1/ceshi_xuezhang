@@ -7,7 +7,7 @@ from utils import init_weights, count_param
 
 class UNet_Nested(nn.Module):
 
-    def __init__(self, in_channels=1, n_classes=2, feature_scale=2, is_deconv=True, is_batchnorm=True, is_ds=True):
+    def __init__(self, in_channels=1, n_classes=2, feature_scale=2, is_deconv=False, is_batchnorm=True, is_ds=True):
         super(UNet_Nested, self).__init__()
         self.in_channels = in_channels
         self.feature_scale = feature_scale
@@ -29,34 +29,34 @@ class UNet_Nested(nn.Module):
         self.conv60 = unetConv2(filters[5], filters[6], self.is_batchnorm)
         
         # upsampling
-        self.up_concat01 = unetUp(filters[1], filters[0])
-        self.up_concat11 = unetUp(filters[2], filters[1])
-        self.up_concat21 = unetUp(filters[3], filters[2])
-        self.up_concat31 = unetUp(filters[4], filters[3])
-        self.up_concat41 = unetUp(filters[5], filters[4])
-        self.up_concat51 = unetUp(filters[6], filters[5])
+        self.up_concat01 = unetUp(filters[1], filters[0], self.is_deconv)
+        self.up_concat11 = unetUp(filters[2], filters[1], self.is_deconv)
+        self.up_concat21 = unetUp(filters[3], filters[2], self.is_deconv)
+        self.up_concat31 = unetUp(filters[4], filters[3], self.is_deconv)
+        self.up_concat41 = unetUp(filters[5], filters[4], self.is_deconv)
+        self.up_concat51 = unetUp(filters[6], filters[5], self.is_deconv)
         
-        self.up_concat02 = unetUp(filters[1], filters[0], 3)
-        self.up_concat12 = unetUp(filters[2], filters[1], 3)
-        self.up_concat22 = unetUp(filters[3], filters[2], 3)
-        self.up_concat32 = unetUp(filters[4], filters[3], 3)
-        self.up_concat42 = unetUp(filters[5], filters[4], 3)
+        self.up_concat02 = unetUp(filters[1], filters[0], self.is_deconv, 3)
+        self.up_concat12 = unetUp(filters[2], filters[1], self.is_deconv, 3)
+        self.up_concat22 = unetUp(filters[3], filters[2], self.is_deconv, 3)
+        self.up_concat32 = unetUp(filters[4], filters[3], self.is_deconv, 3)
+        self.up_concat42 = unetUp(filters[5], filters[4], self.is_deconv, 3)
 
 
-        self.up_concat03 = unetUp(filters[1], filters[0], 4)
-        self.up_concat13 = unetUp(filters[2], filters[1], 4)
-        self.up_concat23 = unetUp(filters[3], filters[2], 4)
-        self.up_concat33 = unetUp(filters[4], filters[3], 4)
+        self.up_concat03 = unetUp(filters[1], filters[0], self.is_deconv, 4)
+        self.up_concat13 = unetUp(filters[2], filters[1], self.is_deconv, 4)
+        self.up_concat23 = unetUp(filters[3], filters[2], self.is_deconv, 4)
+        self.up_concat33 = unetUp(filters[4], filters[3], self.is_deconv, 4)
 
-        self.up_concat04 = unetUp(filters[1], filters[0], 5)
-        self.up_concat14 = unetUp(filters[2], filters[1], 5)
-        self.up_concat24 = unetUp(filters[3], filters[2], 5) 
+        self.up_concat04 = unetUp(filters[1], filters[0], self.is_deconv, 5)
+        self.up_concat14 = unetUp(filters[2], filters[1], self.is_deconv, 5)
+        self.up_concat24 = unetUp(filters[3], filters[2], self.is_deconv, 5) 
         
         
-        self.up_concat05 = unetUp(filters[1], filters[0], 6)
-        self.up_concat15 = unetUp(filters[2], filters[1], 6)
+        self.up_concat05 = unetUp(filters[1], filters[0], self.is_deconv, 6)
+        self.up_concat15 = unetUp(filters[2], filters[1], self.is_deconv, 6)
         
-        self.up_concat06 = unetUp(filters[1], filters[0], 7)
+        self.up_concat06 = unetUp(filters[1], filters[0], self.is_deconv, 7)
 
         # final conv (without any concat)
         self.final_1 = nn.Conv2d(filters[0], n_classes, 1)
