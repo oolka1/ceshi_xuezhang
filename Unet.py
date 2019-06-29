@@ -19,7 +19,7 @@ class UNet_Nested(nn.Module):
         filters = [int(x / self.feature_scale) for x in filters]
 
         # downsampling
-        self.maxpool = nn.MaxPool2d(kernel_size=2,padding=1)
+        self.maxpool = nn.MaxPool2d(kernel_size=2)
         self.conv00 = unetConv2(self.in_channels, filters[0], self.is_batchnorm)
         self.conv10 = unetConv2(filters[0], filters[1], self.is_batchnorm)
         self.conv20 = unetConv2(filters[1], filters[2], self.is_batchnorm)
