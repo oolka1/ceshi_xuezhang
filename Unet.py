@@ -34,7 +34,7 @@ class UNet_Nested(nn.Module):
         self.up_concat21 = unetUp(filters[3], filters[2], self.is_deconv)
         self.up_concat31 = unetUp(filters[4], filters[3], self.is_deconv)
         self.up_concat41 = unetUp(filters[5], filters[4], self.is_deconv)
-        self.up_concat41 = unetUp(filters[6], filters[5], self.is_deconv)
+        self.up_concat51 = unetUp(filters[6], filters[5], self.is_deconv)
         
         self.up_concat02 = unetUp(filters[1], filters[0], self.is_deconv, 3)
         self.up_concat12 = unetUp(filters[2], filters[1], self.is_deconv, 3)
@@ -84,9 +84,9 @@ class UNet_Nested(nn.Module):
         X_30 = self.conv30(maxpool2)     # 128*64*64
         maxpool3 = self.maxpool(X_30)    # 128*32*32
         X_40 = self.conv40(maxpool3)     # 256*32*32
-        maxpool3 = self.maxpool(X_40)    # 128*32*32
+        maxpool4 = self.maxpool(X_40)    # 128*32*32
         X_50 = self.conv50(maxpool4)     # 256*32*32
-        maxpool3 = self.maxpool(X_50)    # 128*32*32
+        maxpool5 = self.maxpool(X_50)    # 128*32*32
         X_60 = self.conv60(maxpool5)     # 256*32*32
         
         nn.Dropout(0.5)
