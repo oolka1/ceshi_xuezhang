@@ -15,11 +15,11 @@ class UNet_Nested(nn.Module):
         self.is_batchnorm = is_batchnorm
         self.is_ds = is_ds
 
-        filters = [72, 144, 288, 576, 1152]
+        filters = [54, 108, 216, 432, 864]
         filters = [int(x / self.feature_scale) for x in filters]
 
         # downsampling
-        self.maxpool = nn.MaxPool2d(kernel_size=3)
+        self.maxpool = nn.MaxPool2d(kernel_size=2)
         self.conv00 = unetConv2(self.in_channels, filters[0], self.is_batchnorm)
         self.conv10 = unetConv2(filters[0], filters[1], self.is_batchnorm)
         self.conv20 = unetConv2(filters[1], filters[2], self.is_batchnorm)
