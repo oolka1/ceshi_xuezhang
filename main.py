@@ -40,7 +40,7 @@ config = parser.parse_args()
 num_classes = 4
 
 load_dataset = fudandataset(traindata_root,train=True)
-x1=int(len(train_dataset))
+x1=int(len(load_dataset))
 x2=int(0.2*x1)
 train_dataset,test_dataset = torch.utils.data.random_split(load_dataset,[x1-x2,x2])
 #test_dataset = fudandataset(testdata_root,train=False)
