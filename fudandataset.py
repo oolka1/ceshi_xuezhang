@@ -45,8 +45,8 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=3
                         x=labels.shape[0]
                         x=int(0.3*x)
-                        labels=labels[x:x+201,]
-                        labels=labels[:,x:x+201]
+                        labels=labels[x:x+202,]
+                        labels=labels[:,x:x+202]
                        
                         self.train_labels.append(labels)
                         
