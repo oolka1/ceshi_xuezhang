@@ -51,7 +51,7 @@ class unetUp(nn.Module):
         super(unetUp, self).__init__()
         self.conv = unetConv2(in_size+(n_concat-2)*out_size, out_size, False)
         if is_deconv:
-            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=2, stride=2, padding=0)
+            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=3, stride=2, padding=0)
         else:
             self.up = nn.Sequential(
                  nn.UpsamplingBilinear2d(scale_factor=2),
