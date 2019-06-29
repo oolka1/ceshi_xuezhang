@@ -65,5 +65,5 @@ class unetUp(nn.Module):
     def forward(self, high_feature, *low_feature):
         outputs0 = self.up(high_feature)
         for feature in low_feature:
-            outputs0 = torch.cat([outputs0, feature], 2)
+            outputs0 = torch.cat([outputs0, feature], 1)
         return self.conv(outputs0)
