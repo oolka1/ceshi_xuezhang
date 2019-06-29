@@ -66,7 +66,7 @@ class fudandataset(data.Dataset):
                             self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
-            self.train_data,self.train_labels = zip(*together)               
+            self.train_data,self.train_labels = zip(*self.together)               
         else:
             print('loading test data ')
             self.test_data = [] 
