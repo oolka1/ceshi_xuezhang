@@ -63,6 +63,7 @@ class fudandataset(data.Dataset):
                             x=int(0.31*x)
                             data=data[x:x+192,]
                             data=data[:,x:x+192]
+                            data=int(0.2*10*data)
                             self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
