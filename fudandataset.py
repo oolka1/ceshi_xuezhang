@@ -25,6 +25,7 @@ class fudandataset(data.Dataset):
         self.root = root
         self.train = train
         x=0
+        max1=0
         if self.train:
             print('loading training data')
             self.train_data = []
@@ -48,8 +49,7 @@ class fudandataset(data.Dataset):
                             x=labels.shape[0]
                             x=int(0.31*x)
                             labels=labels[x:x+192,]
-                            labels=labels[:,x:x+192]
-
+                            labels=labels[:,x:x+192]                    
                             self.train_labels.append(labels)
 
                     else:
@@ -64,6 +64,9 @@ class fudandataset(data.Dataset):
                             data=data[x:x+192,]
                             data=data[:,x:x+192]
                             data=0.2*(i+1)*data
+                            data=double(data)
+                            max1=double(data.max())
+                            data=data/max1
                             self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
@@ -105,6 +108,9 @@ class fudandataset(data.Dataset):
                         x=int(0.31*x)
                         data=data[x:x+192,]
                         data=data[:,x:x+192]
+                        data=double(data)
+                        max1=double(data.max())
+                        data=data/max1
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
          
