@@ -111,12 +111,12 @@ for epoch in range(config.epochs):
                 output = loss(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
-                test_acc = correct.item()/float(label.shape[0])
-                test_acc_epoch.append(val_acc)
-                test_loss_epoch.append(output.item())
+                val_acc = correct.item()/float(label.shape[0])
+                val_acc_epoch.append(val_acc)
+                val_loss_epoch.append(output.item())
                 log_string(' -- %03d / %03d --' % (epoch+1, 1))
                 log_string('val_loss: %f' % (output.item()))
-                log_string('val_accuracy: %f' % (test_acc))
+                log_string('val_accuracy: %f' % (val_acc))
             
     #print("train loss:",loss_stroge[0])
     #print("train acc:", train_acc[0])
