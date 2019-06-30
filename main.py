@@ -31,10 +31,10 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0005, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.0002, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=200, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=100, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
 num_classes = 4
@@ -42,7 +42,7 @@ num_classes = 4
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=10*(config.batchsize), shuffle=True, num_workers=4)
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
 #seed = 123456
 #random.seed(seed)
