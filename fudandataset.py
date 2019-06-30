@@ -89,7 +89,7 @@ class fudandataset(data.Dataset):
                             segmentation = F.hflip(segmentation)
                         if random.random()>0.5:
                             rate1=np.random.randint(0.5, 1)
-                            image=image.*rate1
+                            image=image*rate1
                             
                         image=np.array(image, dtype=np.float32)
                         segmentation=np.array(segmentation, dtype=np.float32)
