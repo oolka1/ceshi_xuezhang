@@ -72,7 +72,7 @@ for epoch in range(config.epochs):
     traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
     valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
     print(str(datetime.now()))
-    train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
+    train_acc_epoch, val_acc_epoch ,train_loss_epoch,val_loss_epoch= [], [],[],[]
     #loss_meter.reset()
     #confusion_matrix.reset()         
     for i, data in enumerate(traindataloader): 
