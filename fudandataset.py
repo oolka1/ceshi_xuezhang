@@ -64,8 +64,8 @@ class fudandataset(data.Dataset):
                             data=data[x:x+192,]
                             data=data[:,x:x+192]
                             data=0.2*(i+1)*data
-                            data=double(data)
-                            max1=double(data.max())
+                            data=float(data)
+                            max1=float(data.max())
                             data=data/max1
                             self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
             self.together=list(zip(self.train_data,self.train_labels))          
@@ -108,8 +108,8 @@ class fudandataset(data.Dataset):
                         x=int(0.31*x)
                         data=data[x:x+192,]
                         data=data[:,x:x+192]
-                        data=double(data)
-                        max1=double(data.max())
+                        data=float(data)
+                        max1=float(data.max())
                         data=data/max1
                         self.test_data.append(data[:,:,np.newaxis].transpose(2,0,1)) #.transpose(2,0,1)
                         
