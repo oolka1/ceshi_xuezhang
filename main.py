@@ -39,11 +39,9 @@ parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', he
 config = parser.parse_args()
 num_classes = 4
 
-train_dataset = fudandataset(traindata_root,train=True)
-test_dataset = fudandataset(testdata_root,train=False)
+load_dataset = fudandataset(traindata_root,train=True)
 
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
-testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
+
 #seed = 123456
 #random.seed(seed)
 #torch.cuda.manual_seed(seed)
@@ -70,6 +68,9 @@ for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
     print('**** EPOCH %03d ****' % (epoch+1))
+    train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
+    traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
+    valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
     print(str(datetime.now()))
     train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
     #loss_meter.reset()
@@ -99,7 +100,7 @@ for epoch in range(config.epochs):
         if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
-            for j, data in enumerate(testdataloader):
+            for j, data in enumerate(valdataloader):
                 slices,label = data
                 slices, label = slices.to(device), label.to(device)
                 #slices = slices.transpose(2, 0, 1)
@@ -111,18 +112,18 @@ for epoch in range(config.epochs):
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
-                test_acc_epoch.append(test_acc)
+                test_acc_epoch.append(val_acc)
                 test_loss_epoch.append(output.item())
                 log_string(' -- %03d / %03d --' % (epoch+1, 1))
-                log_string('test_loss: %f' % (output.item()))
-                log_string('test_accuracy: %f' % (test_acc))
+                log_string('val_loss: %f' % (output.item()))
+                log_string('val_accuracy: %f' % (test_acc))
             
     #print("train loss:",loss_stroge[0])
     #print("train acc:", train_acc[0])
     print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
-    print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
+    print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(val_acc_epoch)))
     print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
-    print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(test_loss_epoch)))
+    print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(val_loss_epoch)))
     print(' ')
     loss_stroge = np.mean(train_loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
