@@ -74,8 +74,8 @@ class fudandataset(data.Dataset):
                 if j<99:
                     for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
-                        image=to_pil_image(self.train_data1(i))
-                        segmentation=to_pil_image(self.train_labels1(i))
+                        image=to_pil_image(self.train_data1[i])
+                        segmentation=to_pil_image(self.train_labels1[i])
                         if random.random() > 5:
                             angle = random.randint(-30, 30)
                             image = F.rotate(image, angle)
@@ -93,8 +93,8 @@ class fudandataset(data.Dataset):
                         self.train_labels.append(segmentation)
                 else:
                      for i in range(len(self.train_data1)):
-                         data2=self.train_data1(i)
-                         label2=self.train_labels1(i)
+                         data2=self.train_data1[i]
+                         label2=self.train_labels1[i]
                          self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
                          self.train_labels.append(label2)
             self.together=list(zip(self.train_data,self.train_labels))          
