@@ -90,11 +90,10 @@ class fudandataset(data.Dataset):
                             
                         image=np.array(image, dtype=np.float32)
                         segmentation=np.array(segmentation, dtype=np.float32)
-                        if random.random()>0.5:
-                            noise=np.random.randint(0,1,(192,192))
-                            noise=noise.astype(np.float32)
-                            noise=0.01*noise
-                            image = noise+image
+                        noise=np.random.randint(0,1,(192,192))
+                        noise=noise.astype(np.float32)
+                        noise=0.01*noise
+                        image = noise+image
                             
                         segmentation[segmentation>650]=0
                         segmentation[segmentation<100]=0
