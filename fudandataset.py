@@ -69,19 +69,19 @@ class fudandataset(data.Dataset):
                         data=data/max1
                         self.train_data1.append(data)
             for j in range(40):
-                if j<9:
+                if j<39:
                     for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
                         image=to_pil_image(self.train_data1[i])
                         segmentation=to_pil_image(self.train_labels1[i])
                         if random.random()>0.5:
-                            angle = random.randint(-30, 30)
+                            angle = np.random.randint(-30, 30)
                             image = F.rotate(image, angle)
                             segmentation = F.rotate(segmentation, angle)
                         if random.random()>0.5:
-                            rate = random.randint(0.1, 1)
-                            positionx = random.randint(0, 1)
-                            positiony = random.randint(0, 1)
+                            rate =np.random.randint(0.1, 1)
+                            positionx = np.random.randint(0, 1)
+                            positiony = np.random.randint(0, 1)
                             image = F.affine(image, angle=0,translate=[positionx,positiony],scale=rate,shear=0)
                             segmentation = F.affine(segmentation, angle=0,translate=[positionx,positiony],scale=rate,shear=0)
                         if random.random()>0.5:
