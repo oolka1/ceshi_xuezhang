@@ -31,7 +31,7 @@ parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_9
                              " (default : 'MODEL.pth')")
 config = parser.parse_args()
 
-testdata_root = "test"
+testdata_root = "test1"
 save_root = "result"
 test_dataset = fudandataset(testdata_root,train=False)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, 
