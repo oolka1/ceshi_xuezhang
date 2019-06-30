@@ -16,7 +16,7 @@ import copy
 #from torchvision import transforms
 import torchvision.transforms.functional as F
 import random
-#from torchvision import transforms as T
+from torchvision import transforms as T
 import cv2
 
     
@@ -28,10 +28,11 @@ class fudandataset(data.Dataset):
         max1=0
         if self.train:
             print('loading training data')
-            self.train_data = []
-            self.train_labels = []
+            self.train_data1 = []
+            self.train_labels1 = []
             self.together = []
-
+            self.train_data=[]
+            self.train_labels=[]
             for i in range(10):
                 files = os.listdir(root)
                 files.sort()
@@ -50,7 +51,7 @@ class fudandataset(data.Dataset):
                             x=int(0.31*x)
                             labels=labels[x:x+192,]
                             labels=labels[:,x:x+192]                    
-                            self.train_labels.append(labels)
+                            self.train_labels1.append(labels)
 
                     else:
                         file_path = os.path.join(self.root,file_name)
@@ -68,7 +69,34 @@ class fudandataset(data.Dataset):
                             max1=data.max()
                             max1=max1.astype(np.float32)
                             data=data/max1
-                            self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+                            self.train_data1.append(data)
+            for j in range(100):
+                if j<99:
+                    for i in range(len(self.train_data1)):
+                        to_pil_image = T.ToPILImage()  
+                        image=ToPILImage(self.train_data1(i))
+                        segmentation=ToPILImage(self.train_labels1(i))
+                        if random.random() > 5:
+                            angle = random.randint(-30, 30)
+                            image = F.rotate(image, angle)
+                            segmentation = TF.rotate(segmentation, angle)
+                        if random.random() > 5:
+                            angle = random.randint(-30, 30)
+                            image = F.affine(image, angle,translate = None,scale = None,shear = None)
+                            segmentation = F.affine(segmentation, angle,translate = None,scale = None,shear = None)
+                        if random.random() > 5:
+                            image = F.hflip(image)
+                            segmentation = F.hflip(segmentation)
+                        image=image.numpy()
+                        segmentation=segmentation.numpy()
+                        self.train_data.append(image[:,:,np.newaxis].transpose(2,0,1))
+                        self.train_labels.append(segmentation)
+                else:
+                     for i in range(len(self.train_data1)):
+                         data2=self.train_data1(i)
+                         label2=self.train_labels1(i)
+                         self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
+                         self.train_labels.append(label2)
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)               
@@ -96,6 +124,7 @@ class fudandataset(data.Dataset):
                         labels=labels[x:x+192,]
                         labels=labels[:,x:x+192]
                         self.test_labels.append(labels)
+                
                         
                 else:
                     file_path = os.path.join(self.root,file_name)
