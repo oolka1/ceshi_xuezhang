@@ -40,9 +40,7 @@ config = parser.parse_args()
 num_classes = 4
 
 load_dataset = fudandataset(traindata_root,train=True)
-train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=10*(config.batchsize), shuffle=True, num_workers=4)
-valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=10*(config.batchsize), shuffle=True,  num_workers=4)
+
 
 #seed = 123456
 #random.seed(seed)
@@ -69,9 +67,12 @@ for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
     print('**** EPOCH %03d ****' % (epoch+1))
-
+    train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
+    traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=10*(config.batchsize), shuffle=True, num_workers=4)
+    valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=10*(config.batchsize), shuffle=True,  num_workers=4)
     print(str(datetime.now()))
     train_acc_epoch, val_acc_epoch ,train_loss_epoch,val_loss_epoch= [], [],[],[]
+    
     #loss_meter.reset()
     #confusion_matrix.reset()         
     for i, data in enumerate(traindataloader): 
