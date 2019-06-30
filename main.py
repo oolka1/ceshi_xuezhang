@@ -50,8 +50,8 @@ classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 2e-3)
-scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.5)
+optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 5e-4)
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
 
