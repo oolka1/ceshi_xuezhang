@@ -43,6 +43,9 @@ class fudandataset(data.Dataset):
                     d = file_data1.shape[2]
                     for i in range(2,d):
                         labels = copy.deepcopy(file_data1[:,:,i])
+                        labels[labels==200]=1
+                        labels[labels==500]=2
+                        labels[labels==600]=3
                         
                         x=labels.shape[0]
                         x=int(0.31*x)
@@ -82,11 +85,7 @@ class fudandataset(data.Dataset):
                             segmentation = F.hflip(segmentation)
                         image=np.array(image, dtype=np.float32)
                         segmentation=np.array(segmentation, dtype=np.int16)
-                        segmentation[segmentation==200]=1
-                        segmentation[segmentation==500]=2
-                        segmentation[segmentation==600]=3
-                        segmentation[segmentation!=1 and segmentation!=2 and segmentation!=3]=0
-                        segmentation=segmentation.astype(np.uint8)
+                        segmentation[segmentation<0]=0
                         self.train_data.append(image[:,:,np.newaxis].transpose(2,0,1))
                         self.train_labels.append(segmentation)
                 else:
