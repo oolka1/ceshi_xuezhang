@@ -96,6 +96,9 @@ class fudandataset(data.Dataset):
                      for i in range(len(self.train_data1)):
                          data2=self.train_data1[i]
                          label2=self.train_labels1[i]
+                         label2[label2==200]=1
+                         label2[label2==500]=2
+                         label2[label2==600]=3
                          self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
                          self.train_labels.append(label2)
             self.together=list(zip(self.train_data,self.train_labels))          
