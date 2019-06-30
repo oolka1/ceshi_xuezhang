@@ -74,8 +74,8 @@ class fudandataset(data.Dataset):
                 if j<99:
                     for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
-                        image=ToPILImage(self.train_data1(i))
-                        segmentation=ToPILImage(self.train_labels1(i))
+                        image=to_pil_image(self.train_data1(i))
+                        segmentation=to_pil_image(self.train_labels1(i))
                         if random.random() > 5:
                             angle = random.randint(-30, 30)
                             image = F.rotate(image, angle)
