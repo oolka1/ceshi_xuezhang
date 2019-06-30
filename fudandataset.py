@@ -79,11 +79,10 @@ class fudandataset(data.Dataset):
                             image = F.rotate(image, angle)
                             segmentation = F.rotate(segmentation, angle)
                         if random.random()>0.5:
-                            rate =np.random.randint(0.1, 1)
                             positionx = np.random.randint(0, 1)
                             positiony = np.random.randint(0, 1)
-                            image = F.affine(image, angle=0,translate=[positionx,positiony],scale=rate,shear=0)
-                            segmentation = F.affine(segmentation, angle=0,translate=[positionx,positiony],scale=rate,shear=0)
+                            image = F.affine(image, angle=0,translate=[positionx,positiony],scale=1,shear=0)
+                            segmentation = F.affine(segmentation, angle=0,translate=[positionx,positiony],scale=1,shear=0)
                         if random.random()>0.5:
                             image = F.hflip(image)
                             segmentation = F.hflip(segmentation)
