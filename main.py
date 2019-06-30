@@ -62,7 +62,7 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
 loss_stroge=0
-
+loss=nn.CrossEntropyLoss()
 
 print (config.epochs)
 print ('Starting training...\n')
@@ -82,7 +82,7 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        output =  nn.CrossEntropyLoss(pred, label)#weight=weight1
+        output =  loss(pred, label)#weight=weight1
        
         #print(pred.size(),label.size())
         output.backward()
@@ -107,7 +107,7 @@ for epoch in range(config.epochs):
                 pred = classifier(slices)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
-                output = nn.CrossEntropyLoss(pred, label)
+                output = loss(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
