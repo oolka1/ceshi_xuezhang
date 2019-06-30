@@ -39,11 +39,8 @@ parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', he
 config = parser.parse_args()
 num_classes = 4
 
-load_dataset = fudandataset(traindata_root,train=True)
-x1=int(len(load_dataset))
-x2=int(0.2*x1)
-train_dataset,test_dataset = torch.utils.data.random_split(load_dataset,[x1-x2,x2])
-#test_dataset = fudandataset(testdata_root,train=False)
+train_dataset = fudandataset(traindata_root,train=True)
+test_dataset = fudandataset(testdata_root,train=False)
 
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=config.batchsize, shuffle=True, num_workers=4)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
@@ -55,7 +52,7 @@ classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 1e-3)
+optimizer = optim.SGD(classifier.parameters(), lr=lr,weight_decay = 1e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
@@ -85,7 +82,7 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        output =  F.cross_entropy(pred, label)#weight=weight1
+        output =  nn.CrossEntropyLoss(pred, label)#weight=weight1
        
         #print(pred.size(),label.size())
         output.backward()
@@ -110,7 +107,7 @@ for epoch in range(config.epochs):
                 pred = classifier(slices)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
-                output = F.cross_entropy(pred, label)
+                output = nn.CrossEntropyLoss(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
