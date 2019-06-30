@@ -83,11 +83,13 @@ class fudandataset(data.Dataset):
                             segmentation = F.hflip(segmentation)
                         image=np.array(image, dtype=np.float32)
                         segmentation=np.array(segmentation, dtype=np.float32)
-                        segmentation[100<segmentation<300]=1
-                        segmentation[350<segmentation<550]=2
-                        segmentation[550<segmentation<650]=3
+                        
                         segmentation[segmentation>650]=0
                         segmentation[segmentation<100]=0
+                        
+                        segmentation[550<segmentation]=3          
+                        segmentation[350<segmentation]=2
+                        segmentation[99<segmentation]=1
                         self.train_data.append(image[:,:,np.newaxis].transpose(2,0,1))
                         self.train_labels.append(segmentation)
                 else:
