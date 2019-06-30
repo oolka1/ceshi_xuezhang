@@ -86,6 +86,10 @@ class fudandataset(data.Dataset):
                         if random.random()>0.5:
                             image = F.hflip(image)
                             segmentation = F.hflip(segmentation)
+                        if random.random()>0.5:
+                            noise=np.random.randint(0,0.01,(192,192))
+                            image = noise+image
+                            
                         image=np.array(image, dtype=np.float32)
                         segmentation=np.array(segmentation, dtype=np.float32)
                         
