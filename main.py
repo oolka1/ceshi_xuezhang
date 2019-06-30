@@ -42,7 +42,7 @@ num_classes = 4
 load_dataset = fudandataset(traindata_root,train=True)
 train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=10*(config.batchsize), shuffle=True, num_workers=4)
-valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
+valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=10*(config.batchsize), shuffle=True,  num_workers=4)
 
 #seed = 123456
 #random.seed(seed)
