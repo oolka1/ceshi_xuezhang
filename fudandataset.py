@@ -87,8 +87,9 @@ class fudandataset(data.Dataset):
                         if random.random() > 5:
                             image = F.hflip(image)
                             segmentation = F.hflip(segmentation)
-                        image=image.numpy()
-                        segmentation=segmentation.numpy()
+                        image=np.array(image, dtype=np.float32)
+
+                        segmentation=np.array(segmentation, dtype=np.float32)
                         self.train_data.append(image[:,:,np.newaxis].transpose(2,0,1))
                         self.train_labels.append(segmentation)
                 else:
