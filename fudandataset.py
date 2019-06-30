@@ -76,15 +76,15 @@ class fudandataset(data.Dataset):
                         to_pil_image = T.ToPILImage()  
                         image=to_pil_image(self.train_data1[i])
                         segmentation=to_pil_image(self.train_labels1[i])
-                        if random.random() > 5:
+                        if random.random()>0.5:
                             angle = random.randint(-30, 30)
                             image = F.rotate(image, angle)
                             segmentation = TF.rotate(segmentation, angle)
-                        if random.random() > 5:
+                        if random.random()>0.5:
                             angle = random.randint(-30, 30)
                             image = F.affine(image, angle,translate = None,scale = None,shear = None)
                             segmentation = F.affine(segmentation, angle,translate = None,scale = None,shear = None)
-                        if random.random() > 5:
+                        if random.random()>0.5:
                             image = F.hflip(image)
                             segmentation = F.hflip(segmentation)
                         image=np.array(image, dtype=np.float32)
@@ -100,7 +100,8 @@ class fudandataset(data.Dataset):
                          self.train_labels.append(label2)
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
-            self.train_data,self.train_labels = zip(*self.together)               
+            self.train_data,self.train_labels = zip(*self.together)
+            print(len(self.train_data))
         else:
             print('loading test data ')
             self.test_data = [] 
