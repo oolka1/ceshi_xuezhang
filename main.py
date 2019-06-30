@@ -56,13 +56,13 @@ optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 1e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
-#weight1 = torch.Tensor([1,200,200,200])
-#weight1 = weight1.to(device)
+weight1 = torch.Tensor([1,3,3,3])
+weight1 = weight1.to(device)
 #loss_meter = meter.AverageValueMeter()
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
 loss_stroge=0
-loss=nn.CrossEntropyLoss()
+loss=nn.CrossEntropyLoss(weight=weight1)
 
 print (config.epochs)
 print ('Starting training...\n')
