@@ -31,9 +31,9 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0002, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.0005, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
-parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
+parser.add_argument('-bs', '--batchsize', type=int, default=2, help='batch size')
 parser.add_argument('--epochs', type=int, default=100, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
@@ -54,13 +54,12 @@ optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 1e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
-weight1 = torch.Tensor([1,3,3,3])
-weight1 = weight1.to(device)
+
 #loss_meter = meter.AverageValueMeter()
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100
 loss_stroge=0
-loss=nn.CrossEntropyLoss(weight=weight1)
+loss=nn.CrossEntropyLoss()
 
 print (config.epochs)
 print ('Starting training...\n')
