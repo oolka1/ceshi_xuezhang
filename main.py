@@ -67,7 +67,7 @@ for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
     print('**** EPOCH %03d ****' % (epoch+1))
-    train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [1800, 400])
+    train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [1600, 400])
     traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
     valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
     print(str(datetime.now()))
