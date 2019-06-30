@@ -79,7 +79,7 @@ class fudandataset(data.Dataset):
                         if random.random()>0.5:
                             angle = random.randint(-30, 30)
                             image = F.rotate(image, angle)
-                            segmentation = TF.rotate(segmentation, angle)
+                            segmentation = F.rotate(segmentation, angle)
                         if random.random()>0.5:
                             angle = random.randint(-30, 30)
                             image = F.affine(image, angle,translate = None,scale = None,shear = None)
