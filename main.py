@@ -52,7 +52,7 @@ classifier.to(device)
 lr=config.lr
 optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 2e-4)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
-train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
+train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [1600, 400])
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
 valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
 #loss = nn.CrossEntropyLoss()
