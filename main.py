@@ -14,7 +14,7 @@ import torch.utils.data
 import torch.nn.functional as F
 import torch.nn as nn
 #from torchnet import meter
-import torch.transforms as T
+import torchvision.transforms as T
 import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet_Nested
