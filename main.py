@@ -52,7 +52,9 @@ classifier.to(device)
 lr=config.lr
 optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 2e-4)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
-
+train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
+valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
 #loss = nn.CrossEntropyLoss()
 
 #loss_meter = meter.AverageValueMeter()
@@ -67,9 +69,7 @@ for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
     print('**** EPOCH %03d ****' % (epoch+1))
-    train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
-    traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
-    valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
+
     print(str(datetime.now()))
     train_acc_epoch, val_acc_epoch ,train_loss_epoch,val_loss_epoch= [], [],[],[]
     
