@@ -57,7 +57,8 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss_meter = meter.AverageValueMeter()
 #confusion_matrix = meter.ConfusionMeter(4)
-
+previous_loss = 1e100	
+loss_stroge=0
 loss=nn.CrossEntropyLoss()
 
 print (config.epochs)
@@ -124,9 +125,13 @@ for epoch in range(config.epochs):
     print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(val_loss_epoch)))
     print(' ')
-    
+    loss_stroge = np.mean(train_loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
-    
+    if loss_stroge > previous_loss:          	
+         lr = lr * 0.9	
+        for param_group in optimizer.param_groups:	
+            param_group['lr'] = lr               	
+    previous_loss = loss_stroge
     '''if loss_stroge[0] > previous_loss:          
         lr = lr * 0.5
         for param_group in optimizer.param_groups:
