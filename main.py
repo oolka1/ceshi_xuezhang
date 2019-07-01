@@ -97,6 +97,7 @@ for epoch in range(config.epochs):
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
         log_string('train_loss: %f' % (output.item()))
         log_string('train_accuracy: %f' % (train_acc))
+        print(i)
         if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
