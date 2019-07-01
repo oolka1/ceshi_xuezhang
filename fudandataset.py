@@ -43,7 +43,9 @@ class fudandataset(data.Dataset):
                     d = file_data1.shape[2]
                     for i in range(d):
                         labels = copy.deepcopy(file_data1[:,:,i])
-                        
+                        labels[labels==200]=1
+                        labels[labels==500]=2
+                        labels[labels==600]=3
                         '''x=labels.shape[0]
                         x=int(0.31*x)
                         labels=labels[x:x+192,]
