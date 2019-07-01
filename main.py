@@ -34,14 +34,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=40, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=100, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
 num_classes = 4
 
-load_dataset = fudandataset(traindata_root,train=True)
+train_dataset = fudandataset(traindata_root,train=True)
 
-
+val_dataset=fudandataset(testdata_root,train=False)
 #seed = 123456
 #random.seed(seed)
 #torch.cuda.manual_seed(seed)
@@ -50,9 +50,9 @@ classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 3e-3)
+optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 6e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
-train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [1600, 400])
+
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
 valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
 #loss = nn.CrossEntropyLoss()
@@ -97,6 +97,7 @@ for epoch in range(config.epochs):
         log_string(' -- %03d / %03d --' % (epoch+1, 1))
         log_string('train_loss: %f' % (output.item()))
         log_string('train_accuracy: %f' % (train_acc))
+        
         if (i+1) % 10 == 0:
             log_string(str(datetime.now()))
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
