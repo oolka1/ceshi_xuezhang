@@ -65,7 +65,7 @@ loss_stroge=0
 weight1 = torch.Tensor([1,30,30,30])
 weight1 = weight1.to(device)	
 #loss=nn.CrossEntropyLoss(weight=weight1)
-loss=F.cross_entropy()
+#loss=F.cross_entropy()
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
@@ -86,8 +86,8 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        output =  loss(pred, label)#weight=weight1
-       
+        #output =  loss(pred, label)#weight=weight1
+        output =  F.cross_entropy(pred, label)
         #print(pred.size(),label.size())
         output.backward()
         optimizer.step()
@@ -112,7 +112,8 @@ for epoch in range(config.epochs):
                 pred = classifier(slices)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
-                output = loss(pred, label)
+                #output = loss(pred, label)
+                output =  F.cross_entropy(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 val_acc = correct.item()/float(label.shape[0])
