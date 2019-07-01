@@ -14,6 +14,7 @@ import torch.utils.data
 import torch.nn.functional as F
 import torch.nn as nn
 #from torchnet import meter
+import torchvision.transforms.functional as f
 import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet_Nested
@@ -31,10 +32,10 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.00002, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=100, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=400, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
 num_classes = 4
@@ -50,19 +51,21 @@ classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 6e-3)
+optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 3e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
-valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=config.batchsize, shuffle=True, num_workers=4)
+valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
 #loss = nn.CrossEntropyLoss()
 
 #loss_meter = meter.AverageValueMeter()
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100	
 loss_stroge=0
-loss=nn.CrossEntropyLoss()
-
+weight1 = torch.Tensor([1,30,30,30])
+weight1 = weight1.to(device)	
+#loss=nn.CrossEntropyLoss(weight=weight1)
+loss=nn.cross_entropy()
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
