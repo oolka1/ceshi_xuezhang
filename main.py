@@ -14,6 +14,7 @@ import torch.utils.data
 import torch.nn.functional as F
 import torch.nn as nn
 #from torchnet import meter
+import torch.transforms as T
 import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet_Nested
@@ -62,7 +63,7 @@ valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.b
 previous_loss = 1e100	
 loss_stroge=0
 weight1=[1,2,2,2]
-weight1=F.to_tensor(weight1)
+weight1=T.ToTensor(weight1)
 loss=nn.CrossEntropyLoss(weight=weight1)
 
 print (config.epochs)
