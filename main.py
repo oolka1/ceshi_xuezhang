@@ -62,8 +62,8 @@ valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.b
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100	
 loss_stroge=0
-weight1= np.array([1,2,2,2])
-weight1=f.to_tensor(weight1)
+weight1 = torch.Tensor([1,2,2,2])
+weight1 = weight1.to(device)	
 loss=nn.CrossEntropyLoss(weight=weight1)
 
 print (config.epochs)
