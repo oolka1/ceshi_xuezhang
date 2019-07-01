@@ -32,7 +32,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.00005, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.00002, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=400, help='epochs to train')
@@ -62,7 +62,7 @@ valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=config.batch
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100	
 loss_stroge=0
-weight1 = torch.Tensor([1,2,2,2])
+weight1 = torch.Tensor([1,30,30,30])
 weight1 = weight1.to(device)	
 loss=nn.CrossEntropyLoss(weight=weight1)
 
