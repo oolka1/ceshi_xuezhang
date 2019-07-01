@@ -48,7 +48,7 @@ class fudandataset(data.Dataset):
                         x=int(0.31*x)
                         labels=labels[x:x+192,]
                         labels=labels[:,x:x+192]                    
-                        self.train_labels1.append(labels)
+                        self.train_labels.append(labels)
 
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -65,8 +65,8 @@ class fudandataset(data.Dataset):
                         max1=data.max()
                         max1=max1.astype(np.float32)
                         data=data/max1   
-                        self.train_data1.append(data)
-            for j in range(30):
+                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+            '''for j in range(30):
                 if j<29:
                     for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
@@ -111,11 +111,11 @@ class fudandataset(data.Dataset):
                          label2[label2==500]=2
                          label2[label2==600]=3
                          self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
-                         self.train_labels.append(label2)
-            self.together=list(zip(self.train_data,self.train_labels))          
+                         self.train_labels.append(label2)'''
+            '''self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
-            print(len(self.train_data))
+            print(len(self.train_data))'''
         else:
             print('loading test data ')
             self.test_data = [] 
