@@ -54,7 +54,7 @@ optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 3e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [1600, 410])
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
-valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
+valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=(config.batchsize), shuffle=True,  num_workers=4)
 #loss = nn.CrossEntropyLoss()
 
 #loss_meter = meter.AverageValueMeter()
