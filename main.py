@@ -41,7 +41,7 @@ num_classes = 4
 
 train_dataset = fudandataset(traindata_root,train=True)
 
-val_dataset=fudandataset(testdata_root,train=True)
+val_dataset=fudandataset(testdata_root,train=False)
 #seed = 123456
 #random.seed(seed)
 #torch.cuda.manual_seed(seed)
