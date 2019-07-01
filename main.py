@@ -64,8 +64,8 @@ previous_loss = 1e100
 loss_stroge=0
 weight1 = torch.Tensor([1,30,30,30])
 weight1 = weight1.to(device)	
-loss=nn.CrossEntropyLoss(weight=weight1)
-
+#loss=nn.CrossEntropyLoss(weight=weight1)
+loss=nn.cross_entropy()
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
