@@ -44,7 +44,6 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         labels = copy.deepcopy(file_data1[:,:,i])
                         
-                        
                         x=labels.shape[0]
                         x=int(0.31*x)
                         labels=labels[x:x+192,]
@@ -63,7 +62,9 @@ class fudandataset(data.Dataset):
                         data=data[x:x+192,]
                         data=data[:,x:x+192]
                         data=data.astype(np.float32)
-                        
+                        max1=data.max()
+                        max1=max1.astype(np.float32)
+                        data=data/max1   
                         self.train_data1.append(data)
             for j in range(100):
                 if j<99:
@@ -93,9 +94,7 @@ class fudandataset(data.Dataset):
                         noise=np.random.randint(0,1,(192,192))
                         noise=noise.astype(np.float32)
                         image = noise+image
-                        max1=image.max()
-                        max1=max1.astype(np.float32)
-                        image=image/max1   
+                        image[image>1]=1
                         segmentation[segmentation>650]=0
                         segmentation[segmentation<100]=0
                         
