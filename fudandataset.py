@@ -44,7 +44,6 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         labels = copy.deepcopy(file_data1[:,:,i])
                         
-                        
                         x=labels.shape[0]
                         x=int(0.31*x)
                         labels=labels[x:x+192,]
@@ -62,33 +61,40 @@ class fudandataset(data.Dataset):
                         x=int(0.31*x)
                         data=data[x:x+192,]
                         data=data[:,x:x+192]
-                        data=0.2*(i+1)*data
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
-                        data=data/max1
+                        data=data/max1   
                         self.train_data1.append(data)
-            for j in range(100):
-                if j<9:
+            for j in range(50):
+                if j<49:
                     for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
                         image=to_pil_image(self.train_data1[i])
                         segmentation=to_pil_image(self.train_labels1[i])
                         if random.random()>0.5:
-                            angle = random.randint(-30, 30)
+                            angle = np.random.randint(-30, 30)
                             image = F.rotate(image, angle)
                             segmentation = F.rotate(segmentation, angle)
                         if random.random()>0.5:
-                            positionx = random.randint(0, 1)
-                            positiony = random.randint(0, 1)
+                            positionx = np.random.randint(0, 1)
+                            positiony = np.random.randint(0, 1)
                             image = F.affine(image, angle=0,translate=[positionx,positiony],scale=1,shear=0)
                             segmentation = F.affine(segmentation, angle=0,translate=[positionx,positiony],scale=1,shear=0)
                         if random.random()>0.5:
                             image = F.hflip(image)
                             segmentation = F.hflip(segmentation)
+                        
+                            
                         image=np.array(image, dtype=np.float32)
                         segmentation=np.array(segmentation, dtype=np.float32)
-                        
+                        if random.random()>0.5:
+                            rate1=np.random.randint(0.5, 1)
+                            image=image*rate1
+                        noise=np.random.randint(0,1,(192,192))
+                        noise=noise.astype(np.float32)
+                        image = noise+image
+                        image[image>1]=1
                         segmentation[segmentation>650]=0
                         segmentation[segmentation<100]=0
                         

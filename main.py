@@ -31,10 +31,10 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0002, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=100, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=40, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
 num_classes = 4
@@ -50,17 +50,18 @@ classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 1e-3)
+optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 3e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
-
+train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [1600, 400])
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
+valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.batchsize), shuffle=True,  num_workers=4)
 #loss = nn.CrossEntropyLoss()
-weight1 = torch.Tensor([1,3,3,3])
-weight1 = weight1.to(device)
+
 #loss_meter = meter.AverageValueMeter()
 #confusion_matrix = meter.ConfusionMeter(4)
-previous_loss = 1e100
+previous_loss = 1e100	
 loss_stroge=0
-loss=nn.CrossEntropyLoss(weight=weight1)
+loss=nn.CrossEntropyLoss()
 
 print (config.epochs)
 print ('Starting training...\n')
@@ -68,11 +69,10 @@ for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
     print('**** EPOCH %03d ****' % (epoch+1))
-    train_dataset,val_dataset=torch.utils.data.random_split(load_dataset, [3200, 800])
-    traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
-    valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=config.batchsize, shuffle=True,  num_workers=4)
+
     print(str(datetime.now()))
     train_acc_epoch, val_acc_epoch ,train_loss_epoch,val_loss_epoch= [], [],[],[]
+    
     #loss_meter.reset()
     #confusion_matrix.reset()         
     for i, data in enumerate(traindataloader): 
@@ -127,10 +127,10 @@ for epoch in range(config.epochs):
     print(' ')
     loss_stroge = np.mean(train_loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
-    if loss_stroge > previous_loss:          
-        lr = lr * 0.9
-        for param_group in optimizer.param_groups:
-            param_group['lr'] = lr               
+    if loss_stroge > previous_loss:          	
+         lr = lr * 0.9	
+         for param_group in optimizer.param_groups:	
+             param_group['lr'] = lr               	
     previous_loss = loss_stroge
     '''if loss_stroge[0] > previous_loss:          
         lr = lr * 0.5
