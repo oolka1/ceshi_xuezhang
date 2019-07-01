@@ -62,7 +62,6 @@ class fudandataset(data.Dataset):
                         x=int(0.31*x)
                         data=data[x:x+192,]
                         data=data[:,x:x+192]
-                        data=0.2*(i+1)*data
                         data=data.astype(np.float32)
                         
                         self.train_data1.append(data)
