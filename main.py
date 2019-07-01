@@ -62,7 +62,7 @@ valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.b
 previous_loss = 1e100	
 loss_stroge=0
 weight1=[1,2,2,2]
-weight1=to_tensor(weight1)
+weight1=F.to_tensor(weight1)
 loss=nn.CrossEntropyLoss(weight=weight1)
 
 print (config.epochs)
