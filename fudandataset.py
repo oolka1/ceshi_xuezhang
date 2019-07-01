@@ -64,9 +64,7 @@ class fudandataset(data.Dataset):
                         data=data[:,x:x+192]
                         data=0.2*(i+1)*data
                         data=data.astype(np.float32)
-                        max1=data.max()
-                        max1=max1.astype(np.float32)
-                        data=data/max1
+                        
                         self.train_data1.append(data)
             for j in range(100):
                 if j<99:
@@ -95,9 +93,10 @@ class fudandataset(data.Dataset):
                             image=image*rate1
                         noise=np.random.randint(0,1,(192,192))
                         noise=noise.astype(np.float32)
-                        noise=0.01*noise
                         image = noise+image
-                            
+                        max1=image.max()
+                        max1=max1.astype(np.float32)
+                        image=image/max1   
                         segmentation[segmentation>650]=0
                         segmentation[segmentation<100]=0
                         
