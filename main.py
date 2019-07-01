@@ -31,7 +31,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.00005, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=100, help='epochs to train')
@@ -50,7 +50,7 @@ classifier = UNet_Nested(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 lr=config.lr
-optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 6e-3)
+optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 3e-3)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=20*(config.batchsize), shuffle=True, num_workers=4)
@@ -61,7 +61,9 @@ valdataloader = torch.utils.data.DataLoader(val_dataset, batch_size=20*(config.b
 #confusion_matrix = meter.ConfusionMeter(4)
 previous_loss = 1e100	
 loss_stroge=0
-loss=nn.CrossEntropyLoss()
+weight1=[1,2,2,2]
+weight1=to_tensor(weight1)
+loss=nn.CrossEntropyLoss(weight=weight1)
 
 print (config.epochs)
 print ('Starting training...\n')
