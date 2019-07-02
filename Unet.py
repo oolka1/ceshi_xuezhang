@@ -2,6 +2,7 @@
 import _init_paths
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 from layers import unetConv2, unetUp
 from utils import init_weights, count_param
 
