@@ -132,11 +132,7 @@ for epoch in range(config.epochs):
     print(' ')
     loss_stroge = np.mean(train_loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
-    if loss_stroge > previous_loss:          	
-         lr = lr * 0.9	
-         for param_group in optimizer.param_groups:	
-             param_group['lr'] = lr               	
-    previous_loss = loss_stroge
+    
     '''if loss_stroge[0] > previous_loss:          
         lr = lr * 0.5
         for param_group in optimizer.param_groups:
