@@ -15,7 +15,7 @@ class UNet_Nested(nn.Module):
         self.is_batchnorm = is_batchnorm
         self.is_ds = is_ds
 
-        filters = [ 256, 512, 1024, 2048, 4096]
+        filters = [ 256, 512, 1024, 2048]
         filters = [int(x / self.feature_scale) for x in filters]
 
         # downsampling
@@ -24,28 +24,27 @@ class UNet_Nested(nn.Module):
         self.conv10 = unetConv2(filters[0], filters[1], self.is_batchnorm)
         self.conv20 = unetConv2(filters[1], filters[2], self.is_batchnorm)
         self.conv30 = unetConv2(filters[2], filters[3], self.is_batchnorm)
-        self.conv40 = unetConv2(filters[3], filters[4], self.is_batchnorm)
+       
 
         # upsampling
         self.up_concat01 = unetUp(filters[1], filters[0], self.is_deconv)
         self.up_concat11 = unetUp(filters[2], filters[1], self.is_deconv)
         self.up_concat21 = unetUp(filters[3], filters[2], self.is_deconv)
-        self.up_concat31 = unetUp(filters[4], filters[3], self.is_deconv)
-
+        
         self.up_concat02 = unetUp(filters[1], filters[0], self.is_deconv, 3)
         self.up_concat12 = unetUp(filters[2], filters[1], self.is_deconv, 3)
-        self.up_concat22 = unetUp(filters[3], filters[2], self.is_deconv, 3)
+        
 
         self.up_concat03 = unetUp(filters[1], filters[0], self.is_deconv, 4)
-        self.up_concat13 = unetUp(filters[2], filters[1], self.is_deconv, 4)
+       
         
-        self.up_concat04 = unetUp(filters[1], filters[0], self.is_deconv, 5)
+        
         
         # final conv (without any concat)
         self.final_1 = nn.Conv2d(filters[0], n_classes, 1)
         self.final_2 = nn.Conv2d(filters[0], n_classes, 1)
         self.final_3 = nn.Conv2d(filters[0], n_classes, 1)
-        self.final_4 = nn.Conv2d(filters[0], n_classes, 1)
+        
 
         # initialise weights
         for m in self.modules():
@@ -63,30 +62,28 @@ class UNet_Nested(nn.Module):
         X_20 = self.conv20(maxpool1)     # 64*128*128
         maxpool2 = self.maxpool(X_20)    # 64*64*64
         X_30 = self.conv30(maxpool2)     # 128*64*64
-        maxpool3 = self.maxpool(X_30)    # 128*32*32
-        X_40 = self.conv40(maxpool3)     # 256*32*32
+        2
         # column : 1
         X_01 = self.up_concat01(X_10,X_00)
         X_11 = self.up_concat11(X_20,X_10)
         X_21 = self.up_concat21(X_30,X_20)
-        X_31 = self.up_concat31(X_40,X_30)
+        
         # column : 2
         X_02 = self.up_concat02(X_11,X_00,X_01)
         X_12 = self.up_concat12(X_21,X_10,X_11)
-        X_22 = self.up_concat22(X_31,X_20,X_21)
+        
         # column : 3
         X_03 = self.up_concat03(X_12,X_00,X_01,X_02)
-        X_13 = self.up_concat13(X_22,X_10,X_11,X_12)
+        
         # column : 4
-        X_04 = self.up_concat04(X_13,X_00,X_01,X_02,X_03)
+        
 
         # final layer
         final_1 = self.final_1(X_01)
         final_2 = self.final_2(X_02)
         final_3 = self.final_3(X_03)
-        final_4 = self.final_4(X_04)
-
-        final = (final_1+final_2+final_3+final_4)/4
+        
+        final = (final_1+final_2+final_3)/3
 
         if self.is_ds:
             return final
