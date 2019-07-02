@@ -27,11 +27,7 @@ class UNet_Nested(nn.Module):
         self.conv30 = unetConv2(filters[2], filters[3], self.is_batchnorm)
         self.conv40 = unetConv2(filters[3], filters[4], self.is_batchnorm)
         
-        self.cls = nn.Sequential(
-            nn.Dropout(p=0.5),
-            nn.Conv2d(256,3,1),
-            nn.AdaptiveMaxPool2d(1),
-            nn.Sigmoid())
+        
 
         # upsampling
         self.up_concat01 = unetUp(filters[1], filters[0], self.is_deconv)
