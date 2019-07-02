@@ -92,9 +92,9 @@ class UNet_Nested(nn.Module):
         final = (final_1+final_2+final_3+final_4)/4
 
         if self.is_ds:
-            return F.log_softmax(final,dim=1),cls_branch
-        else:
-            return F.log_softmax(final_4),cls_branch
+            return final	            
+        else:	        
+            return final_4           
 
 if __name__ == '__main__':
     print('#### Test Case ###')
