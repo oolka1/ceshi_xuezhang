@@ -15,7 +15,7 @@ class UNet_Nested(nn.Module):
         self.is_batchnorm = is_batchnorm
         self.is_ds = is_ds
 
-        filters = [ 256, 512, 1024, 2048]
+        filters = [ 256, 512, 1024]
         filters = [int(x / self.feature_scale) for x in filters]
 
         # downsampling
@@ -23,19 +23,19 @@ class UNet_Nested(nn.Module):
         self.conv00 = unetConv2(self.in_channels, filters[0], self.is_batchnorm)
         self.conv10 = unetConv2(filters[0], filters[1], self.is_batchnorm)
         self.conv20 = unetConv2(filters[1], filters[2], self.is_batchnorm)
-        self.conv30 = unetConv2(filters[2], filters[3], self.is_batchnorm)
+        
        
 
         # upsampling
         self.up_concat01 = unetUp(filters[1], filters[0], self.is_deconv)
         self.up_concat11 = unetUp(filters[2], filters[1], self.is_deconv)
-        self.up_concat21 = unetUp(filters[3], filters[2], self.is_deconv)
+        
         
         self.up_concat02 = unetUp(filters[1], filters[0], self.is_deconv, 3)
-        self.up_concat12 = unetUp(filters[2], filters[1], self.is_deconv, 3)
+        
         
 
-        self.up_concat03 = unetUp(filters[1], filters[0], self.is_deconv, 4)
+        
        
         
         
@@ -43,7 +43,7 @@ class UNet_Nested(nn.Module):
         # final conv (without any concat)
         self.final_1 = nn.Conv2d(filters[0], n_classes, 1)
         self.final_2 = nn.Conv2d(filters[0], n_classes, 1)
-        self.final_3 = nn.Conv2d(filters[0], n_classes, 1)
+        
         
 
         # initialise weights
@@ -60,20 +60,15 @@ class UNet_Nested(nn.Module):
         X_10= self.conv10(maxpool0)      # 32*256*256
         maxpool1 = self.maxpool(X_10)    # 32*128*128
         X_20 = self.conv20(maxpool1)     # 64*128*128
-        maxpool2 = self.maxpool(X_20)    # 64*64*64
-        X_30 = self.conv30(maxpool2)     # 128*64*64
+        
         
         # column : 1
         X_01 = self.up_concat01(X_10,X_00)
         X_11 = self.up_concat11(X_20,X_10)
-        X_21 = self.up_concat21(X_30,X_20)
+        
         
         # column : 2
         X_02 = self.up_concat02(X_11,X_00,X_01)
-        X_12 = self.up_concat12(X_21,X_10,X_11)
-        
-        # column : 3
-        X_03 = self.up_concat03(X_12,X_00,X_01,X_02)
         
         # column : 4
         
@@ -81,14 +76,14 @@ class UNet_Nested(nn.Module):
         # final layer
         final_1 = self.final_1(X_01)
         final_2 = self.final_2(X_02)
-        final_3 = self.final_3(X_03)
+     
         
-        final = (final_1+final_2+final_3)/3
+        final = (final_1+final_2)/2
 
         if self.is_ds:
             return final
         else:
-            return final_4
+            return final_2
 
 if __name__ == '__main__':
     print('#### Test Case ###')
