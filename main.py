@@ -32,7 +32,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.00002, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.00001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=400, help='epochs to train')
@@ -65,7 +65,7 @@ loss_stroge=0
 weight1 = torch.Tensor([1,30,30,30])
 weight1 = weight1.to(device)	
 #loss=nn.CrossEntropyLoss(weight=weight1)
-loss=nn.cross_entropy()
+#loss=F.cross_entropy()
 print (config.epochs)
 print ('Starting training...\n')
 for epoch in range(config.epochs):
@@ -86,8 +86,8 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        output =  loss(pred, label)#weight=weight1
-       
+        #output =  loss(pred, label)#weight=weight1
+        output =  F.cross_entropy(pred, label)
         #print(pred.size(),label.size())
         output.backward()
         optimizer.step()
@@ -112,7 +112,8 @@ for epoch in range(config.epochs):
                 pred = classifier(slices)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
-                output = loss(pred, label)
+                #output = loss(pred, label)
+                output =  F.cross_entropy(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 val_acc = correct.item()/float(label.shape[0])
@@ -131,11 +132,7 @@ for epoch in range(config.epochs):
     print(' ')
     loss_stroge = np.mean(train_loss_epoch)
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
-    if loss_stroge > previous_loss:          	
-         lr = lr * 0.9	
-         for param_group in optimizer.param_groups:	
-             param_group['lr'] = lr               	
-    previous_loss = loss_stroge
+    
     '''if loss_stroge[0] > previous_loss:          
         lr = lr * 0.5
         for param_group in optimizer.param_groups:
