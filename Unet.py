@@ -34,11 +34,7 @@ class UNet_Nested_dilated(nn.Module):
 
         self.dilated = unetConv2_dilation(filters[4],filters[4],self.is_batchnorm)
 
-        self.cls = nn.Sequential(
-            nn.Dropout(p=0.5),
-            nn.Conv2d(128,1,1),
-            nn.AdaptiveMaxPool2d(1),
-            nn.Sigmoid())
+       
 
         # upsampling
         self.up_concat01 = unetUp(filters[1], filters[0], self.is_deconv)
@@ -80,7 +76,7 @@ class UNet_Nested_dilated(nn.Module):
         maxpool3 = self.maxpool3(X_30)  
         X_40 = self.conv40(maxpool3)   
         X_40_d = self.dilated(X_40)
-        cls_branch = self.cls(X_40_d).squeeze()
+       
         # column : 1
         X_01 = self.up_concat01(X_10,X_00)
         X_11 = self.up_concat11(X_20,X_10)
@@ -105,6 +101,6 @@ class UNet_Nested_dilated(nn.Module):
         final = (final_1+final_2+final_3+final_4)/4
 
         if self.is_ds:
-            return F.log_softmax(final),cls_branch
+            return final
         else:
-            return F.log_softmax(final_4),cls_branch
+            return final_4
