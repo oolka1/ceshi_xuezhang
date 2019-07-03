@@ -17,7 +17,7 @@ import torch.nn as nn
 import torchvision.transforms.functional as f
 import numpy as np
 from fudandataset import fudandataset
-from Unet import UNet_Nested
+from Unet import UNet_Nested_dilated
 import copy
 
 traindata_root = "train"
