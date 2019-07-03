@@ -69,7 +69,7 @@ class UNet_Nested(nn.Module):
 
         final = self.final(up1)
 
-        return F.log_softmax(final_1,dim=1),cls_branch
+        return F.log_softmax(final,dim=1),cls_branch
 
 if __name__ == '__main__':
     print('#### Test Case ###')
