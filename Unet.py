@@ -27,6 +27,11 @@ class UNet_Nested(nn.Module):
         self.conv3 = unetConv2(filters[1], filters[2], self.is_batchnorm)
         self.conv4 = unetConv2(filters[2], filters[3], self.is_batchnorm)
         self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
+        self.cls = nn.Sequential(
+            nn.Dropout(p=0.5),
+            nn.Conv2d(256,3,1),
+            nn.AdaptiveMaxPool2d(1),
+            nn.Sigmoid())
         # upsampling
         self.up_concat4 = unetUp(filters[4], filters[3], self.is_deconv)
         self.up_concat3 = unetUp(filters[3], filters[2], self.is_deconv)
@@ -56,6 +61,7 @@ class UNet_Nested(nn.Module):
         maxpool4 = self.maxpool(conv4)       # 128*32*32
 
         center = self.center(maxpool4)       # 256*32*32
+        cls_branch = self.cls(center).squeeze()
         up4 = self.up_concat4(center,conv4)  # 128*64*64
         up3 = self.up_concat3(up4,conv3)     # 64*128*128
         up2 = self.up_concat2(up3,conv2)     # 32*256*256
@@ -63,7 +69,7 @@ class UNet_Nested(nn.Module):
 
         final = self.final(up1)
 
-        return final
+        return F.log_softmax(final_1,dim=1),cls_branch
 
 if __name__ == '__main__':
     print('#### Test Case ###')
