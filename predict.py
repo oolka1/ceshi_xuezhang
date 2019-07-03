@@ -26,7 +26,7 @@ def mask_to_image(mask):
     return Image.fromarray((mask * 255).astype(np.uint8))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_4.pth', metavar='FILE',
+parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_399.pth', metavar='FILE',
                         help="Specify the file in which is stored the model"
                              " (default : 'MODEL.pth')")
 config = parser.parse_args()
