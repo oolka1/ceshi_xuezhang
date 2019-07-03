@@ -29,7 +29,7 @@ class UNet_Nested(nn.Module):
         self.center = unetConv2(filters[3], filters[4], self.is_batchnorm)
         self.cls = nn.Sequential(
             nn.Dropout(p=0.5),
-            nn.Conv2d(256,3,1),
+            nn.Conv2d(128,1,1),
             nn.AdaptiveMaxPool2d(1),
             nn.Sigmoid())
         # upsampling
