@@ -41,15 +41,15 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data1 = file_data.get_data()
                     d = file_data1.shape[2]
-                    for i in range(d):
+                    for i in range(2,d):
                         labels = copy.deepcopy(file_data1[:,:,i])
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
                         x=labels.shape[0]
                         x=int(0.25*x)
-                        labels=labels[x:x+256,]
-                        labels=labels[:,x:x+256]                   
+                        labels=labels[x:x+128,]
+                        labels=labels[:,x:x+128]                   
                         self.train_labels.append(labels)
 
                 else:
@@ -57,12 +57,12 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data1 = file_data.get_data()
                     d = file_data1.shape[2]
-                    for i in range(d):
+                    for i in range(2,d):
                         data = copy.deepcopy(file_data1[:,:,i])
                         x=data.shape[0]
-                        x=int(0.31*x)
-                        data=data[x:x+256,]
-                        data=data[:,x:x+256]
+                        x=int(0.25*x)
+                        data=data[x:x+128,]
+                        data=data[:,x:x+128]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
