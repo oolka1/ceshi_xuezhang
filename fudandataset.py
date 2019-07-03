@@ -114,10 +114,10 @@ class fudandataset(data.Dataset):
                          label2[label2==600]=3
                          self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
                          self.train_labels.append(label2)'''
-            '''self.together=list(zip(self.train_data,self.train_labels))          
+            self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
-            print(len(self.train_data))'''
+            print(len(self.train_data))
         else:
             print('loading test data ')
             self.test_data = [] 
