@@ -46,10 +46,10 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        '''x=labels.shape[0]
-                        x=int(0.31*x)
-                        labels=labels[x:x+96,]
-                        labels=labels[:,x:x+96]'''                   
+                        x=labels.shape[0]
+                        x=int(0.25*x)
+                        labels=labels[x:x+256,]
+                        labels=labels[:,x:x+256]                   
                         self.train_labels.append(labels)
 
                 else:
@@ -59,10 +59,10 @@ class fudandataset(data.Dataset):
                     d = file_data1.shape[2]
                     for i in range(d):
                         data = copy.deepcopy(file_data1[:,:,i])
-                        '''x=data.shape[0]
+                        x=data.shape[0]
                         x=int(0.31*x)
-                        data=data[x:x+96,]
-                        data=data[:,x:x+96]'''
+                        data=data[x:x+256,]
+                        data=data[:,x:x+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
@@ -137,10 +137,10 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=1
                         labels[labels==500]=2
                         labels[labels==600]=3
-                        '''x=labels.shape[0]
-                        x=int(0.31*x)
-                        labels=labels[x:x+192,]
-                        labels=labels[:,x:x+192]'''
+                        x=labels.shape[0]
+                        x=int(0.25*x)
+                        labels=labels[x:x+256,]
+                        labels=labels[:,x:x+256]
                         self.test_labels.append(labels)
                 
                         
@@ -152,10 +152,10 @@ class fudandataset(data.Dataset):
                     x= file_data1.shape[1]
                     for i in range(2,d):
                         data = copy.deepcopy(file_data1[:,:,i])
-                        '''x=data.shape[0]
-                        x=int(0.31*x)
-                        data=data[x:x+192,]
-                        data=data[:,x:x+192]'''
+                        x=data.shape[0]
+                        x=int(0.25*x)
+                        data=data[x:x+256,]
+                        data=data[:,x:x+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
