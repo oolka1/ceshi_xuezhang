@@ -48,8 +48,8 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=3
                         x=labels.shape[0]
                         x=int(0.25*x)
-                        labels=labels[x:x+128,]
-                        labels=labels[:,x:x+128]                   
+                        labels=labels[x:x+140,]
+                        labels=labels[:,x:x+140]                   
                         self.train_labels.append(labels)
 
                 else:
@@ -61,8 +61,8 @@ class fudandataset(data.Dataset):
                         data = copy.deepcopy(file_data1[:,:,i])
                         x=data.shape[0]
                         x=int(0.25*x)
-                        data=data[x:x+128,]
-                        data=data[:,x:x+128]
+                        data=data[x:x+140,]
+                        data=data[:,x:x+140]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
@@ -139,8 +139,8 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=3
                         x=labels.shape[0]
                         x=int(0.25*x)
-                        labels=labels[x:x+256,]
-                        labels=labels[:,x:x+256]
+                        labels=labels[x:x+252,]
+                        labels=labels[:,x:x+252]
                         self.test_labels.append(labels)
                 
                         
@@ -154,8 +154,8 @@ class fudandataset(data.Dataset):
                         data = copy.deepcopy(file_data1[:,:,i])
                         x=data.shape[0]
                         x=int(0.25*x)
-                        data=data[x:x+256,]
-                        data=data[:,x:x+256]
+                        data=data[x:x+252,]
+                        data=data[:,x:x+252]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
