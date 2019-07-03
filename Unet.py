@@ -10,7 +10,7 @@ class UNet_Nested_dilated(nn.Module):
     
 
     def __init__(self, in_channels=1, n_classes=4, feature_scale=8, is_deconv=True, is_batchnorm=True):
-         super(UNet_Nested_dilated, self).__init__()
+        super(UNet_Nested_dilated, self).__init__()
         self.is_deconv = is_deconv
         self.in_channels = in_channels
         self.is_batchnorm = is_batchnorm
