@@ -17,7 +17,7 @@ class UNet_Nested(nn.Module):
         self.is_batchnorm = is_batchnorm
         
 
-        filters = [  64, 128,256,512]
+        filters = [  128,256,512]
         filters = [int(x / self.feature_scale) for x in filters]
 
         # downsampling
@@ -50,16 +50,15 @@ class UNet_Nested(nn.Module):
         conv2 = self.conv2(maxpool1)         # 32*256*256
         maxpool2 = self.maxpool(conv2)       # 32*128*128
 
-        conv3 = self.conv3(maxpool2)         # 64*128*128
-        maxpool3 = self.maxpool(conv3)       # 64*64*64
+        
 
         
 
-        center = self.center(maxpool3)       # 256*32*32
+        center = self.center(maxpool2)       # 256*32*32
      
         
-        up3 = self.up_concat3(center,conv3)     # 64*128*128
-        up2 = self.up_concat2(up3,conv2)     # 32*256*256
+       
+        up2 = self.up_concat2(center,conv2)     # 32*256*256
         up1 = self.up_concat1(up2,conv1)     # 16*512*512
 
         final = self.final(up1)
