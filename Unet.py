@@ -24,13 +24,12 @@ class UNet_Nested(nn.Module):
         self.maxpool = nn.MaxPool2d(kernel_size=2)
         self.conv1 = unetConv2(self.in_channels, filters[0], self.is_batchnorm)
         self.conv2 = unetConv2(filters[0], filters[1], self.is_batchnorm)
-        self.conv3 = unetConv2(filters[1], filters[2], self.is_batchnorm)
-        
-        self.center = unetConv2(filters[2], filters[3], self.is_batchnorm)
+       
+        self.center = unetConv2(filters[1], filters[2], self.is_batchnorm)
         
         # upsampling
         
-        self.up_concat3 = unetUp(filters[3], filters[2], self.is_deconv)
+        
         self.up_concat2 = unetUp(filters[2], filters[1], self.is_deconv)
         self.up_concat1 = unetUp(filters[1], filters[0], self.is_deconv)
         # final conv (without any concat)
