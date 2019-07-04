@@ -29,7 +29,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(d):
+                    for i in range(2:d):
                         labels = file_data[:,:,i]
                         labels[labels==200]=0
                         labels[labels==500]=1
@@ -44,7 +44,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(d):
+                    for i in range(2:d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
                         x=int(0.31*x)
@@ -71,7 +71,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(d):
+                    for i in range(2:d):
                         labels = file_data[:,:,i]
                         labels[labels==200]=0
                         labels[labels==500]=1
@@ -86,7 +86,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(d):
+                    for i in range(2:d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
                         x=int(0.31*x)
