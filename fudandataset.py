@@ -48,8 +48,8 @@ class fudandataset(data.Dataset):
                         data = file_data[:,:,i]
                         x=data.shape[0]
                         x=int(0.31*x)
-                        data=data[x:x+128,]
-                        data=data[:,x:x+128]
+                        data=data[x:x+192,]
+                        data=data[:,x:x+192]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
@@ -90,8 +90,8 @@ class fudandataset(data.Dataset):
                         data = file_data[:,:,i]
                         x=data.shape[0]
                         x=int(0.31*x)
-                        data=data[x:x+128,]
-                        data=data[:,x:x+128]
+                        data=data[x:x+192,]
+                        data=data[:,x:x+192]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
