@@ -35,9 +35,9 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=1
                         labels[labels==600]=0
                         x=labels.shape[0]
-                        x=int(0.31*x)
-                        labels=labels[x:x+192,]
-                        labels=labels[:,x:x+192]  
+                        x=int(0.36*x)
+                        labels=labels[x:x+128,]
+                        labels=labels[:,x:x+128]  
                         self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -47,9 +47,9 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
-                        x=int(0.31*x)
-                        data=data[x:x+192,]
-                        data=data[:,x:x+192]
+                        x=int(0.36*x)
+                        data=data[x:x+128,]
+                        data=data[:,x:x+128]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
@@ -77,9 +77,9 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=1
                         labels[labels==600]=0
                         x=labels.shape[0]
-                        x=int(0.31*x)
-                        labels=labels[x:x+192,]
-                        labels=labels[:,x:x+192] 
+                        x=int(0.36*x)
+                        labels=labels[x:x+128,]
+                        labels=labels[:,x:x+128] 
                         self.test_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -89,9 +89,9 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
-                        x=int(0.31*x)
-                        data=data[x:x+192,]
-                        data=data[:,x:x+192]
+                        x=int(0.36*x)
+                        data=data[x:x+128,]
+                        data=data[:,x:x+128]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
