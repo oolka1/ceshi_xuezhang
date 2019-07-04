@@ -35,8 +35,9 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=1
                         labels[labels==600]=0
                         x=labels.shape[0]
-                        x=int(0.36*x)
-                        labels=labels[x:x+128,]
+                        y=int(0.39*x)
+                        x=int(0.37*x)
+                        labels=labels[y:y+128,]
                         labels=labels[:,x:x+128]  
                         self.train_labels.append(labels)
                 else:
@@ -47,8 +48,9 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
-                        x=int(0.36*x)
-                        data=data[x:x+128,]
+                        y=int(0.39*x)
+                        x=int(0.37*x)
+                        data=data[y:y+128,]
                         data=data[:,x:x+128]
                         data=data.astype(np.float32)
                         max1=data.max()
@@ -77,8 +79,9 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=1
                         labels[labels==600]=0
                         x=labels.shape[0]
-                        x=int(0.36*x)
-                        labels=labels[x:x+128,]
+                        y=int(0.39*x)
+                        x=int(0.37*x)
+                        labels=labels[y:y+128,]
                         labels=labels[:,x:x+128] 
                         self.test_labels.append(labels)
                 else:
@@ -89,8 +92,9 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
-                        x=int(0.36*x)
-                        data=data[x:x+128,]
+                        y=int(0.39*x)
+                        x=int(0.37*x)
+                        data=data[y:y+128,]
                         data=data[:,x:x+128]
                         data=data.astype(np.float32)
                         max1=data.max()
