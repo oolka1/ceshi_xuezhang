@@ -11,19 +11,10 @@ import torch
 import torch.utils.data
 import numpy as np
 from fudandataset import fudandataset
-from Unet import UNet_Nested
+
 from PIL import Image
 from torchvision import transforms
 
-unloader = transforms.ToPILImage()
-def tensor_to_PIL(tensor):
-    image = tensor.cpu().clone()
-    image = image.squeeze(0)
-    image = unloader(image)
-    return image
-
-def mask_to_image(mask):
-    return Image.fromarray((mask * 255).astype(np.uint8))
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_399.pth', metavar='FILE',
