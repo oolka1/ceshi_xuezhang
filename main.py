@@ -31,10 +31,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=200, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=400, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
-num_classes = 4
+num_classes = 2
 
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
