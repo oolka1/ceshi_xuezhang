@@ -55,6 +55,7 @@ optimizer = optim.Adam(classifier.parameters(), lr=config.lr)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
 weight_1 = torch.Tensor([1,4])
+weight1=weight1.to(device)
 output = nn.CrossEntropyLoss(weight=weight_1)
 
 print ('Starting training...\n')
