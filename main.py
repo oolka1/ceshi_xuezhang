@@ -14,11 +14,20 @@ import torch.utils.data
 import torch.nn.functional as F
 import numpy as np
 from fudandataset import fudandataset
+<<<<<<< HEAD
 from Unet import UNet
 
 traindata_root = "/home/hesun/phd/medical image/unet_test/data/train"
 testdata_root = "/home/hesun/phd/medical image/unet_test/data/test"
 log_root = "/home/hesun/phd/medical image/unet_test/log"
+=======
+from Unet import UNet_Nested_dilated
+import copy
+from torch.autograd import Variable
+traindata_root = "train"
+testdata_root = "test"
+log_root = "log"
+>>>>>>> efb3c28742dafd13216e21205a50f452932f4ea2
 if not os.path.exists(log_root): os.mkdir(log_root)
 LOG_FOUT = open(os.path.join(log_root, 'train.log'), 'w')
 def log_string(out_str):
@@ -50,7 +59,12 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
+<<<<<<< HEAD
 optimizer = optim.Adam(classifier.parameters(), lr=config.lr)
+=======
+lr=config.lr
+optimizer = optim.Adam(classifier.parameters(), lr=lr,weight_decay = 1e-6)
+>>>>>>> efb3c28742dafd13216e21205a50f452932f4ea2
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 
 #loss = nn.CrossEntropyLoss()
@@ -59,9 +73,22 @@ print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
+<<<<<<< HEAD
     train_acc_epoch, test_acc_epoch = [], []
     for i, data in enumerate(traindataloader):
         slices,label = data
+=======
+    print('**** EPOCH %03d ****' % (epoch+1))
+
+    print(str(datetime.now()))
+    train_acc_epoch, val_acc_epoch ,train_loss_epoch,val_loss_epoch= [], [],[],[]
+    
+    #loss_meter.reset()
+    #confusion_matrix.reset()         
+    for i, data in enumerate(traindataloader): 
+        slices, label = data
+        slices=Variable(slices, requires_grad=True)
+>>>>>>> efb3c28742dafd13216e21205a50f452932f4ea2
         slices, label = slices.to(device), label.to(device)
         optimizer.zero_grad()
         classifier = classifier.train()
@@ -86,6 +113,7 @@ for epoch in range(config.epochs):
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
             for j, data in enumerate(testdataloader):
                 slices,label = data
+                slices=Variable(slices, requires_grad=True)
                 slices, label = slices.to(device), label.to(device)
                 #slices = slices.transpose(2, 0, 1)
                 classifier = classifier.eval()

@@ -11,7 +11,11 @@ import torch
 import torch.utils.data
 import numpy as np
 from fudandataset import fudandataset
+<<<<<<< HEAD
 from Unet import UNet
+=======
+from torch.autograd import Variable
+>>>>>>> efb3c28742dafd13216e21205a50f452932f4ea2
 from PIL import Image
 from torchvision import transforms
 
@@ -45,14 +49,15 @@ classifier.load_state_dict(torch.load(config.model))
 test_acc_all = []
 for j, data in enumerate(testdataloader):
     slices,label = data
+    slices=Variable(slices, requires_grad=True)
     slices, label = slices.to(device), label.to(device)
     classifier = classifier.eval()
     pred = classifier(slices)
     
-    indata = slices.cpu().numpy()
+    #indata = slices.cpu().numpy()
     inlabel = label.cpu().numpy()
     
-    np.save('%s/raw_%d' % (save_root,j),indata)
+    #np.save('%s/raw_%d' % (save_root,j),indata)
     np.save('%s/label_%d' % (save_root,j),inlabel)
     pred = pred.view(-1, num_classes)
     label = label.view(-1).long()
