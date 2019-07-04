@@ -19,7 +19,7 @@ import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet_Nested_dilated
 import copy
-
+from torch.autograd import Variable
 traindata_root = "train"
 testdata_root = "test"
 log_root = "log"
@@ -79,7 +79,8 @@ for epoch in range(config.epochs):
     #loss_meter.reset()
     #confusion_matrix.reset()         
     for i, data in enumerate(traindataloader): 
-        slices, label = data    
+        slices, label = data
+        slices=Variable(slices, requires_grad=True)
         slices, label = slices.to(device), label.to(device)
         optimizer.zero_grad()
         classifier = classifier.train()
@@ -106,6 +107,7 @@ for epoch in range(config.epochs):
             log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
             for j, data in enumerate(valdataloader):
                 slices,label = data
+                slices=Variable(slices, requires_grad=True)
                 slices, label = slices.to(device), label.to(device)
                 #slices = slices.transpose(2, 0, 1)
                 classifier = classifier.eval()
