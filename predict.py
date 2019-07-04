@@ -36,14 +36,15 @@ classifier.to(device)
 test_acc_all = []
 for j, data in enumerate(testdataloader):
     slices,label = data
+    slices=Variable(slices, requires_grad=True)
     slices, label = slices.to(device), label.to(device)
     classifier = classifier.eval()
     pred = classifier(slices)
     
-    indata = slices.cpu().numpy()
+    #indata = slices.cpu().numpy()
     inlabel = label.cpu().numpy()
     
-    np.save('%s/raw_%d' % (save_root,j),indata)
+    #np.save('%s/raw_%d' % (save_root,j),indata)
     np.save('%s/label_%d' % (save_root,j),inlabel)
     pred = pred.view(-1, num_classes)
     label = label.view(-1).long()
