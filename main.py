@@ -102,7 +102,8 @@ for epoch in range(config.epochs):
                 log_string(' -- %03d / %03d --' % (epoch+1, 1))
                 log_string('loss: %f' % (loss.item()))
                 log_string('accuracy: %f' % (test_acc))
-            
+    print('**** EPOCH %03d ****' % (epoch+1))
+    print(str(datetime.now()))        
     print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
