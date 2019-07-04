@@ -69,7 +69,7 @@ for epoch in range(config.epochs):
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
         loss = F.cross_entropy(pred, label)
-        print(pred.size(),label.size())
+        #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
         pred_choice = pred.data.max(1)[1]
