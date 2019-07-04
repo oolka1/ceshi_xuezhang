@@ -11,7 +11,7 @@ import torch
 import torch.utils.data
 import numpy as np
 from fudandataset import fudandataset
-
+from torch.autograd import Variable
 from PIL import Image
 from torchvision import transforms
 
