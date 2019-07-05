@@ -94,11 +94,11 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=0
                         labels[labels==500]=1
                         labels[labels==600]=0
-                        x=labels.shape[0]
+                        '''x=labels.shape[0]
                         y=int(0.39*x)
                         x=int(0.37*x)
                         labels=labels[y:y+128,]
-                        labels=labels[:,x:x+128] 
+                        labels=labels[:,x:x+128] '''
                         self.test_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -107,11 +107,11 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(2,d):
                         data = file_data[:,:,i]
-                        x=data.shape[0]
+                        '''x=data.shape[0]
                         y=int(0.39*x)
                         x=int(0.37*x)
                         data=data[y:y+128,]
-                        data=data[:,x:x+128]
+                        data=data[:,x:x+128]'''
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
