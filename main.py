@@ -51,10 +51,10 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
-optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-6)
+optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 2e-6)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
-weight1 = torch.Tensor([1,100])
+weight1 = torch.Tensor([1,150])
 weight1=weight1.to(device)
 output = nn.CrossEntropyLoss(weight=weight1)
 
