@@ -38,7 +38,7 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=1
                         labels[labels==600]=0
                          
-                        self.train_labels1.append(labels)
+                        self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
                     file_data = nib.load(file_path)
@@ -51,8 +51,8 @@ class fudandataset(data.Dataset):
                         max1=data.max()
                         max1=max1.astype(np.float32)
                         data=data/max1  
-                        self.train_data1.append(data)
-            y1=[0.36,0.37,0.38,0.39]
+                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+            '''y1=[0.36,0.37,0.38,0.39]
             x1=[0.35,0.36,0.37,0.38]
             L=len(self.train_data1)
             for i in range(L):
@@ -72,7 +72,7 @@ class fudandataset(data.Dataset):
                         data1=data1[y:y+128,]
                         data1=data1[:,x:x+128]
                         self.train_labels.append(labels1)
-                        self.train_data.append(data1[:,:,np.newaxis].transpose(2,0,1))
+                        self.train_data.append(data1[:,:,np.newaxis].transpose(2,0,1))'''
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
