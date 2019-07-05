@@ -32,7 +32,7 @@ class fudandataset(data.Dataset):
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
                     for i in range(2,d):
-                        labels = file_data[:,:,i]
+                        labels = copy.deepcopy(file_data[:,:,i])
                         labels[labels==200]=0
                         labels[labels==500]=1
                         labels[labels==600]=0
@@ -44,7 +44,7 @@ class fudandataset(data.Dataset):
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
                     for i in range(2,d):
-                        data = file_data[:,:,i]
+                        data = copy.deepcopy(file_data[:,:,i])
                 
                         data=data.astype(np.float32)
                         max1=data.max()
@@ -57,21 +57,21 @@ class fudandataset(data.Dataset):
             for i in range(L):
                 for m in range(4):
                     for n in range(4):
-                        labels = self.train_labels1[i]
-                        x=labels.shape[0]
+                        labels1 = self.train_labels1[i]
+                        x=labels1.shape[0]
                         y=int(y1[m]*x)
                         x=int(x1[n]*x)
-                        labels=labels[y:y+128,]
-                        labels=labels[:,x:x+128]  
-                        self.train_labels.append(labels)
-                        data = self.train_data1[i]
-                        x=data.shape[0]
+                        labels1=labels1[y:y+128,]
+                        labels1=labels1[:,x:x+128]  
+                        self.train_labels.append(labels1)
+                        data1 = self.train_data1[i]
+                        x=data1.shape[0]
                         y=int(y1[m]*x)
                         x=int(x1[n]*x)
-                        data=data[y:y+128,]
-                        data=data[:,x:x+128]
-                        self.train_labels.append(labels)
-                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+                        data1=data1[y:y+128,]
+                        data1=data1[:,x:x+128]
+                        self.train_labels.append(labels1)
+                        self.train_data.append(data1[:,:,np.newaxis].transpose(2,0,1))
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
