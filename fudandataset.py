@@ -37,7 +37,11 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=0
                         labels[labels==500]=1
                         labels[labels==600]=0
-                         
+                        x=labels.shape[0]
+                        
+                        x1=int(0.25*x)
+                        labels=labels[x1:x1+256,]
+                        labels=labels[:,x1:x1+256] 
                         self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -46,33 +50,18 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(2,d):
                         data = copy.deepcopy(file_data[:,:,i])
-                
+                        
+                        x=data.shape[0]
+                        
+                        x1=int(0.25*x)
+                        data=data[x1:x1+256,]
+                        data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
                         data=data/max1  
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
-            '''y1=[0.36,0.37,0.38,0.39]
-            x1=[0.35,0.36,0.37,0.38]
-            L=len(self.train_data1)
-            for i in range(L):
-                for m in range(4):
-                    for n in range(4):
-                        labels1 = self.train_labels1[i]
-                        x=labels1.shape[0]
-                        y=int(y1[m]*x)
-                        x=int(x1[n]*x)
-                        labels1=labels1[y:y+128,]
-                        labels1=labels1[:,x:x+128]  
-                        self.train_labels.append(labels1)
-                        data1 = self.train_data1[i]
-                        x=data1.shape[0]
-                        y=int(y1[m]*x)
-                        x=int(x1[n]*x)
-                        data1=data1[y:y+128,]
-                        data1=data1[:,x:x+128]
-                        self.train_labels.append(labels1)
-                        self.train_data.append(data1[:,:,np.newaxis].transpose(2,0,1))'''
+            
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
@@ -94,11 +83,11 @@ class fudandataset(data.Dataset):
                         labels[labels==200]=0
                         labels[labels==500]=1
                         labels[labels==600]=0
-                        '''x=labels.shape[0]
-                        y=int(0.39*x)
-                        x=int(0.37*x)
-                        labels=labels[y:y+128,]
-                        labels=labels[:,x:x+128] '''
+                        x=labels.shape[0]
+                        
+                        x1=int(0.25*x)
+                        labels=labels[x1:x1+256,]
+                        labels=labels[:,x1:x1+256]
                         self.test_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -107,11 +96,11 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(2,d):
                         data = file_data[:,:,i]
-                        '''x=data.shape[0]
-                        y=int(0.39*x)
-                        x=int(0.37*x)
-                        data=data[y:y+128,]
-                        data=data[:,x:x+128]'''
+                        x=data.shape[0]
+                        
+                        x1=int(0.25*x)
+                        data=data[x1:x1+256,]
+                        data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
