@@ -26,7 +26,7 @@ def mask_to_image(mask):
     return Image.fromarray((mask * 255).astype(np.uint8))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_499.pth', metavar='FILE',
+parser.add_argument('--model', '-m', default='./model_checkpoint/fudanc0_model_399.pth', metavar='FILE',
                         help="Specify the file in which is stored the model"
                              " (default : 'MODEL.pth')")
 config = parser.parse_args()
@@ -35,8 +35,8 @@ testdata_root = "test"
 save_root = "result"
 test_dataset = fudandataset(testdata_root,train=False)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, 
-                                              num_workers=4)
-num_classes = 2
+                                              num_workers=1)
+num_classes = 4
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
