@@ -39,7 +39,7 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=0
                         x=labels.shape[0]
                         
-                        x1=int(0.3*x)
+                        x1=int(0.25*x)
                         labels=labels[x1:x1+256,]
                         labels=labels[:,x1:x1+256] 
                         self.train_labels.append(labels)
@@ -53,7 +53,7 @@ class fudandataset(data.Dataset):
                         
                         x=data.shape[0]
                         
-                        x1=int(0.3*x)
+                        x1=int(0.25*x)
                         data=data[x1:x1+256,]
                         data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
@@ -85,7 +85,7 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=0
                         x=labels.shape[0]
                         
-                        x1=int(0.3*x)
+                        x1=int(0.25*x)
                         labels=labels[x1:x1+256,]
                         labels=labels[:,x1:x1+256]
                         self.test_labels.append(labels)
@@ -98,7 +98,7 @@ class fudandataset(data.Dataset):
                         data = file_data[:,:,i]
                         x=data.shape[0]
                         
-                        x1=int(0.3*x)
+                        x1=int(0.25*x)
                         data=data[x1:x1+256,]
                         data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
