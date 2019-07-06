@@ -34,14 +34,14 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(2,d):
                         labels = copy.deepcopy(file_data[:,:,i])
-                        labels[labels==200]=0
-                        labels[labels==500]=1
-                        labels[labels==600]=0
-                        '''x=labels.shape[0]
+                        labels[labels==200]=1
+                        labels[labels==500]=2
+                        labels[labels==600]=3
+                        x=labels.shape[0]
                         
                         x1=int(0.25*x)
                         labels=labels[x1:x1+256,]
-                        labels=labels[:,x1:x1+256] '''
+                        labels=labels[:,x1:x1+256] 
                         self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -51,11 +51,11 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data = copy.deepcopy(file_data[:,:,i])
                         
-                        '''x=data.shape[0]
+                        x=data.shape[0]
                         
                         x1=int(0.25*x)
                         data=data[x1:x1+256,]
-                        data=data[:,x1:x1+256]'''
+                        data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
@@ -80,14 +80,14 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(2,d):
                         labels = file_data[:,:,i]
-                        labels[labels==200]=0
-                        labels[labels==500]=1
-                        labels[labels==600]=0
-                        ''' x=labels.shape[0]
+                        labels[labels==200]=1
+                        labels[labels==500]=2
+                        labels[labels==600]=3
+                        x=labels.shape[0]
                         
                         x1=int(0.25*x)
                         labels=labels[x1:x1+256,]
-                        labels=labels[:,x1:x1+256]'''
+                        labels=labels[:,x1:x1+256]
                         self.test_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -96,11 +96,11 @@ class fudandataset(data.Dataset):
                     d = file_data.shape[2]
                     for i in range(2,d):
                         data = file_data[:,:,i]
-                        '''x=data.shape[0]
+                        x=data.shape[0]
                         
                         x1=int(0.25*x)
                         data=data[x1:x1+256,]
-                        data=data[:,x1:x1+256]'''
+                        data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
