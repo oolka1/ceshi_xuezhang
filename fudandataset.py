@@ -40,8 +40,8 @@ class fudandataset(data.Dataset):
                         x=labels.shape[0]
                         
                         x1=int(0.3*x)
-                        labels=labels[x1:x-x1,]
-                        labels=labels[:,x1:x-x1] 
+                        labels=labels[x1:x1+256,]
+                        labels=labels[:,x1:x1+256] 
                         self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -54,8 +54,8 @@ class fudandataset(data.Dataset):
                         x=data.shape[0]
                         
                         x1=int(0.3*x)
-                        data=data[x1:x-x1,]
-                        data=data[:,x1:x-x1]
+                        data=data[x1:x1+256,]
+                        data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
@@ -86,8 +86,8 @@ class fudandataset(data.Dataset):
                         x=labels.shape[0]
                         
                         x1=int(0.3*x)
-                        labels=labels[x1:x-x1,]
-                        labels=labels[:,x1:x-x1]
+                        labels=labels[x1:x1+256,]
+                        labels=labels[:,x1:x1+256]
                         self.test_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -99,8 +99,8 @@ class fudandataset(data.Dataset):
                         x=data.shape[0]
                         
                         x1=int(0.3*x)
-                        data=data[x1:x-x1,]
-                        data=data[:,x1:x-x1]
+                        data=data[x1:x1+256,]
+                        data=data[:,x1:x1+256]
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
