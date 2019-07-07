@@ -14,6 +14,7 @@ import nibabel as nib
 import numpy as np
 import random
 import copy
+from PIL import Image
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
         self.root = root
