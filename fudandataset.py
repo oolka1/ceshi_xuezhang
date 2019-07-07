@@ -39,9 +39,9 @@ class fudandataset(data.Dataset):
                         labels[labels==600]=3
                         x=labels.shape[0]
                         
-                        x1=int(0.25*x)
+                        '''x1=int(0.25*x)
                         labels=labels[x1:x1+256,]
-                        labels=labels[:,x1:x1+256] 
+                        labels=labels[:,x1:x1+256]'''
                         self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -51,11 +51,10 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data = copy.deepcopy(file_data[:,:,i])
                         
-                        x=data.shape[0]
-                        
+                        '''x=data.shape[0]
                         x1=int(0.25*x)
                         data=data[x1:x1+256,]
-                        data=data[:,x1:x1+256]
+                        data=data[:,x1:x1+256]'''
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
@@ -84,10 +83,13 @@ class fudandataset(data.Dataset):
                         labels[labels==500]=2
                         labels[labels==600]=3
                         x=labels.shape[0]
-                        
-                        x1=int(0.25*x)
+                        x2=int(x/2)
+                        img=Image.fromarray(np.uint8(labels1))
+                        img1=img.resize((x2, x2))
+                        labels = np.array(img1)
+                        '''x1=int(0.25*x)
                         labels=labels[x1:x1+256,]
-                        labels=labels[:,x1:x1+256]
+                        labels=labels[:,x1:x1+256]'''
                         self.test_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
@@ -97,10 +99,13 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
-                        
-                        x1=int(0.25*x)
+                        x2=int(x/2)
+                        img=Image.fromarray(np.uint8(labels1))
+                        img1=img.resize((x2, x2))
+                        labels = np.array(img1)
+                        '''x1=int(0.25*x)
                         data=data[x1:x1+256,]
-                        data=data[:,x1:x1+256]
+                        data=data[:,x1:x1+256]'''
                         data=data.astype(np.float32)
                         max1=data.max()
                         max1=max1.astype(np.float32)
