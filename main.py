@@ -41,9 +41,9 @@ train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=4)
+                                              num_workers=16)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=4)
+                                              num_workers=16)
 #seed = 123456
 #random.seed(seed)
 #torch.cuda.manual_seed(seed)
