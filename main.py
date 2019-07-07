@@ -41,9 +41,9 @@ train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
 traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=1)
+                                              num_workers=4)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True, 
-                                              num_workers=1)
+                                              num_workers=4)
 #seed = 123456
 #random.seed(seed)
 #torch.cuda.manual_seed(seed)
@@ -51,7 +51,7 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
-optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-6)
+optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 5e-7)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
 weight1 = torch.Tensor([1,25])
