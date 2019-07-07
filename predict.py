@@ -35,7 +35,7 @@ testdata_root = "test"
 save_root = "result"
 test_dataset = fudandataset(testdata_root,train=False)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=True, 
-                                              num_workers=1)
+                                              num_workers=4)
 num_classes = 4
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
