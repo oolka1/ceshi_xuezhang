@@ -41,6 +41,7 @@ class fudandataset(data.Dataset):
                         x=labels.shape[0]
                         img=Image.fromarray(np.uint8(labels))
                         img1=img.resize((256, 256))
+                        x=256
                         labels = np.array(img1)
                         x1=int(0.25*x)
                         labels=labels[x1:x1+128,]
@@ -57,6 +58,7 @@ class fudandataset(data.Dataset):
                         img1=img.resize((256, 256))
                         data = np.array(img1)
                         x=data.shape[0]
+                        x=256
                         x1=int(0.25*x)
                         data=data[x1:x1+128,]
                         data=data[:,x1:x1+128]
@@ -92,7 +94,8 @@ class fudandataset(data.Dataset):
                         img=Image.fromarray(np.uint8(labels))
                         img1=img.resize((256, 256))
                         labels = np.array(img1)
-                        x1=int(0.2*x)
+                        x=256
+                        x1=int(0.25*x)
                         labels=labels[x1:x1+128,]
                         labels=labels[:,x1:x1+128]
                         self.test_labels.append(labels)
@@ -108,7 +111,8 @@ class fudandataset(data.Dataset):
                         img=Image.fromarray(np.int32(data))
                         img1=img.resize((256, 256))
                         data = np.array(img1)
-                        x1=int(0.2*x)
+                        x=256
+                        x1=int(0.25*x)
                         data=data[x1:x1+128,]
                         data=data[:,x1:x1+128]
                         data=data.astype(np.float32)
