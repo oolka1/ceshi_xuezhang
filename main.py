@@ -29,7 +29,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0005, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=400, help='epochs to train')
@@ -40,7 +40,7 @@ num_classes = 2
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=8*(config.batchsize), shuffle=True, 
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=16*(config.batchsize), shuffle=True, 
                                               num_workers=4)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True, 
                                               num_workers=4)
@@ -51,7 +51,7 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
-optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 2e-7)
+optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 2e-6)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
 weight1 = torch.Tensor([1,6])
