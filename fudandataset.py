@@ -36,8 +36,8 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         labels = copy.deepcopy(file_data[:,:,i])
                         labels[labels==200]=1
-                        labels[labels==500]=0
-                        labels[labels==600]=0
+                        labels[labels==500]=2
+                        labels[labels==600]=3
                         x=labels.shape[0]
                         img=Image.fromarray(np.uint8(labels))
                         img1=img.resize((256, 256))
@@ -87,8 +87,8 @@ class fudandataset(data.Dataset):
                     for i in range(2,d):
                         labels = file_data[:,:,i]
                         labels[labels==200]=1
-                        labels[labels==500]=0
-                        labels[labels==600]=0
+                        labels[labels==500]=2
+                        labels[labels==600]=3
                         x=labels.shape[0]
                         
                         img=Image.fromarray(np.uint8(labels))
