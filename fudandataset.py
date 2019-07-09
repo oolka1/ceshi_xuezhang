@@ -33,7 +33,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(d):
+                    for i in range(2,d):
                         labels = copy.deepcopy(file_data[:,:,i])
                         labels[labels==200]=0
                         labels[labels==500]=1
@@ -52,7 +52,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(d):
+                    for i in range(2,d):
                         data = copy.deepcopy(file_data[:,:,i])
                         img=Image.fromarray(np.int32(data))
                         img1=img.resize((256, 256))
