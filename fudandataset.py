@@ -14,6 +14,8 @@ import nibabel as nib
 import numpy as np
 import random
 import copy
+from torchvision import transforms as T
+import torchvision.transforms.functional as F
 from PIL import Image
 class fudandataset(data.Dataset):
     def __init__(self,root,train=True):
