@@ -33,7 +33,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(2,d):
+                    for i in range(d):
                         labels = copy.deepcopy(file_data[:,:,i])
                         labels[labels==200]=1
                         labels[labels==500]=2
@@ -52,7 +52,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(2,d):
+                    for i in range(d):
                         data = copy.deepcopy(file_data[:,:,i])
                         img=Image.fromarray(np.int32(data))
                         img1=img.resize((256, 256))
@@ -67,7 +67,40 @@ class fudandataset(data.Dataset):
                         max1=max1.astype(np.float32)
                         data=data/max1  
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
-            
+             for j in range(30):
+                if j<29:
+                    for i in range(len(self.train_data1)):
+                        to_pil_image = T.ToPILImage()  
+                        image=to_pil_image(self.train_data1[i])
+                        segmentation=to_pil_image(self.train_labels1[i])
+                        if random.random()>0.5:
+                            angle = np.random.randint(-30, 30)
+                            image = F.rotate(image, angle)
+                            segmentation = F.rotate(segmentation, angle)
+                        if random.random()>0.5:
+                            positionx = np.random.random()
+                            positiony = np.random.random()
+                            image = F.affine(image, angle=0,translate=[64*positionx,64*positiony],scale=1,shear=0)
+                            segmentation = F.affine(segmentation, angle=0,translate=[64*positionx,64*positiony],scale=1,shear=0)
+                        if random.random()>0.5:
+                            image = F.hflip(image)
+                            segmentation = F.hflip(segmentation)
+                        
+                            
+                        image=np.array(image, dtype=np.float32)
+                        segmentation=np.array(segmentation, dtype=np.float32)
+                       
+                        self.train_data.append(image[:,:,np.newaxis].transpose(2,0,1))
+                        self.train_labels.append(segmentation)
+                else:
+                     for i in range(len(self.train_data1)):
+                         data2=self.train_data1[i]
+                         label2=self.train_labels1[i]
+                         label2[label2==200]=1
+                         label2[label2==500]=2
+                         label2[label2==600]=3
+                         self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
+                         self.train_labels.append(label2)           
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
@@ -84,7 +117,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(2,d):
+                    for i in range(d):
                         labels = file_data[:,:,i]
                         labels[labels==200]=1
                         labels[labels==500]=2
@@ -104,7 +137,7 @@ class fudandataset(data.Dataset):
                     file_data = nib.load(file_path)
                     file_data = file_data.get_data()
                     d = file_data.shape[2]
-                    for i in range(2,d):
+                    for i in range(d):
                         data = file_data[:,:,i]
                         x=data.shape[0]
                         
