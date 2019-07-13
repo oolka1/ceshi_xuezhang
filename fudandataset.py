@@ -71,7 +71,7 @@ class fudandataset(data.Dataset):
                         self.train_data1.append(data)
             for j in range(10):
                 if j<9:
-                    for i in range(len(self.train_data1)):
+                    '''for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
                         image=to_pil_image(self.train_data1[i])
                         segmentation=to_pil_image(self.train_labels1[i])
@@ -79,11 +79,11 @@ class fudandataset(data.Dataset):
                             angle = np.random.randint(-30, 30)
                             image = F.rotate(image, angle)
                             segmentation = F.rotate(segmentation, angle)
-                        '''if random.random()>0.5:
+                        if random.random()>0.5:
                             positionx = np.random.random()
                             positiony = np.random.random()
                             image = F.affine(image, angle=0,translate=[128*positionx,128*positiony],scale=1,shear=0)
-                            segmentation = F.affine(segmentation, angle=0,translate=[128*positionx,128*positiony],scale=1,shear=0)'''
+                            segmentation = F.affine(segmentation, angle=0,translate=[128*positionx,128*positiony],scale=1,shear=0)
                         if random.random()>0.5:
                             image = F.hflip(image)
                             segmentation = F.hflip(segmentation)
@@ -93,7 +93,7 @@ class fudandataset(data.Dataset):
                         segmentation=np.array(segmentation, dtype=np.float32)
                        
                         self.train_data.append(image[:,:,np.newaxis].transpose(2,0,1))
-                        self.train_labels.append(segmentation)
+                        self.train_labels.append(segmentation)'''  
                 else:
                      for i in range(len(self.train_data1)):
                          data2=self.train_data1[i]
@@ -102,7 +102,7 @@ class fudandataset(data.Dataset):
                          label2[label2==500]=2
                          label2[label2==600]=3
                          self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
-                         self.train_labels.append(label2)           
+                         self.train_labels.append(label2)         
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
