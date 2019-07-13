@@ -46,7 +46,7 @@ class fudandataset(data.Dataset):
                         x1=int(0.25*x)
                         labels=labels[x1:x1+128,]
                         labels=labels[:,x1:x1+128]
-                        self.train_labels.append(labels)
+                        self.train_labels1.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
                     file_data = nib.load(file_path)
@@ -66,7 +66,7 @@ class fudandataset(data.Dataset):
                         max1=data.max()
                         max1=max1.astype(np.float32)
                         data=data/max1  
-                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+                        self.train_data1.append(data.transpose(2,0,1))
             for j in range(30):
                 if j<29:
                     for i in range(len(self.train_data1)):
