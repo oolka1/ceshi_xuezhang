@@ -32,14 +32,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
-parser.add_argument('--epochs', type=int, default=600, help='epochs to train')
+parser.add_argument('--epochs', type=int, default=400, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
 num_classes = 2
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=4*(config.batchsize), shuffle=True, 
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=16*(config.batchsize), shuffle=True, 
                                               num_workers=4)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True, 
                                               num_workers=4)
@@ -53,9 +53,9 @@ classifier.to(device)
 optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 5e-7)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
-#weight1 = torch.Tensor([1,1])
-#weight1=weight1.to(device)
-#output = nn.CrossEntropyLoss(weight=weight1)
+weight1 = torch.Tensor([1,1])
+weight1=weight1.to(device)
+output = nn.CrossEntropyLoss(weight=weight1)
 
 print ('Starting training...\n')
 for epoch in range(config.epochs):
@@ -70,8 +70,8 @@ for epoch in range(config.epochs):
         pred = classifier(slices)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
-        loss = F.cross_entropy(pred, label)
-        #loss = output(pred, label)
+        #loss = F.cross_entropy(pred, label)
+        loss = output(pred, label)
                 
         #print(pred.size(),label.size())
         loss.backward()
@@ -96,8 +96,8 @@ for epoch in range(config.epochs):
                 pred = classifier(slices)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
-                loss = F.cross_entropy(pred, label)
-                #loss = output(pred, label)
+                #loss = F.cross_entropy(pred, label)
+                loss = output(pred, label)
                 
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
