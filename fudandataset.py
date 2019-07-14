@@ -69,7 +69,7 @@ class fudandataset(data.Dataset):
                         max1=max1.astype(np.float32)
                         data=data/max1  
                         self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
-             '''for j in range(10):
+            '''for j in range(10):
                 if j<9:
                    for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
