@@ -35,7 +35,7 @@ parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size'
 parser.add_argument('--epochs', type=int, default=600, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
-num_classes = 2
+num_classes = 4
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
