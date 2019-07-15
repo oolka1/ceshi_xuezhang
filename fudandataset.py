@@ -48,7 +48,7 @@ class fudandataset(data.Dataset):
                         x1=int(0.25*x)
                         labels=labels[x1:x1+128,]
                         labels=labels[:,x1:x1+128]
-                        self.train_labels1.append(labels)
+                        self.train_labels.append(labels)
                 else:
                     file_path = os.path.join(self.root,file_name)
                     file_data = nib.load(file_path)
@@ -68,8 +68,8 @@ class fudandataset(data.Dataset):
                         max1=data.max()
                         max1=max1.astype(np.float32)
                         data=data/max1  
-                        self.train_data1.append(data)
-            for j in range(10):
+                        self.train_data.append(data[:,:,np.newaxis].transpose(2,0,1))
+            '''for j in range(10):
                 if j<9:
                    for i in range(len(self.train_data1)):
                         to_pil_image = T.ToPILImage()  
@@ -91,7 +91,6 @@ class fudandataset(data.Dataset):
                             
                         image=np.array(image, dtype=np.float32)
                         segmentation=np.array(segmentation, dtype=np.float32)
-                       
                         self.train_data.append(image[:,:,np.newaxis].transpose(2,0,1))
                         self.train_labels.append(segmentation)  
                 else:
@@ -102,7 +101,8 @@ class fudandataset(data.Dataset):
                          label2[label2==500]=1
                          label2[label2==600]=0
                          self.train_data.append(data2[:,:,np.newaxis].transpose(2,0,1))
-                         self.train_labels.append(label2)         
+                         self.train_labels.append(label2)'''
+                                
             self.together=list(zip(self.train_data,self.train_labels))          
             random.shuffle(self.together)
             self.train_data,self.train_labels = zip(*self.together)
