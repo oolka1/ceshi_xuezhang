@@ -80,9 +80,7 @@ for epoch in range(config.epochs):
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
         
-        log_string(' -- %03d / %03d --' % (epoch+1, 1))
-        log_string('loss: %f' % (loss.item()))
-        log_string('accuracy: %f' % (train_acc))
+
         train_acc_epoch.append(train_acc)
         train_loss_epoch.append(loss.item())
         if (i+1) % 10 == 0:
@@ -105,13 +103,16 @@ for epoch in range(config.epochs):
                
                 test_acc_epoch.append(test_acc)
                 test_loss_epoch.append(loss.item())
-                log_string(' -- %03d / %03d --' % (epoch+1, 1))
-                log_string('loss: %f' % (loss.item()))
-                log_string('accuracy: %f' % (test_acc))
+
     print('**** EPOCH %03d ****' % (epoch+1))
     print(str(datetime.now()))        
     print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
     print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(test_loss_epoch)))
+    log_string(' -- %03d / %03d --' % (epoch+1, 1))
+    log_string('train_loss: %f' % (train_loss_epoch))
+    log_string('train_accuracy: %f' % (train_acc_epoch))
+    log_string('test_loss: %f' % (test_loss_epoch))
+    log_string('test_accuracy: %f' % (test_acc_epoch))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
