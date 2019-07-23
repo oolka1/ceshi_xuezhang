@@ -84,8 +84,6 @@ for epoch in range(config.epochs):
         train_acc_epoch.append(train_acc)
         train_loss_epoch.append(loss.item())
         if (i+1) % 10 == 0:
-            log_string(str(datetime.now()))
-            log_string('---- EPOCH %03d EVALUATION ----'%(epoch+1))
             for j, data in enumerate(testdataloader):
                 slices,label = data
                 slices, label = slices.to(device), label.to(device)
