@@ -68,12 +68,14 @@ for epoch in range(config.epochs):
         optimizer.zero_grad()
         classifier = classifier.train()
         pred = classifier(slices)
-       
+        
         pred1 = pred.view(-1, num_classes)
         label1 = label.view(-1).long()
         #loss = F.cross_entropy(pred, label)
-        #loss = output(pred, label)
-        label=label.astype(np.int64)
+        #loss = output(pred, label)       
+        
+        label=np.asarray(label,np.int64)
+        label=torch.from_numpy(label)
         loss = losses.dice_loss(pred, label)       
         #print(pred.size(),label.size())
         loss.backward()
@@ -81,8 +83,7 @@ for epoch in range(config.epochs):
         pred_choice = pred1.data.max(1)[1]
         correct = pred_choice.eq(label1.data).cpu().sum()
         train_acc = correct.item()/float(label1.shape[0])
-        
-
+ 
         train_acc_epoch.append(train_acc)
         train_dice_epoch.append(1-loss.item())
         train_loss_epoch.append(loss.item())
@@ -98,7 +99,8 @@ for epoch in range(config.epochs):
                 label1 = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
                 #loss = output(pred, label)
-                label=label.astype(np.int64)
+                label=np.asarray(label,np.int64)
+                label=torch.from_numpy(label)
                 loss = losses.dice_loss(pred, label)
                 pred_choice = pred1.data.max(1)[1]
                 correct = pred_choice.eq(label1.data).cpu().sum()
