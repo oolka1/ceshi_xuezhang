@@ -52,16 +52,15 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
 optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-5)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
-train_acc_epoch, test_acc_epoch ,train_loss_epoch,test_loss_epoch= [], [],[],[]
 weight1 = torch.Tensor([1,6,6,6])
 weight1=weight1.to(device)
 #output = nn.CrossEntropyLoss(weight=weight1)
-output=losses.dice_loss()
+
 print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
-    train_acc_epoch, test_acc_epoch = [], []
+    train_acc_epoch, test_acc_epoch,train_dice_epoch, test_dice_epoch,train_loss_epoch,test_loss_epoch= [], [],[],[],[],[]
     for i, data in enumerate(traindataloader):
         slices,label = data
         slices, label = slices.to(device), label.to(device)
@@ -71,18 +70,18 @@ for epoch in range(config.epochs):
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
         #loss = F.cross_entropy(pred, label)
-        loss = output(pred, label)
-                
+        #loss = output(pred, label)
+        loss = losses.dice_loss(pred, label)       
         #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
-        #pred_choice = pred.data.max(1)[1]
-        #correct = pred_choice.eq(label.data).cpu().sum()
-        #train_acc = correct.item()/float(label.shape[0])
+        pred_choice = pred.data.max(1)[1]
+        correct = pred_choice.eq(label.data).cpu().sum()
+        train_acc = correct.item()/float(label.shape[0])
         
 
-        #train_acc_epoch.append(train_acc)
-        train_acc_epoch.append(1-loss.item())
+        train_acc_epoch.append(train_acc)
+        train_dice_epoch.append(1-loss.item())
         train_loss_epoch.append(loss.item())
         if (i+1) % 10 == 0:
             for j, data in enumerate(testdataloader):
@@ -94,34 +93,29 @@ for epoch in range(config.epochs):
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
-                loss = output(pred, label)
-                
-                #pred_choice = pred.data.max(1)[1]
-                #correct = pred_choice.eq(label.data).cpu().sum()
-                #test_acc = correct.item()/float(label.shape[0])
+                #loss = output(pred, label)
+                loss = losses.dice_loss(pred, label)
+                pred_choice = pred.data.max(1)[1]
+                correct = pred_choice.eq(label.data).cpu().sum()
+                test_acc = correct.item()/float(label.shape[0])
                
-                #test_acc_epoch.append(test_acc)
-                test_acc_epoch.append(1-loss.item())
+                test_acc_epoch.append(test_acc)
+                test_dice_epoch.append(1-loss.item())
                 test_loss_epoch.append(loss.item())
 
     print('**** EPOCH %03d ****' % (epoch+1))
     print(str(datetime.now()))        
-    #print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
-    #print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
-    #print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
-    #print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(test_loss_epoch)))
-    #log_string(' -- %03d / %03d --' % (epoch+1, 1))
-    #log_string('train_loss: %f' % (np.mean(train_loss_epoch)))
-    #log_string('train_accuracy: %f' % (np.mean(train_acc_epoch)))
-    #log_string('test_loss: %f' % (np.mean(test_loss_epoch)))
-    #log_string('test_accuracy: %f' % (np.mean(test_acc_epoch)))
-    print(('epoch %d | mean train dice score: %f') % (epoch+1, np.mean(train_acc_epoch)))
-    print(('epoch %d | mean test dice score: %f') % (epoch+1, np.mean(test_acc_epoch)))
+    print(('epoch %d | mean train acc: %f') % (epoch+1, np.mean(train_acc_epoch)))
+    print(('epoch %d | mean test acc: %f') % (epoch+1, np.mean(test_acc_epoch)))
     print(('epoch %d | mean train loss: %f') % (epoch+1, np.mean(train_loss_epoch)))
     print(('epoch %d | mean test loss: %f') % (epoch+1, np.mean(test_loss_epoch)))
+    print(('epoch %d | mean train dice score: %f') % (epoch+1, np.mean(train_dice_epoch)))
+    print(('epoch %d | mean test dice score: %f') % (epoch+1, np.mean(test_dice_epoch)))
     log_string(' -- %03d / %03d --' % (epoch+1, 1))
     log_string('train_loss: %f' % (np.mean(train_loss_epoch)))
-    log_string('train_dicescore: %f' % (np.mean(train_acc_epoch)))
+    log_string('train_dicescore: %f' % (np.mean(train_dice_epoch)))
+    log_string('train_accuracy: %f' % (np.mean(train_acc_epoch)))
     log_string('test_loss: %f' % (np.mean(test_loss_epoch)))
-    log_string('test_dicescore: %f' % (np.mean(test_acc_epoch)))    
+    log_string('test_dicescore: %f' % (np.mean(test_dice_epoch))) 
+    log_string('test_accuracy: %f' % (np.mean(test_acc_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
