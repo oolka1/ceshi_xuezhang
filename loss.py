@@ -11,14 +11,14 @@ class DiceLoss(nn.Module):
     def forward(self,input, target):
         input = torch.exp(input)
         self.smooth = 0.
-        Dice = Variable(torch.Tensor([0]).float()).cuda()
+        Dice = (torch.Tensor([0]).float()).cuda()
         for i in range(1,self.class_num):
             input_i = input[:,i,:,:]
             target_i = (target == i).float()
             intersect = (input_i*target_i).sum()
             union = torch.sum(input_i) + torch.sum(target_i)
             if target_i.sum() == 0:
-                dice = Variable(torch.Tensor([1]).float()).cuda()
+                dice = (torch.Tensor([1]).float()).cuda()
             else:
                 dice = (2 * intersect + self.smooth) / (union + self.smooth)
             Dice += dice
@@ -35,14 +35,14 @@ class EL_DiceLoss(nn.Module):
     def forward(self,input, target):
         input = torch.exp(input)
         self.smooth = 0.
-        Dice = Variable(torch.Tensor([0]).float()).cuda()
+        Dice = (torch.Tensor([0]).float()).cuda()
         for i in range(1,self.class_num):
             input_i = input[:,i,:,:]
             target_i = (target == i).float()
             intersect = (input_i*target_i).sum()
             union = torch.sum(input_i) + torch.sum(target_i)
             if target_i.sum() == 0:
-                dice = Variable(torch.Tensor([1]).float()).cuda()
+                dice = (torch.Tensor([1]).float()).cuda()
             else:
                 dice = (2 * intersect + self.smooth) / (union + self.smooth)
             Dice += (-torch.log(dice))**self.gamma
