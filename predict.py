@@ -49,6 +49,7 @@ for j, data in enumerate(testdataloader):
     classifier = classifier.eval()
     pred = classifier(slices)
     
+    pred = torch.exp(pred)
     indata = slices.cpu().numpy()
     inlabel = label.cpu().numpy()
     
