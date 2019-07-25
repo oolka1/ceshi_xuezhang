@@ -16,17 +16,16 @@ class DiceLoss(nn.Module):
         for i in range(1,self.class_num):
             input_i = input[:,i,:,:]
             target_i = (target == i).float()
-            print('ok')
+
             intersect = (input_i*target_i).sum()
             union = torch.sum(input_i) + torch.sum(target_i)
-            print(intersect)
-            print(union)
+
             if target_i.sum() == 0:
                 dice = (torch.Tensor([1]).float()).cuda()
             else:
                 dice = (2 * intersect + self.smooth) / (union + self.smooth)
             
-            print(dice)
+
             Dice += dice
             
         dice_loss = 1 - Dice/(self.class_num - 1)
