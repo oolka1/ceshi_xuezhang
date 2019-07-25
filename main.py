@@ -17,7 +17,7 @@ import numpy as np
 import torchvision.transforms as t
 from fudandataset import fudandataset
 from Unet import UNet
-import sklearn.metrics as met
+from loss import DiceLoss,EL_DiceLoss
 traindata_root = "train"
 testdata_root = "test"
 log_root = "log"
@@ -26,15 +26,7 @@ LOG_FOUT = open(os.path.join(log_root, 'train.log'), 'w')
 def log_string(out_str):
     LOG_FOUT.write(out_str+'\n')
     LOG_FOUT.flush()
-def dice_loss(pred,label):
-    pred_choice = pred.data.max(1)[1]
-    label1=label.data
-    pred_choice=np.asarray(pred_choice.cpu())
-    label1=np.asarray(label1.cpu())
-    dicescore=met.f1_score(label1, pred_choice, average='binary')
-    diceloss=1-dicescore
-    diceloss=t.ToTensor(diceloss)
-    return diceloss
+
 
 
 os.system('mkdir {0}'.format('model_checkpoint'))
@@ -87,7 +79,7 @@ for epoch in range(config.epochs):
         #loss = output(pred, label)       
         
 
-        loss = dice_loss(pred, label)       
+        loss = DiceLoss(pred, label,class_num=num_classes)       
         #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
@@ -112,7 +104,7 @@ for epoch in range(config.epochs):
                 #loss = F.cross_entropy(pred, label)
                 #loss = output(pred, label)
 
-                loss = dice_loss(pred, label)
+                loss = DiceLoss(pred, label,class_num=num_classes)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
