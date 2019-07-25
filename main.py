@@ -66,17 +66,17 @@ for epoch in range(config.epochs):
     train_acc_epoch, test_acc_epoch,train_dice_epoch, test_dice_epoch,train_loss_epoch,test_loss_epoch= [], [],[],[],[],[]
     for i, data in enumerate(traindataloader):
         slices,label = data
-        label=np.asarray(label,np.int64)
-        label=torch.from_numpy(label)        
+       
         slices, label = slices.to(device), label.to(device)
         optimizer.zero_grad()
         classifier = classifier.train()
         pred = classifier(slices)
-        
+        pred1=pred
+        label1=label
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
         #loss = F.cross_entropy(pred, label)
-        loss = output(pred, label)       
+        loss = output(pred1, label1)       
         
 
               
@@ -93,8 +93,7 @@ for epoch in range(config.epochs):
         if (i+1) % 10 == 0:
             for j, data in enumerate(testdataloader):
                 slices,label = data
-                label=np.asarray(label,np.int64)
-                label=torch.from_numpy(label)
+
                 slices, label = slices.to(device), label.to(device)
                 #slices = slices.transpose(2, 0, 1)
                 classifier = classifier.eval()
@@ -102,7 +101,9 @@ for epoch in range(config.epochs):
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
-                loss = output(pred, label)
+                pred1=pred
+                label1=label
+                loss = output(pred1, label1)
 
                 
                 pred_choice = pred.data.max(1)[1]
