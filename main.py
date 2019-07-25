@@ -58,7 +58,7 @@ scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 weight1 = torch.Tensor([1,6,6,6])
 weight1=weight1.to(device)
 #output = nn.CrossEntropyLoss(weight=weight1)
-
+output = l.DiceLoss() 
 print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
@@ -76,10 +76,10 @@ for epoch in range(config.epochs):
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
         #loss = F.cross_entropy(pred, label)
-        #loss = output(pred, label)       
+        loss = output(pred, label)       
         
 
-        loss = l.DiceLoss(pred, label)       
+              
         #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
@@ -102,9 +102,9 @@ for epoch in range(config.epochs):
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
-                #loss = output(pred, label)
+                loss = output(pred, label)
 
-                loss = l.DiceLoss(pred, label)
+                
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
