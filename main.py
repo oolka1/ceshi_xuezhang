@@ -71,7 +71,7 @@ for epoch in range(config.epochs):
         optimizer.zero_grad()
         classifier = classifier.train()
         pred = classifier(slices)
-        pred1 = torch.exp(pred)
+        pred = torch.exp(pred)
         label1=label
         pred1=pred
         pred = pred.view(-1, num_classes)
