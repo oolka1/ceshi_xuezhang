@@ -97,9 +97,9 @@ class UNet(nn.Module):
         final = (final_1+final_2+final_3+final_4)/4
 
         if self.is_ds:
-            return final
+            return F.log_softmax(final,dim=1)
         else:
-            return final_4
+            return F.log_softmax(final_4)
 
 if __name__ == '__main__':
     print('#### Test Case ###')
