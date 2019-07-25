@@ -22,6 +22,7 @@ class DiceLoss(nn.Module):
             else:
                 dice = (2 * intersect + self.smooth) / (union + self.smooth)
             Dice += dice
+            print(Dice)
         dice_loss = 1 - Dice/(self.class_num - 1)
         return dice_loss
 
