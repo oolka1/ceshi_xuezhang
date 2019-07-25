@@ -98,11 +98,12 @@ for epoch in range(config.epochs):
                 #slices = slices.transpose(2, 0, 1)
                 classifier = classifier.eval()
                 pred = classifier(slices)
+                pred1=pred
+                label1=label
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
-                pred1=pred
-                label1=label
+                
                 loss = output(pred1, label1)
 
                 
