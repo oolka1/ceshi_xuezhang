@@ -3,16 +3,16 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 class DiceLoss(nn.Module):
-    def __init__(self, class_num=2,smooth=1):
+    def __init__(self,smooth=1):
         super(DiceLoss, self).__init__()
         self.smooth = smooth
-        self.class_num = class_num
 
-    def forward(self,input, target):
+
+    def forward(self,input, target, class_num=2):
         input = torch.exp(input)
         self.smooth = 0.
         Dice = Variable(torch.Tensor([0]).float()).cuda()
-        for i in range(1,self.class_num):
+        for i in range(1,class_num):
             input_i = input[:,i,:,:]
             target_i = (target == i).float()
             intersect = (input_i*target_i).sum()
@@ -26,17 +26,17 @@ class DiceLoss(nn.Module):
         return dice_loss
 
 class EL_DiceLoss(nn.Module):
-    def __init__(self, class_num=2,smooth=1,gamma=0.5):
+    def __init__(self,smooth=1,gamma=0.5):
         super(EL_DiceLoss, self).__init__()
         self.smooth = smooth
-        self.class_num = class_num
+
         self.gamma = gamma
 
-    def forward(self,input, target):
+    def forward(self,input, target, class_num=2):
         input = torch.exp(input)
         self.smooth = 0.
         Dice = Variable(torch.Tensor([0]).float()).cuda()
-        for i in range(1,self.class_num):
+        for i in range(1,class_num):
             input_i = input[:,i,:,:]
             target_i = (target == i).float()
             intersect = (input_i*target_i).sum()
