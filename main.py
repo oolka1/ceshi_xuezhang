@@ -79,7 +79,7 @@ for epoch in range(config.epochs):
         #loss = output(pred, label)       
         
 
-        loss = l.DiceLoss(pred, label,class_num=num_classes)       
+        loss = l.DiceLoss(pred, label)       
         #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
@@ -104,7 +104,7 @@ for epoch in range(config.epochs):
                 #loss = F.cross_entropy(pred, label)
                 #loss = output(pred, label)
 
-                loss = l.DiceLoss(pred, label,class_num=num_classes)
+                loss = l.DiceLoss(pred, label)
                 pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
