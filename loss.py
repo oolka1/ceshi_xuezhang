@@ -22,7 +22,7 @@ class DiceLoss(nn.Module):
             else:
                 dice = (2 * intersect + self.smooth) / (union + self.smooth)
             Dice += dice
-        dice_loss = 1 - Dice/(self.class_num - 1)
+        dice_loss = 1 - Dice/(class_num - 1)
         return dice_loss
 
 class EL_DiceLoss(nn.Module):
@@ -46,5 +46,5 @@ class EL_DiceLoss(nn.Module):
             else:
                 dice = (2 * intersect + self.smooth) / (union + self.smooth)
             Dice += (-torch.log(dice))**self.gamma
-        dice_loss = Dice/(self.class_num - 1)
+        dice_loss = Dice/(class_num - 1)
         return dice_loss
