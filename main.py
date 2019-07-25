@@ -42,7 +42,7 @@ num_classes = 2
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
-traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=2*(config.batchsize), shuffle=True, 
+traindataloader = torch.utils.data.DataLoader(train_dataset, batch_size=4*(config.batchsize), shuffle=True, 
                                               num_workers=4)
 testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.batchsize, shuffle=True, 
                                               num_workers=4)
