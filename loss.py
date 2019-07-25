@@ -9,6 +9,7 @@ class DiceLoss(nn.Module):
         self.class_num = class_num
 
     def forward(self,input, target):
+        input=F.log_softmax(input,dim=1)
         input = torch.exp(input)
         self.smooth = 1
         Dice = (torch.Tensor([0]).float()).cuda()
