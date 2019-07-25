@@ -32,7 +32,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=600, help='epochs to train')
@@ -71,8 +71,7 @@ for epoch in range(config.epochs):
         optimizer.zero_grad()
         classifier = classifier.train()
         pred = classifier(slices)
-        pred1=pred
-        label1=label
+        pred = torch.exp(pred)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
         #loss = F.cross_entropy(pred, label)
@@ -98,8 +97,7 @@ for epoch in range(config.epochs):
                 #slices = slices.transpose(2, 0, 1)
                 classifier = classifier.eval()
                 pred = classifier(slices)
-                pred1=pred
-                label1=label
+                pred = torch.exp(pred)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
