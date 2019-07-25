@@ -11,7 +11,7 @@ import torch
 import torch.nn as nn
 from layers import unetConv2, unetUp
 from utils import init_weights, count_param
-
+import torch.nn.functional as F
 
 class UNet(nn.Module):
 
