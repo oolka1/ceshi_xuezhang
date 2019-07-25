@@ -28,8 +28,8 @@ def log_string(out_str):
 def dice_loss(pred,label):
     pred_choice = pred.data.max(1)[1]
     label1=label.data
-    pred_choice=np.asarray(pred_choice)
-    label1=np.asarray(label1)
+    pred_choice=np.asarray(pred_choice.cpu())
+    label1=np.asarray(label1.cpu())
     dicescore=met.f1_score(label1, pred_choice, average='binary')
     diceloss=1-dicescore
     return diceloss
