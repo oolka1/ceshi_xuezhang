@@ -14,6 +14,7 @@ import torch.utils.data
 import torch.nn.functional as F
 import torch.nn as nn
 import numpy as np
+import torchvision.transforms as t
 from fudandataset import fudandataset
 from Unet import UNet
 import sklearn.metrics as met
@@ -32,6 +33,7 @@ def dice_loss(pred,label):
     label1=np.asarray(label1.cpu())
     dicescore=met.f1_score(label1, pred_choice, average='binary')
     diceloss=1-dicescore
+    diceloss=t.ToTensor(diceloss)
     return diceloss
 
 
