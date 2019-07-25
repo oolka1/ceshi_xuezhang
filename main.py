@@ -16,7 +16,7 @@ import torch.nn as nn
 import numpy as np
 from fudandataset import fudandataset
 from Unet import UNet
-import kornia.losses as losses 
+import sklearn.metrics as met
 traindata_root = "train"
 testdata_root = "test"
 log_root = "log"
@@ -25,6 +25,7 @@ LOG_FOUT = open(os.path.join(log_root, 'train.log'), 'w')
 def log_string(out_str):
     LOG_FOUT.write(out_str+'\n')
     LOG_FOUT.flush()
+def 
 
 os.system('mkdir {0}'.format('model_checkpoint'))
 
@@ -35,7 +36,7 @@ parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size'
 parser.add_argument('--epochs', type=int, default=600, help='epochs to train')
 parser.add_argument('-out', '--outf', type=str, default='./model_checkpoint', help='path to save model checkpoints')
 config = parser.parse_args()
-num_classes = 4
+num_classes = 2
 train_dataset = fudandataset(traindata_root,train=True)
 test_dataset = fudandataset(testdata_root,train=False)
 
