@@ -12,7 +12,7 @@ class DiceLoss(nn.Module):
         input = torch.exp(input)
         self.smooth = 0.
         Dice = (torch.Tensor([0]).float()).cuda()
-        for i in range(self.class_num-1):
+        for i in range(1:self.class_num):
             input_i = input[:,i,:,:]
             target_i = (target == i).float()
             intersect = (input_i*target_i).sum()
@@ -36,7 +36,7 @@ class EL_DiceLoss(nn.Module):
         input = torch.exp(input)
         self.smooth = 0.
         Dice = (torch.Tensor([0]).float()).cuda()
-        for i in range(self.class_num-1):
+        for i in range(1:self.class_num):
             input_i = input[:,i,:,:]
             target_i = (target == i).float()
             intersect = (input_i*target_i).sum()
