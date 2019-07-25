@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 class DiceLoss(nn.Module):
-    def __init__(self, class_num=4,smooth=1):
+    def __init__(self, class_num=2,smooth=1):
         super(DiceLoss, self).__init__()
         self.smooth = smooth
         self.class_num = class_num
@@ -26,7 +26,7 @@ class DiceLoss(nn.Module):
         return dice_loss
 
 class EL_DiceLoss(nn.Module):
-    def __init__(self, class_num=4,smooth=1,gamma=0.5):
+    def __init__(self, class_num=2,smooth=1,gamma=0.5):
         super(EL_DiceLoss, self).__init__()
         self.smooth = smooth
         self.class_num = class_num
