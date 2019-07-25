@@ -25,7 +25,15 @@ LOG_FOUT = open(os.path.join(log_root, 'train.log'), 'w')
 def log_string(out_str):
     LOG_FOUT.write(out_str+'\n')
     LOG_FOUT.flush()
-def 
+def dice_loss(pred,label):
+    pred_choice = pred.data.max(1)[1]
+    label1=label.data
+    pred_choice=np.asarray(pred_choice)
+    label1=np.asarray(label1)
+    dicescore=met.f1_score(label1, pred_choice, average='binary')
+    diceloss=1-dicescore
+    return diceloss
+
 
 os.system('mkdir {0}'.format('model_checkpoint'))
 
@@ -71,19 +79,19 @@ for epoch in range(config.epochs):
         classifier = classifier.train()
         pred = classifier(slices)
         
-        pred1 = pred.view(-1, num_classes)
-        label1 = label.view(-1).long()
+        pred = pred.view(-1, num_classes)
+        label = label.view(-1).long()
         #loss = F.cross_entropy(pred, label)
         #loss = output(pred, label)       
         
 
-        loss = losses.dice_loss(pred, label)       
+        loss = dice_loss(pred, label)       
         #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
-        pred_choice = pred1.data.max(1)[1]
-        correct = pred_choice.eq(label1.data).cpu().sum()
-        train_acc = correct.item()/float(label1.shape[0])
+        pred_choice = pred.data.max(1)[1]
+        correct = pred_choice.eq(label.data).cpu().sum()
+        train_acc = correct.item()/float(label.shape[0])
  
         train_acc_epoch.append(train_acc)
         train_dice_epoch.append(1-loss.item())
@@ -97,15 +105,15 @@ for epoch in range(config.epochs):
                 #slices = slices.transpose(2, 0, 1)
                 classifier = classifier.eval()
                 pred = classifier(slices)
-                pred1 = pred.view(-1, num_classes)
-                label1 = label.view(-1).long()
+                pred = pred.view(-1, num_classes)
+                label = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
                 #loss = output(pred, label)
 
-                loss = losses.dice_loss(pred, label)
-                pred_choice = pred1.data.max(1)[1]
-                correct = pred_choice.eq(label1.data).cpu().sum()
-                test_acc = correct.item()/float(label1.shape[0])
+                loss = dice_loss(pred, label)
+                pred_choice = pred.data.max(1)[1]
+                correct = pred_choice.eq(label.data).cpu().sum()
+                test_acc = correct.item()/float(label.shape[0])
                
                 test_acc_epoch.append(test_acc)
                 test_dice_epoch.append(1-loss.item())
