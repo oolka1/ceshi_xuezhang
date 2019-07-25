@@ -8,7 +8,7 @@ class DiceLoss(nn.Module):
         self.smooth = smooth
 
 
-    def forward(self,input, target, class_num=2):
+    def forward(self,input, target, class_num):
         input = torch.exp(input)
         self.smooth = 0.
         Dice = Variable(torch.Tensor([0]).float()).cuda()
@@ -32,7 +32,7 @@ class EL_DiceLoss(nn.Module):
 
         self.gamma = gamma
 
-    def forward(self,input, target, class_num=2):
+    def forward(self,input, target, class_num):
         input = torch.exp(input)
         self.smooth = 0.
         Dice = Variable(torch.Tensor([0]).float()).cuda()
