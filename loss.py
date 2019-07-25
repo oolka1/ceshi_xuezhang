@@ -9,7 +9,7 @@ class DiceLoss(nn.Module):
         self.class_num = class_num
 
     def forward(self,input, target):
-       
+        input = torch.exp(input)
         self.smooth = 1
         Dice = (torch.Tensor([0]).float()).cuda()
         for i in range(1,self.class_num):
@@ -38,7 +38,7 @@ class EL_DiceLoss(nn.Module):
         self.gamma = gamma
 
     def forward(self,input, target):
-        
+        input = torch.exp(input)
         self.smooth = 1
         Dice = (torch.Tensor([0]).float()).cuda()
         for i in range(1,self.class_num):
