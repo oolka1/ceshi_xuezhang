@@ -71,9 +71,10 @@ for epoch in range(config.epochs):
         optimizer.zero_grad()
         classifier = classifier.train()
         pred = classifier(slices)
-        pred = torch.exp(pred)
+        
         label1=label
         pred1=pred
+        pred = torch.exp(pred)
         pred = pred.view(-1, num_classes)
         label = label.view(-1).long()
         #loss = F.cross_entropy(pred, label)
@@ -99,9 +100,10 @@ for epoch in range(config.epochs):
                 #slices = slices.transpose(2, 0, 1)
                 classifier = classifier.eval()
                 pred = classifier(slices)
-                pred = torch.exp(pred)
+                
                 label1=label
                 pred1=pred
+                pred = torch.exp(pred)
                 pred = pred.view(-1, num_classes)
                 label = label.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
