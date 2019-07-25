@@ -12,6 +12,7 @@ import torch.nn as nn
 from layers import unetConv2, unetUp
 from utils import init_weights, count_param
 
+
 class UNet(nn.Module):
 
     def __init__(self, in_channels=1, n_classes=2, feature_scale=8, is_deconv=True, is_batchnorm=True,is_ds=True):
@@ -99,13 +100,16 @@ class UNet(nn.Module):
             return final
         else:
             return final_4
-        
+
 if __name__ == '__main__':
     print('#### Test Case ###')
     from torch.autograd import Variable
     x = Variable(torch.rand(2,1,64,64)).cuda()
-    model = UNet().cuda()
+    model = UNet_Nested().cuda()
     param = count_param(model)
     y = model(x)
     print('Output shape:',y.shape)
-    print('UNet totoal parameters: %.2fM (%d)'%(param/1e6,param))
+    print('UNet++ totoal parameters: %.2fM (%d)'%(param/1e6,param))
+
+
+      
