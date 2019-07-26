@@ -101,7 +101,7 @@ class UNet(nn.Module):
         #else:
             #return F.log_softmax(final_4)
         if self.is_ds:
-            return final,dim=1
+            return final
         else:
             return final_4
         
