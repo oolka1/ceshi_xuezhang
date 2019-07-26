@@ -53,7 +53,7 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
-optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-7)
+optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-6)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 weight1 = torch.Tensor([1,6,6,6])
 weight1=weight1.to(device)
