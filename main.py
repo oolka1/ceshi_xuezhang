@@ -57,7 +57,7 @@ optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-6
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 weight1 = torch.Tensor([1,6,6,6])
 weight1=weight1.to(device)
-output = nn.CrossEntropyLoss(weight=weight1)
+output = nn.NLLLoss (weight=weight1)
 #output = l.DiceLoss() 
 print ('Starting training...\n')
 for epoch in range(config.epochs):
@@ -75,7 +75,7 @@ for epoch in range(config.epochs):
         
         label1=label
         pred1=pred
-        #pred = torch.exp(pred)
+        pred = torch.exp(pred)
         pred1 = pred1.view(-1, num_classes)
         pred=torch.max(pred,1)
         label = label.view(-1).long()
@@ -105,7 +105,7 @@ for epoch in range(config.epochs):
                 
                 label1=label
                 pred1=pred
-                #pred = torch.exp(pred)
+                pred = torch.exp(pred)
                 pred1 = pred1.view(-1, num_classes)
                 pred=torch.max(pred,1)
                 label = label.view(-1).long()
