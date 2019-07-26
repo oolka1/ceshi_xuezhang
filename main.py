@@ -75,13 +75,13 @@ for epoch in range(config.epochs):
         label1=label
         pred1=pred
         pred = torch.exp(pred)
-
+        pred1 = pred1.view(-1, num_classes)
         pred=torch.max(pred,1)
         label = label.view(-1).long()
     
         pred_choice=pred.indices.view(-1).long()
         #loss = F.cross_entropy(pred1, label1)
-        loss = output(pred_choice, label)       
+        loss = output(pred1, label)       
         
 
               
@@ -107,13 +107,14 @@ for epoch in range(config.epochs):
                 label1=label
                 pred1=pred
                 pred = torch.exp(pred)
+                pred1 = pred1.view(-1, num_classes)
                 pred=torch.max(pred,1)
                 label = label.view(-1).long()
     
                 pred_choice=pred.indices.view(-1).long()
                 #loss = F.cross_entropy(pred1, label1)
                 
-                loss = output(pred_choice, label)
+                loss = output(pred1, label)
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                
