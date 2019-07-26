@@ -32,7 +32,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.0001, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=600, help='epochs to train')
@@ -75,8 +75,10 @@ for epoch in range(config.epochs):
         label1=label
         pred1=pred
         pred = torch.exp(pred)
-        pred = pred.view(-1, num_classes)
+        pred=torch.max(pred,1)
         label = label.view(-1).long()
+    
+        pred_choice=pred.indices.view(-1).long()
         #loss = F.cross_entropy(pred, label)
         loss = output(pred1, label1)       
         
@@ -85,7 +87,7 @@ for epoch in range(config.epochs):
         #print(pred.size(),label.size())
         loss.backward()
         optimizer.step()
-        pred_choice = pred.data.max(1)[1]
+
         correct = pred_choice.eq(label.data).cpu().sum()
         train_acc = correct.item()/float(label.shape[0])
  
@@ -104,14 +106,13 @@ for epoch in range(config.epochs):
                 label1=label
                 pred1=pred
                 pred = torch.exp(pred)
-                pred = pred.view(-1, num_classes)
+                pred=torch.max(pred,1)
                 label = label.view(-1).long()
+    
+                pred_choice=pred.indices.view(-1).long()
                 #loss = F.cross_entropy(pred, label)
                 
                 loss = output(pred1, label1)
-
-                
-                pred_choice = pred.data.max(1)[1]
                 correct = pred_choice.eq(label.data).cpu().sum()
                 test_acc = correct.item()/float(label.shape[0])
                
