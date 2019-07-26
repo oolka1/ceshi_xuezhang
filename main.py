@@ -32,7 +32,7 @@ def log_string(out_str):
 os.system('mkdir {0}'.format('model_checkpoint'))
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--lr', type=float, default=0.00001, help='learning rate')
+parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
 parser.add_argument('--momentum', type=float, default=0.9, help='momentum in optimizer')
 parser.add_argument('-bs', '--batchsize', type=int, default=1, help='batch size')
 parser.add_argument('--epochs', type=int, default=600, help='epochs to train')
@@ -53,7 +53,7 @@ testdataloader = torch.utils.data.DataLoader(test_dataset, batch_size=config.bat
 classifier = UNet(n_classes = num_classes)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 classifier.to(device)
-optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-5)
+optimizer = optim.Adam(classifier.parameters(), lr=config.lr,weight_decay = 1e-7)
 scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)
 weight1 = torch.Tensor([1,6,6,6])
 weight1=weight1.to(device)
