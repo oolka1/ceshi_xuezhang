@@ -110,7 +110,7 @@ for epoch in range(config.epochs):
                 label = label.view(-1).long()
     
                 pred_choice=pred.indices.view(-1).long()
-                loss = F.cross_entropy(pred1, label1)
+                #loss = F.cross_entropy(pred1, label1)
                 
                 loss = output(pred, label)
                 correct = pred_choice.eq(label.data).cpu().sum()
