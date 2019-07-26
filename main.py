@@ -63,7 +63,8 @@ print ('Starting training...\n')
 for epoch in range(config.epochs):
     log_string('**** EPOCH %03d ****' % (epoch+1))
     log_string(str(datetime.now()))
-    train_acc_epoch, test_acc_epoch,train_dice_epoch, test_dice_epoch,train_loss_epoch,test_loss_epoch= [], [],[],[],[],[]
+    train_acc_epoch, test_acc_epoch,train_loss_epoch,test_loss_epoch= [], [],[],[]
+    #train_dice_epoch, test_dice_epoch=[],[]
     for i, data in enumerate(traindataloader):
         slices,label = data
        
@@ -81,9 +82,7 @@ for epoch in range(config.epochs):
     
         pred_choice=pred.indices.view(-1).long()
         #loss = F.cross_entropy(pred1, label1)
-        loss = output(pred1, label)       
-        
-
+        loss = output(pred1, label) 
               
         #print(pred.size(),label.size())
         loss.backward()
@@ -132,9 +131,9 @@ for epoch in range(config.epochs):
     #print(('epoch %d | mean test dice score: %f') % (epoch+1, np.mean(test_dice_epoch)))
     log_string(' -- %03d / %03d --' % (epoch+1, 1))
     log_string('train_loss: %f' % (np.mean(train_loss_epoch)))
-    log_string('train_dicescore: %f' % (np.mean(train_dice_epoch)))
+    #log_string('train_dicescore: %f' % (np.mean(train_dice_epoch)))
     log_string('train_accuracy: %f' % (np.mean(train_acc_epoch)))
     log_string('test_loss: %f' % (np.mean(test_loss_epoch)))
     #log_string('test_dicescore: %f' % (np.mean(test_dice_epoch))) 
-    #log_string('test_accuracy: %f' % (np.mean(test_acc_epoch)))
+    log_string('test_accuracy: %f' % (np.mean(test_acc_epoch)))
     torch.save(classifier.state_dict(), '%s/%s_model_%d.pth' % (config.outf, 'fudanc0', epoch))
